@@ -1,0 +1,13 @@
+{
+  "name": "PMCC.APP",
+  "short_name": "PMCC",
+  "start_url": "index.html",
+  "display": "standalone",
+  "icons": [{
+    "src": "assets/imgs/pmccLogo.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "background_color": "#4e8ef7",
+  "theme_color": "#4e8ef7"
+}

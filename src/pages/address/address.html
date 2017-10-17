@@ -1,0 +1,63 @@
+<style>
+  .error{
+    color:red;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+</style>
+<ion-header class="signup-header auth-header">
+  <ion-navbar>
+    <ion-title>Sign up</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-content auth-content">
+  <h2 class="auth-title">Address Details</h2>
+  <form class="login-form auth-form" [formGroup]="address" (ngSubmit)="doSignUp()">
+    <ion-item>
+      <ion-label color="primary" floating>Company Name</ion-label>
+      <ion-input type="text" formControlName="companyName" (ionBlur)="onCompanyNameBlur()" ></ion-input>
+    </ion-item>
+     <small *ngIf="$validateName" class="error" >
+       You are Exceeding max length.
+      </small>
+    <ion-item>
+      <ion-label color="primary" floating>Address Line1</ion-label>
+      <ion-input type="text" formControlName="address1" (ionBlur)="onAddress1Blur()" ></ion-input>
+    </ion-item>
+      <small *ngIf="$validateAddress1" class="error" >
+       You are Exceeding max length.
+      </small>
+      <ion-item>
+        <ion-label color="primary" floating>Address Line2</ion-label>
+        <ion-input type="text" formControlName="address2" (ionBlur)="onAddress2Blur()" ></ion-input>
+      </ion-item>
+      <small *ngIf="$validateAddress2" class="error" >
+       You are Exceeding max length.
+      </small>
+      <ion-item>
+      <ion-label color="primary" floating >State</ion-label>
+      <ion-select formControlName="state">
+        <ion-option (ionSelect)="onStateChange($event)" *ngFor="let state of states" 
+                    [value]="state.Value" >{{state.Name}}</ion-option>
+      </ion-select>
+   </ion-item>
+   <ion-item>
+      <ion-label color="primary" floating >City</ion-label>
+      <ion-select formControlName="city" >
+        <ion-option *ngFor="let city of cites"
+            [value]="city.Value">
+            {{city.Name}}
+        </ion-option>
+      </ion-select>
+   </ion-item>
+    <ion-item>
+        <ion-label color="primary" floating>Pincode</ion-label>
+        <ion-input type="number" formControlName="pincode" (ionBlur)="onPincodeBlur()"></ion-input>
+      </ion-item>
+      <small *ngIf="$validatePincode" class="error" >
+       Pincode should of length 6.
+      </small>
+    <button ion-button block class="auth-action-button login-button" [disabled]="!address.valid" type="submit">Sign Up</button>
+  </form>
+</ion-content>

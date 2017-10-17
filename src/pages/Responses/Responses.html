@@ -1,0 +1,125 @@
+<style>
+  .item-icon {
+    font-size: 1.6em;
+    padding-left: 10px;
+}
+.col{
+    padding: 0px;
+  }
+
+
+.container h1{
+ font-size:12px;
+ color: #ae75e7;
+}
+.container .column-left{ 
+color: #ae75e7;
+float: left; 
+width: 20%; 
+font-size:10px;
+
+}
+.container .column-right{ 
+float: right; 
+width: 40%; 
+font-size:11px;
+}
+.container .column-center{ 
+display: inline-block; 
+width: 40%; 
+font-size:11px;
+}
+
+</style>
+
+<ion-header>
+  <ion-navbar>
+    <ion-title>Responses</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="responses-content">
+  <ion-segment class="responses-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
+    <ion-segment-button value="Active" width-15 (ionSelect)="onSegmentSelected($event)">
+      Date
+    </ion-segment-button>
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+      Delivery on
+    </ion-segment-button>
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+      Cost
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="segment">
+    <div *ngSwitchCase="'Active'">
+      <ion-list class="responses-list">
+        <ion-item class="responses-item" *ngFor="let item of responses.responses">
+          <ion-row>
+            <ion-col width-100 class="responses-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <ion-row>
+                    <ion-col width-85 style="padding: 0px;">
+                      <h2 class="item-title one-line">{{item.RowNo}}) {{item.Name}}</h2>
+                    </ion-col>
+                    <ion-col width-15 style="padding: 0px;">
+                      <ion-icon style="font-size: 1.6em;" class="item-icon" name="call" (click)='onCallNumber(item);' ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col width-60>
+                      <div class="item-description">
+                         <ion-icon class="description-icon" name="clock"></ion-icon>
+                         <p class="description-text one-line">{{item.ReceivedDate}}</p>
+                      </div>
+                    </ion-col>
+                    <ion-col width-40>
+                     <div class="item-description">
+                      <span class="description-icon">&#x20B9;</span> 
+                      <p class="description-text one-line">{{item.ReceivedCost}}/</p>
+                    </div>
+                    </ion-col>
+                  </ion-row>
+                  <div class="item-description" >
+                    <button ion-button small clear 
+                    style="font-size: 1rem;padding:0px" 
+                    (click)="ExpandResponse(item);" >
+                       View details &nbsp;
+                        <ion-icon name="ios-arrow-down"></ion-icon>
+                    </button>
+                  </div>
+                  <ion-row *ngIf="currentRow ==item.RowNo">
+                    <ion-col width-100>
+                      <div class="container">
+                        <div class="column-left">
+                        <h1>Response</h1><br>
+                        <span>Delivery On</span><br>
+                        <span>Location</span><br>
+                        <span>Mode</span><br>
+                        <span>Cost</span>
+                        </div>
+                        <div class="column-center">
+                        <h1>Expected</h1><br>
+                        <span>{{item.ExpectedDeliverDate}}</span><br>
+                        <span>{{item.ExpectedLoc}}</span><br>
+                        <span>{{item.ExpectedMode}}</span><br>
+                        <span>&#x20B9; {{item.ExpectedCost}}/-</span>
+                        </div>
+                        <div class="column-right">
+                        <h1>Offered</h1><br>
+                        <span>{{item.ReceivedDate}}</span><br>
+                        <span>{{item.ReceivedLoc}}</span><br>
+                        <span>{{item.ReceivedMode}}</span><br>
+                        <span>&#x20B9; {{item.ReceivedCost}}/-</span>
+                        </div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

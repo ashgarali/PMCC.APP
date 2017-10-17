@@ -1,5 +1,8 @@
 {
   "name": "PMCC.APP",
-  "app_id": "",
-  "type": "ionic-angular"
+  "app_id": "1f746de4",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

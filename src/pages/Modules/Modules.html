@@ -1,0 +1,68 @@
+<style>
+   .section-title {
+    margin-top: 5px;
+    text-align: left;
+}
+  .notifications-content{
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.9px;
+    color: #5e5874;
+}
+</style>
+<ion-header>
+  <ion-navbar>
+    <ion-title>Modules</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div  class="event-example-view">
+  <div class="sample-form event-form" >
+        <ion-list>
+          <ion-item-group>
+          <ion-item-divider class="notifications-content" >Offers</ion-item-divider>
+           <section class="form-section">
+          <ion-chip color="secondary" *ngFor="let item of offers.offers" >
+              <ion-icon color="danger" name="heart"></ion-icon>
+              <ion-label color="dark">{{item.Description}}</ion-label>
+          </ion-chip>
+           </section>
+          </ion-item-group>
+        </ion-list>
+        <ion-list>
+          <ion-item-group>
+          <ion-item-divider class="notifications-content" >Modules</ion-item-divider>
+          <section class="form-section">
+          <ion-item *ngFor="let item of modules.modules">
+            <ion-label>{{item.Name}}</ion-label>
+            <ion-label style="text-align: right;" >{{item.Cost}}/-</ion-label>
+            <ion-checkbox [(ngModel)]="item.Checked"
+               (ionChange)="AddToBye(item);">
+             </ion-checkbox>
+          </ion-item>
+          </section>
+        <hr>
+        <section class="form-section">
+          <ion-item>
+            <ion-label style="text-align: right;" >Total : {{Total}}/-</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label style="text-align: right;" >Offer : {{Offer}}%</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label style="text-align: right;" >Grand Total : {{GrandTotal}}/-</ion-label>
+          </ion-item>
+        </section>
+          </ion-item-group>
+        </ion-list>
+        <section class="form-section">
+          <ion-row no-padding class="multi-input-row">
+              <ion-col no-padding>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onByeClick()" [disabled]="!enableBye" >Bay!</button>
+              </ion-col>
+          </ion-row>
+        </section>
+  </div>
+  </div>
+</ion-content>

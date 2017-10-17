@@ -1,0 +1,51 @@
+JobSelection-Page {
+	// ion-header {
+	// 	@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+	// }
+	$categories-heading-image-height: 150px;
+	$categories-grid-padding: 10px;
+	$categories-horizontal-list-padding: 10px;
+	.forms-examples-content
+	{
+		background-color: color($colors, background, base);
+		.categories-title
+		{
+			font-size: 1.2rem;
+			font-weight: 400;
+			letter-spacing: 0.7px;
+			color: $white-d;
+			margin: 8px 16px 16px;
+		}
+		.horizontal-categories
+		{
+			border-bottom: 10px solid $white-a;
+			padding-bottom: 16px;
+
+			preload-image {
+				padding-bottom:0!important;
+				border-radius: 50%;
+
+				img	{
+					border-radius: 50%;
+				}
+			}
+
+			.categories-row
+			{
+				&::after{
+					content: '';
+					flex: 0 0 $categories-horizontal-list-padding;
+			    max-width: $categories-horizontal-list-padding;
+				}
+			}
+
+			.horizontal-item
+			{
+				text-align: center;
+				padding: 0px 0px 0px $categories-horizontal-list-padding;
+			}
+		}
+		
+	}
+}
+

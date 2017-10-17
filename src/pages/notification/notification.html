@@ -1,0 +1,83 @@
+<style>
+  .col{
+    padding:0px;
+  }
+</style>
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Notifications</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="notification-content">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-segment class="notification-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+      Active Enquiries
+    </ion-segment-button>
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+      Responded Enquiries
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="segment">
+    <div *ngSwitchCase="'Active'">
+      <ion-list class="notification-list">
+        <ion-item class="notification-item" *ngFor="let item of notifications.notifications">
+          <ion-row>
+            <ion-col width-15 class="notification-date">
+              <h2 class="notification-day">{{item.DocDay}}</h2>
+              <h3 class="notification-month">{{item.DocMonth}}</h3>
+              <h4 class="notification-time">{{item.DocTime}}</h4>
+            </ion-col>
+            <ion-col width-85 class="notification-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <h2 class="item-title one-line">{{item.DocName}}</h2>
+                  <ion-row>
+                    <ion-col width-90>
+                      <div class="item-description">
+                      <p class="description-text">{{item.JobTypeName}}</p>
+                    </div>
+                    </ion-col>
+                    <ion-col width-10>
+                      <ion-icon style="font-size: 1.6em;"  class="item-icon" name="arrow-forward" (click)='GoToJobPage(item);' ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  
+                  <ion-row>
+                    <ion-col width-60>
+                      <div class="item-description">
+                      <ion-icon class="description-icon" name="clock"></ion-icon>
+                      <p class="description-text">{{item.ExpectedDate}}</p>
+                  </div>
+                    </ion-col>
+                     <ion-col width-40>
+                      <div class="item-description">
+                         <span class="description-icon">&#x20B9;</span> 
+                          <p class="description-text one-line">{{item.ExpectedCost}}/-</p>
+                      </div>
+                    </ion-col>
+                    
+                  </ion-row>
+                </div>
+                
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>

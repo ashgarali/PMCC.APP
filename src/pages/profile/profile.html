@@ -1,0 +1,90 @@
+<ion-header class="listing-header">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Account</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="profile-content">
+  <div class="user-details">
+    <ion-row class="user-main-data-row">
+      <ion-col no-padding width-30>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="profileImg" alt="" title=""></preload-image>
+      </ion-col>
+      <ion-col no-padding>
+        <ion-row wrap class="user-bio-row">
+          <ion-col no-padding width-90>
+            <h2 class="user-name">{{profile.user.Name}}</h2>
+          </ion-col>
+          <br/>
+          <ion-col no-padding width-30>
+            <h2 class="user-description">Company</h2>
+          </ion-col>
+           <ion-col no-padding width-60>
+            <h2 class="user-description">:&nbsp;{{profile.user.CompanyName}}</h2>
+          </ion-col>
+          <ion-col no-padding width-30>
+            <h2 class="user-description">Email</h2>
+          </ion-col>
+          <ion-col no-padding width-60>
+            <h2 class="user-description">:&nbsp;{{profile.user.Email}}</h2>
+          </ion-col>
+          <ion-col no-padding width-30>
+            <h2 class="user-description">Phone</h2>
+          </ion-col>
+          <ion-col no-padding width-60>
+            <h2 class="user-description">:&nbsp;{{profile.user.PhoneNo}}</h2>
+          </ion-col>
+          <ion-col no-padding width-90>
+            <p class="user-description">
+              Address&nbsp;&nbsp;&nbsp;&nbsp;:<br/>
+            {{profile.user.AddressLine1}},{{profile.user.AddressLine2}} <br/>
+            {{profile.user.CityName}}, {{profile.user.StateName}}
+            </p>
+          </ion-col>
+        </ion-row>
+        
+      </ion-col>
+    </ion-row>
+    <div class="user-details">
+    <ion-row class="user-main-data-row ">
+          <ion-col no-padding class="profile-action-row">
+            <button ion-button block small (click)="goToSettings()">
+              Edit profile
+            </button>
+          </ion-col>
+    </ion-row>
+    </div>
+  </div>
+  <div class="list-mini-content">
+    <ion-item-group>
+    <ion-item-divider class="notifications-divider">Modules</ion-item-divider>
+  <div class="list-mini">
+    <ion-list>
+      <div class="list-item"  ion-item *ngFor="let item of modelList.modules">
+        <ion-row no-padding class="content-row one-line">
+          <!-- You can limit the rows of the description by using the class one-line. If you remove it, all the content from the row will be shown -->
+          <ion-col no-padding width-18 class="item-avatar">
+            <preload-image class="avatar-image" [ratio]="{w:1, h:1}" [src]="item.Img"></preload-image>
+          </ion-col>
+          <ion-col no-padding width-60 class="item-content">
+            <h3 class="item-title">{{item.Name}} @ &#x20B9;{{item.Cost}}</h3>
+            <p class="item-description">Validity details</p>
+            <p class="item-description">From {{item.PaymentDate}} to {{item.TillDate}} </p>
+          </ion-col>
+         <button style="margin: 7px;" (click)="onRenewClick(item)" ion-button small outline>Renew</button>
+        </ion-row>
+      </div>
+    </ion-list>
+  </div>
+  </ion-item-group>
+  </div>
+<ion-fab bottom left>
+ <button mini ion-fab (click)="onAddModules()" >
+  <ion-icon  name="add"></ion-icon>
+ </button>
+</ion-fab>
+</ion-content>
+

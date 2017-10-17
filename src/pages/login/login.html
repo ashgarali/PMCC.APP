@@ -1,0 +1,46 @@
+<style>
+background-image .bg-overlay {
+     background-color: transparent !important;
+}
+</style>
+<ion-header class="login-header auth-header">
+  <ion-navbar>
+    <ion-title>Sign in</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-content auth-content">
+   <background-image class="image-heading" [src]="banner_image">
+      <!-- <ion-row class="heading-row">
+      <ion-col no-padding width-100>
+        <h2 class="main-title">Client Connect</h2>
+      </ion-col>
+    </ion-row>   -->
+  </background-image>
+  <form class="login-form auth-form" [formGroup]="login" (ngSubmit)="doLogin()">
+    <ion-item>
+      <ion-label color="primary" floating>Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <show-hide-container>
+      <ion-item>
+        <ion-label color="primary" floating>Password</ion-label>
+        <ion-input type="password" formControlName="password" show-hide-input></ion-input>
+      </ion-item>
+    </show-hide-container>
+    <button ion-button block class="auth-action-button login-button" type="submit" [disabled]="!login.valid">Log in</button>
+  </form>
+  <ion-row class="alt-options">
+    <ion-col no-padding width-50>
+      <button ion-button block clear class="forgot-button" (click)="goToForgotPassword()">Forgot Password?</button>
+    </ion-col>
+    <ion-col no-padding width-50>
+      <button ion-button block clear class="signup-button" (click)="goToSignup()">Sign up!</button>
+    </ion-col>
+  </ion-row>
+  <!-- <p class="auth-divider">
+    Or
+  </p>
+  <button ion-button block class="facebook-auth-button" (click)="doFacebookLogin()">Log in with Facebook</button> -->
+  <!-- <button ion-button block class="google-auth-button" (click)="doGoogleLogin()">Log in with Google</button> -->
+</ion-content>

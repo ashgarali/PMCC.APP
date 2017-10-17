@@ -1,0 +1,110 @@
+<style>
+  .error{
+    color:red;
+    text-transform: uppercase;
+    font-size: 10px;
+    padding-left: 20px;
+  }
+</style>
+<ion-header>
+  <ion-navbar>
+    <ion-title>Profile</ion-title>
+    <ion-buttons end (click)="logout()">
+      <button ion-button>
+        Logout &nbsp;
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="settings-content">
+  <div class="user-details">
+    <ion-row class="user-main-data-row">
+      <ion-col no-padding width-33>
+        <preload-image class="user-image" [ratio]="{w:1, h:1}" [src]="profileImg"></preload-image>
+      </ion-col>
+      <ion-col no-padding>
+        <ion-row wrap class="user-bio-row">
+          <ion-col no-padding width-90>
+             <ion-label class="user-description">Name:</ion-label>
+          </ion-col>
+          <ion-col no-padding width-90>
+            <h2 class="user-name">{{profile.user.Name}}</h2>
+          </ion-col>
+          <ion-col no-padding width-90>
+            <ion-label class="user-description">CompanyName:</ion-label>
+          </ion-col>
+          <ion-col no-padding width-90>
+            <h2 class="user-name">{{profile.user.CompanyName}}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <form [formGroup]="settingsForm" class="settings-form">
+    <ion-list class="user-data-content">
+      <ion-item>
+        <ion-label stacked>Email</ion-label>
+        <ion-input type="text" formControlName="email" (ionBlur)="onEmailBlur()"></ion-input>
+      </ion-item>
+      <small *ngIf="$validateEmail" class="error" >
+      Not a valid email.
+    </small>
+      <ion-item>
+        <ion-label stacked>Phone</ion-label>
+        <ion-input type="text" formControlName="phone" (ionBlur)="onPhoneBlur()"></ion-input>
+      </ion-item>
+      <small *ngIf="$validatePhone" class="error" >
+       Phone no should be of length 10.
+      </small>
+      <ion-item>
+        <ion-label stacked>Address Line1</ion-label>
+        <ion-input type="text" formControlName="address1"  (ionBlur)="onAddress1Blur()"></ion-input>
+      </ion-item>
+      <small *ngIf="$validateAddress1" class="error" >
+       You are Exceeding max length.
+      </small>
+      <ion-item>
+        <ion-label stacked>Address Line2</ion-label>
+        <ion-input type="text" formControlName="address2" (ionBlur)="onAddress2Blur()" ></ion-input>
+      </ion-item>
+       <small *ngIf="$validateAddress2" class="error" >
+       You are Exceeding max length.
+      </small>
+      <ion-item>
+       <ion-label stacked>State</ion-label>
+      <ion-select formControlName="state">
+        <ion-option (ionSelect)="onStateChange($event)" *ngFor="let state of states" 
+                    [value]="state.Value" >{{state.Name}}</ion-option>
+      </ion-select>
+     </ion-item>
+      <ion-item>
+      <ion-label stacked >City</ion-label>
+      <ion-select formControlName="city" >
+        <ion-option *ngFor="let city of cites"
+            [value]="city.Value">
+            {{city.Name}}
+        </ion-option>
+      </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Pin</ion-label>
+        <ion-input type="text" formControlName="pincode" (ionBlur)="onPincodeBlur()"></ion-input>
+      </ion-item>
+       <small *ngIf="$validatePincode" class="error" >
+       Pincode should of length 6.
+      </small>
+    </ion-list>
+    <div class="user-details">
+    <ion-row class="user-main-data-row ">
+          <ion-col no-padding class="profile-action-row">
+            <button ion-button block small (click)="SaveUserDetails()" [disabled]="!(this.settingsForm.valid && this.settingsForm.dirty)" >  
+              Save
+            </button>
+          </ion-col>
+    </ion-row>
+    </div>
+  </form>
+</ion-content>

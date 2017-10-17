@@ -1,0 +1,25 @@
+<style>
+  .jboItem{
+    padding-bottom: 5px;
+    padding-top: 15px;
+  }
+  </style>
+<ion-header>
+  <ion-navbar>
+    <ion-title>New Enquiries</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <h4 class="categories-title">Select module</h4>
+    <div class="horizontal-categories">
+    <ion-row class="categories-row">
+      <ion-col width-33 style="padding-bottom:5px;"  class="horizontal-item"  *ngFor="let popular of populars">
+       <div class="jboItem" >
+        <preload-image [ratio]="{w:1, h:1}" (click)="onJobSelection(popular)" style="height: 50px; width: 50px;margin-left:30px" [src]="popular.Img" title="popular.Name"></preload-image>
+       </div>
+       <label >{{popular.Name}}</label>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

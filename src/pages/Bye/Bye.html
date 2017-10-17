@@ -1,0 +1,63 @@
+<style>
+   .section-title {
+    margin-top: 5px;
+    text-align: left;
+}
+  .notifications-content{
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.9px;
+    color: #5e5874;
+}
+  .radio-md {
+    margin-top: 13px !important;
+}
+</style>
+<ion-header>
+  <ion-navbar>
+    <ion-title>Offers</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div  class="event-example-view">
+  <div class="sample-form event-form">
+        <ion-list radio-group >
+          <ion-item-group>
+          <ion-item-divider class="notifications-content" >Modules</ion-item-divider>
+          <section class="form-section">
+          <ion-row *ngFor="let item of offers.offers">
+            <ion-col width-10>
+              <ion-radio [value]="item.OfferCount" (ionSelect)="OfferSelected(item);" [checked]="item.Checked"></ion-radio>
+              </ion-col>
+               <ion-col width-25>
+               <ion-label>{{item.OfferCost}}/-</ion-label>
+              </ion-col>
+              <ion-col width-65>
+                <button style="float:right;width: 100%;" ion-button round outline>{{item.Description}}
+                </button>
+              </ion-col>
+            </ion-row>
+          </section>
+        <hr>
+        </ion-item-group>
+        <ion-item-group>
+        <ion-item-divider class="notifications-content" >Payment Details</ion-item-divider>
+        <section class="form-section">
+          <ion-item>
+            <ion-label style="text-align: right;" >Total amount  : {{payAmount}}/-</ion-label>
+          </ion-item>
+        </section>
+        </ion-item-group>
+        <hr>
+        </ion-list>
+        <section class="form-section">
+          <ion-row no-padding class="multi-input-row">
+              <ion-col no-padding>
+                  <button ion-button block class="form-action-button create-event-button" (click)="GotoPaymentModal();"  >Bay!</button>
+              </ion-col>
+          </ion-row>
+        </section>
+  </div>
+  </div>
+</ion-content>

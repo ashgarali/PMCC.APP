@@ -1,0 +1,77 @@
+login-page {
+	$categories-heading-image-height: 160px;
+	.login-content
+	{
+		.image-heading
+		{
+			height: $categories-heading-image-height;
+
+			.bg-overlay
+			{
+				z-index: 1;
+				//background-color: rgba($black-c, .6);
+			}
+
+			ion-spinner {
+				z-index: 2;
+			}
+
+			@include spinner-color($white);
+
+			.heading-row
+			{
+				height: 100%;
+				width: 100%;
+				z-index: 3;
+  			position: absolute;
+				@include align-items(center);
+
+				.main-title
+				{
+				//	@include categories-title-style($white);
+					font-size: 8vw;
+				}
+			}
+		}
+		.alt-options
+		{
+			.button
+			{
+				margin: 0px;
+				padding: 0px;
+				font-size: 1.4rem;
+			}
+
+			.forgot-button
+			{
+				color: $white-d;
+
+				.button-inner
+				{
+					@include justify-content(flex-start);
+				}
+			}
+
+			.signup-button
+			{
+				font-weight: 500;
+				color: $theme-color-2;
+
+				.button-inner
+				{
+					@include justify-content(flex-end);
+				}
+			}
+		}
+		.alt-button
+		{
+			margin: 0px;
+			background-color: $white;
+			font-size: 1.4rem;
+			letter-spacing: 0.2px;
+			color: $white-d;
+
+			@include element-shadow();
+		}
+	}
+}

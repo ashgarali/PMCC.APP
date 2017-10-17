@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Send Respones</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <ion-segment class="forms-examples-segment">
+    <h3>Enquiry No : {{currentJob.DocName}}</h3>
+  </ion-segment>
+  <div class="forms-wrapper">
+    <div class="card-example-view">
+      <form class="sample-form card-form" [formGroup]="responed_form" (ngSubmit)="sendResponed()">
+         <section class="form-section">
+          <ion-list class="card-preferences" style="margin-top:0px">
+          <ion-item class="switcher-item">
+            <ion-label>Delivery Date Accepted</ion-label>
+            <ion-toggle formControlName="expectedDate_option"></ion-toggle>
+          </ion-item>
+        </ion-list>
+        <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input">
+                <ion-label floating>Expeted Date</ion-label>
+                <ion-input type="text" formControlName="expected_date" [disabled]="true"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input time-item">
+                <ion-label floating>Your Date</ion-label>
+                <ion-datetime formControlName="your_date" [disabled]="responed_form.value.expectedDate_option" displayFormat="DD/MM/YYYY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-list class="card-preferences"  >
+          <ion-item class="switcher-item">
+            <ion-label>Delivery Location Accepted</ion-label>
+            <ion-toggle formControlName="expectedLocation_option"></ion-toggle>
+          </ion-item>
+        </ion-list>
+        <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input">
+                <ion-label floating>Expected Location</ion-label>
+                <ion-select formControlName="expected_location" [disabled]="true" style="max-width:100%">
+                    <ion-option *ngFor="let deliveryAt of deliveryList" 
+                    [value]="deliveryAt.Value" >{{deliveryAt.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input time-item">
+                <ion-label floating>Your Location</ion-label>
+                <ion-select formControlName="your_location" [disabled]="responed_form.value.expectedLocation_option" style="max-width:100%">
+                    <ion-option *ngFor="let deliveryAt of deliveryListNew" 
+                    [value]="deliveryAt.Value" >{{deliveryAt.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-list class="card-preferences">
+          <ion-item class="switcher-item">
+            <ion-label>Payment Mode Accepted</ion-label>
+            <ion-toggle formControlName="paymentMode_option"></ion-toggle>
+          </ion-item>
+        </ion-list>
+        <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input">
+                <ion-label floating>Payment Mode</ion-label>
+                <ion-select formControlName="payment_mode" [disabled]="true" style="max-width:100%">
+                    <ion-option *ngFor="let payment of paymentModeList" 
+                    [value]="payment.Value" >{{payment.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input time-item">
+                <ion-label floating>Your Mode</ion-label>
+                <ion-select formControlName="your_paymentMode" [disabled]="responed_form.value.paymentMode_option" style="max-width:100%">
+                    <ion-option *ngFor="let payment of paymentModeListNew" 
+                    [value]="payment.Value" >{{payment.Name}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-list class="card-preferences">
+          <ion-item class="switcher-item">
+            <ion-label>Cost Accepted</ion-label>
+            <ion-toggle formControlName="paymentCost_option"></ion-toggle>
+          </ion-item>
+        </ion-list>
+        <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input">
+                <ion-label floating>Cost</ion-label>
+                <ion-input type="text" formControlName="given_cost" [disabled]="true"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding width-50>
+              <ion-item class="multi-input time-item">
+                <ion-label floating>Your Cost</ion-label>
+                <ion-input type="number" formControlName="your_cost" [disabled]="responed_form.value.paymentCost_option"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-item>
+            <ion-label floating>Your Openion</ion-label>
+            <ion-input type="text" formControlName="your_opinion"></ion-input>
+          </ion-item>
+          </section>
+        <section class="form-section">
+          <button ion-button block class="form-action-button create-card-button" type="submit">Confirm</button>
+        </section>
+      </form>
+    </div>
+  </div>
+</ion-content>
