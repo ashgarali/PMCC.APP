@@ -41,5 +41,4 @@ export class Msg
 {
     public static PlatesCountError="Please select all colors plates.";
     public static SaveSuccess="Save successfuly."
-    public static OnError="Error come!"
 }
