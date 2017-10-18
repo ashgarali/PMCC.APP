@@ -23,10 +23,10 @@
     </ion-refresher-content>
   </ion-refresher>
   <ion-segment class="notification-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(false)">
       Active Enquiries
     </ion-segment-button>
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(true)">
       Responded Enquiries
     </ion-segment-button>
   </ion-segment>

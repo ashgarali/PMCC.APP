@@ -14,10 +14,10 @@
 
 <ion-content class="enquiries-content">
   <ion-segment class="enquiries-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(false)">
       Active Enquiries
     </ion-segment-button>
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(true)">
       Closed Enquiries
     </ion-segment-button>
   </ion-segment>
@@ -62,7 +62,7 @@
                   </ion-row>
                   <div class="item-description" style="width: 130px;" >
                     <ion-badge style="border-radius: 10px;margin:0px" item-right>{{item.ResponseCount}}</ion-badge>
-                    <button ion-button small clear (click)="onResponsesClick(item)" >
+                    <button ion-button small clear [disabled]="item.ResponseCount == 0" (click)="onResponsesClick(item)" >
                        Responses >>
                     </button>
                   </div>

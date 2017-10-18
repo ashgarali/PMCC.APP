@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {NavController, SegmentButton, AlertController ,ToastController,LoadingController,NavParams} from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import {EnquiriesPage} from '../Enquiries/Enquiries';
+import {ResponedPage} from '../Responed/responed';
 import {KeyValueData,DataSourceList} from '../../model/datasource.model';
 import {DataSourceMasters,DataSourceGroup} from '../../model/appenums';
 import { counterRangeValidator } from '../../components/counter-input/counter-input';
@@ -20,6 +21,7 @@ import {Msg,MsgType} from '../../app.config'
 export class JobOffsetPage {
     jobOffsetForm: FormGroup;
     enquiriesPage : { component: any };
+    responedPage : { component: any };
     jobTypeList: DataSourceList[]=[];
     noofPlatesList:DataSourceList[]=[];
     colorsList: DataSourceList[]=[];
@@ -48,6 +50,7 @@ constructor(
    public navParams :NavParams
   ) {
     this.enquiriesPage = { component:EnquiriesPage };
+    this.responedPage = { component:ResponedPage };
     this.loading = this.loadingCtrl.create();
     let id = this.navParams.get('id');
     this.currentDate = (new Date()).toISOString();
@@ -358,6 +361,15 @@ public onJobTypeChange(event:any)
   }
   onRespondClick()
   {
-    this.nav.push(this.enquiriesPage.component);
+    let responed = AppCommon.CreateResponedData(
+      this.currentJob.Id,
+      this.currentJob.DocName,
+      this.currentJob.JobType,
+      this.currentJob.ExpectedCost,
+      this.currentJob.ExpectedDeliverDate,
+      this.currentJob.DeliveryAt,
+      this.currentJob.PaymentMode
+    );
+    this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
 }

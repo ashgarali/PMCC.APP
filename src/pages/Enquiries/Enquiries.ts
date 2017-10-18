@@ -9,7 +9,9 @@ import {ResponsesPage } from'../Responses/Responses';
 import {JobSelectionPage} from '../JobSelection/JobSelection';
 import {ServiceHelper} from '../../services/serviceHelper';
 import {JobGetsRequest} from '../../model/JobRequest';
-import {JobType,ViewsType} from '../../model/appenums';
+import {JobType,ViewsType,Operators} from '../../model/appenums';
+import { Filter} from '../../model/datasource.model';
+import {Msg,MsgType} from '../../app.config'
 
 @Component({
   selector: 'enquiries-page',
@@ -42,20 +44,32 @@ export class EnquiriesPage {
   }
   ionViewWillEnter() {
     this.loading.present();
-    this.serviceHelper
-      .GetViews(this.CreateEnquiriesRequest())
+    this.GetEnquiries(false);
+    
+  }
+public GetEnquiries(IsClosed:boolean=false)
+{
+  this.serviceHelper
+      .GetViews(this.CreateEnquiriesRequest(IsClosed))
       .then(response => {
          this.enquiries.enquiries = response.Value.Data;
         // this.enquiries.responded = data.responded;
         this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
       },error => this.OnError(error));
-  }
- private CreateEnquiriesRequest():JobGetsRequest
+}
+ private CreateEnquiriesRequest(IsClosed :boolean):JobGetsRequest
  {
     let request = new JobGetsRequest();
     request.JobType=JobType.ViewDocument;
     request.ViewId= ViewsType.ViewEnquiries;
+    if(IsClosed)
+      {
+          request.Filters.push(new Filter("IsClosed",Operators.Equals,true))
+      }else
+      {
+          request.Filters.push(new Filter("IsClosed",Operators.Equals,false))
+      }
     return request;
  }
   onActiveItemClick(item: EnquiryModel)
@@ -111,7 +125,9 @@ export class EnquiriesPage {
     // console.log('Segment changed to', segmentButton.value);
   }
 
-  onSegmentSelected(segmentButton: SegmentButton) {
+  onSegmentSelected(segmentButton: boolean) {
+    this.loading.present();
+    this.GetEnquiries(segmentButton);
     // console.log('Segment selected', segmentButton.value);
   }
 
