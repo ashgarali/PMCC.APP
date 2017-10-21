@@ -35,6 +35,8 @@ export class ICardPage {
     holderQualityList:DataSourceList[]=[];
     paymentModeList: DataSourceList[]=[];
     deliveryList:DataSourceList[]=[];
+
+    connctionErrorCount:number=0;
     
    constructor(
    public nav: NavController,
@@ -83,4 +85,85 @@ public CreateForm()
       details:new FormControl()
     });
   }
+   ionViewWillEnter()
+  {
+    this.GetDataSource(DataSourceMasters.ICardJobType);
+    this.GetDataSource(DataSourceMasters.ICardJobQuality);
+    this.GetDataSource(DataSourceMasters.ICardLesstype);
+    this.GetDataSource(DataSourceMasters.ICardHolderQuality);
+    this.GetDataSource(DataSourceMasters.DeliveryAt);
+    this.GetDataSource(DataSourceMasters.PaymentMode);
+    // if(this.isEditMode)
+    //   this.LoadCurrentJob(this.editId);
+  }
+  private GetDataSource(id:number)
+  {
+    this.serviceHelper.DataSourceValues(id)
+    .then( response => this.OnDataSourceSuccess(response) ,
+        error => this.OnError(error));
+  }
+  public OnDataSourceSuccess(response:Status)
+  {
+    if(response.Status){
+      switch(response.SourceId.toString())
+      {
+          case DataSourceMasters.BindingJobType.toString():
+            this.jobTypeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.ICardJobQuality.toString():
+            this.jobQualityList= AppCommon.CreateDataSource(response);
+            break;
+           case DataSourceMasters.ICardLesstype.toString():
+            this.lessTypeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.PaymentMode.toString():
+            this.paymentModeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.ICardHolderQuality.toString():
+            this.holderQualityList= AppCommon.CreateDataSource(response);
+            break;
+           case DataSourceMasters.DeliveryAt.toString():
+            this.deliveryList= AppCommon.CreateDataSource(response);
+            break;
+      }
+     }else
+     {
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+      
+  }
+    public OnError(error:any)
+  {
+    this.loading.dismiss();
+    if(this.connctionErrorCount==0)
+      this.ShowAlert(MsgType.ErrorType,error.message);
+    if(error.status==0)
+      this.connctionErrorCount++;
+    this.loading = this.loadingCtrl.create();
+  }
+  ShowAlert(title:string,msg:string) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: msg,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.connctionErrorCount=0;
+        }
+      }]
+    });
+    alert.present();
+  }
+  ShowToast(msg:string) {
+  let toast = this.toastCtrl.create({
+    message: msg,
+    duration: 2000,
+    position: 'top'
+  });
+  toast.onDidDismiss(() => {
+     this.nav.setRoot(this.enquiriesPage.component);
+     //this.nav.getro.setRoot(this.main_page.component);
+  });
+  toast.present();
+}
 }

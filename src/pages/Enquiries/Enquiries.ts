@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 import { EnquiriesModel ,EnquiryModel} from './Enquiries.model';
 import {PrintingPage } from'../JobPrinting/Printing';
 import {JobOffsetPage} from '../JobOffset/JobOffset';
+import {BindingPage } from '../JobBinding/Binding';
 import {ResponsesPage } from'../Responses/Responses';
 import {JobSelectionPage} from '../JobSelection/JobSelection';
 import {ServiceHelper} from '../../services/serviceHelper';
@@ -25,6 +26,7 @@ export class EnquiriesPage {
   printingPage : { component: any };
   responsesPage : { component: any };
   jobOffsetPage :{component:any};
+  jobBindingPage:{component:any};
   jobSelectionPage :{component:any};
 
    connctionErrorCount:number=0;
@@ -41,6 +43,7 @@ export class EnquiriesPage {
      this.responsesPage = { component: ResponsesPage };
      this.jobSelectionPage ={component : JobSelectionPage};
      this.jobOffsetPage ={component:JobOffsetPage};
+     this.jobBindingPage ={component:BindingPage};
   }
   ionViewWillEnter() {
     this.loading.present();
@@ -84,6 +87,9 @@ public GetEnquiries(IsClosed:boolean=false)
         break;
         case JobType.OffsetPrinting:
           this.nav.push(this.jobOffsetPage.component,{id:item.Id});
+        break;
+        case JobType.Binding:
+          this.nav.push(this.jobBindingPage.component,{id:item.Id});
         break;
      }
   }

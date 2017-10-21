@@ -10,8 +10,8 @@ import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
 import {JobType} from '../../model/appenums';
-import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
-//import {JobPrintingModel} from './Binding.model';
+import {JobCreateRequest,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
+import {BindingModel} from './Binding.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
   selector: 'Binding-Page',
@@ -25,7 +25,7 @@ export class BindingPage {
     editId="";
     common = new AppCommon();
     loading: any;
-    //currentJob:JobPrintingModel;
+    currentJob:BindingModel;
     currentDate:string;
     responedPage : { component: any };
     enquiriesPage:{component:any}
@@ -38,6 +38,8 @@ export class BindingPage {
     deliveryList:DataSourceList[]=[];
     
     hideJobSize:boolean=false;
+    showCovertType:boolean=true;
+    connctionErrorCount:number=0;
 
    constructor(
    public nav: NavController,
@@ -88,4 +90,243 @@ public CreateForm()
       details:new FormControl()
     });
   }
+  ionViewWillEnter()
+  {
+    this.loading.present();
+    this.GetDataSource(DataSourceMasters.BindingJobType);
+    this.GetDataSource(DataSourceMasters.BindingJobSize);
+    this.GetDataSource(DataSourceMasters.BindingNoOfCopy);
+    this.GetDataSource(DataSourceMasters.BindingCoverType);
+    this.GetDataSource(DataSourceMasters.DeliveryAt);
+    this.GetDataSource(DataSourceMasters.PaymentMode);
+    this.GetDataSource(DataSourceMasters.UMO);
+    if(this.isEditMode)
+      this.LoadCurrentJob(this.editId);
+  }
+  private GetDataSource(id:number)
+  {
+    this.serviceHelper.DataSourceValues(id)
+    .then( response => this.OnDataSourceSuccess(response) ,
+        error => this.OnError(error));
+  }
+  public OnDataSourceSuccess(response:Status)
+  {
+    if(response.Status){
+      switch(response.SourceId.toString())
+      {
+          case DataSourceMasters.BindingJobType.toString():
+            this.jobTypeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.BindingJobSize.toString():
+            this.jobSizeList= AppCommon.CreateDataSource(response);
+            break;
+           case DataSourceMasters.BindingNoOfCopy.toString():
+            this.noOfCopiesList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.UMO.toString():
+            this.umoList= AppCommon.CreateDataSource(response);
+            this.loading.dismiss();
+            break;
+          case DataSourceMasters.PaymentMode.toString():
+            this.paymentModeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.BindingCoverType.toString():
+            this.coverTypeList= AppCommon.CreateDataSource(response);
+            break;
+           case DataSourceMasters.DeliveryAt.toString():
+            this.deliveryList= AppCommon.CreateDataSource(response);
+            break;
+      }
+     }else
+     {
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+      
+  }
+ public onJobTypeChange(event:any)
+ {
+    let item = AppCommon.GetElementFromArray(this.jobTypeList,event);
+    if(parseInt(item.Value) <=3 )
+    {
+        this.hideJobSize=false;
+        this.bindingForm.patchValue({  //patchValue//setValue
+               jobDim1:0,
+               jobDim2:0,
+               jobUom:0
+      });
+    }else{
+        this.hideJobSize=true;
+        this.bindingForm.patchValue({  //patchValue//setValue
+               jobSize:0,
+               coverType:0,
+               noOfCopies:0
+      });
+    }
+    if(parseInt(item.Value) <=2 ){
+      this.showCovertType=true;
+    }
+    else
+      {
+      this.showCovertType=false;
+      this.bindingForm.patchValue({  //patchValue//setValue
+               jobSize:0,
+               coverType:0,
+              noOfCopies:0
+      });
+      }
+ }
+public LoadCurrentJob(id:string)
+  {
+    this.loading.present();
+    let job= new JobGetRequest();
+    job.JobType=JobType.Binding;
+    job.Id=id;
+    this.serviceHelper.GetJob(job)
+    .then( response => this.onJobSuccess(response) ,
+        error => this.OnError(error));
+  }
+public onJobSuccess(response:Status)
+  {
+      if(response.Status)
+      {
+        let job=response.Value.Data;
+        setTimeout(()=>{this.onJobTypeChange(job.JobType);},500);
+        setTimeout(()=>{this.SetFormValues(job);},500);
+      }
+      this.loading.dismiss();
+      this.loading = this.loadingCtrl.create();
+  }
+  SetFormValues(job:BindingModel)
+  {
+     this.currentJob=job;
+      this.bindingForm.patchValue({  //patchValue//setValue
+        jobType:job.JobType,
+        noOfBook: job.NumberOfBooks,
+        jobSize:job.JobSize,
+        jobDim1:job.JobSizDimension1,
+        jobDim2 :job.JobSizDimension2,
+        jobUom:job.UOM,
+        noOfCopies:job.NumberOfcopies,
+        eachCopyQty:job.EachCopyQty,
+        coverType:job.CoverType,
+        noRequired:job.NumberingRequired,
+        expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
+        payMode:job.PaymentMode,
+        expCost:job.ExpectedCost,
+        deliveryAt:job.DeliveryAt,
+        details:job.specialInstructions
+      });
+      if(this.isEditDesiable)
+        this.bindingForm.disable();
+  }
+public onBindingSave()
+{
+   this.loading.present();
+    if(!this.isEditMode){
+      let jobRequest= this.CreateReqest(this.bindingForm.value);
+      this.serviceHelper.CreateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }else
+    {
+       let jobRequest= this.UpdateRequest(this.bindingForm.value);
+      this.serviceHelper.UpdateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }
+} 
+public onSaveSuccess(response:Status)
+ {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.SaveSuccess);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+ } 
+private CreateReqest(formValues:any):JobCreateRequest
+ {
+    let jobRequest = new JobCreateRequest();
+    jobRequest.JobType= JobType.Binding;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+ }
+  private UpdateRequest(formValues:any):JobUpdateRequest
+  {
+    let jobRequest = new JobUpdateRequest();
+    jobRequest.JobType= JobType.Binding;
+    jobRequest.Id=this.editId;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+  }
+  private SetProperties(formValues:any):BindingModel
+  {
+    let screenObj = new BindingModel();
+    screenObj.JobType= formValues.jobType;
+    screenObj.NumberOfBooks =formValues.noOfBook;
+    screenObj.JobSize =formValues.jobSize;
+    screenObj.JobSizDimension1 = formValues.jobDim1;
+    screenObj.JobSizDimension2 = formValues.jobDim2;
+    screenObj.UOM = formValues.jobUom;
+    screenObj.NumberOfcopies = formValues.noOfCopies;
+    screenObj.EachCopyQty = formValues.eachCopyQty;
+    screenObj.NumberingRequired = formValues.noRequired;
+    screenObj.CoverType = formValues.coverType;
+    screenObj.ExpectedDeliverDate = formValues.expDelivery;
+    screenObj.PaymentMode = formValues.payMode;
+    screenObj.ExpectedCost = formValues.expCost;
+    screenObj.DeliveryAt =formValues.deliveryAt;
+    screenObj.specialInstructions=formValues.details;
+    return screenObj;
+  }
+  onRespondClick()
+  {
+    let responed = AppCommon.CreateResponedData(
+      this.currentJob.Id,
+      this.currentJob.DocName,
+      this.currentJob.JobType,
+      this.currentJob.ExpectedCost,
+      this.currentJob.ExpectedDeliverDate,
+      this.currentJob.DeliveryAt,
+      this.currentJob.PaymentMode
+    );
+    this.nav.push(this.responedPage.component,{"currentJob":responed});
+  }
+  public OnError(error:any)
+  {
+    this.loading.dismiss();
+    if(this.connctionErrorCount==0)
+      this.ShowAlert(MsgType.ErrorType,error.message);
+    if(error.status==0)
+      this.connctionErrorCount++;
+    this.loading = this.loadingCtrl.create();
+  }
+  ShowAlert(title:string,msg:string) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: msg,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.connctionErrorCount=0;
+        }
+      }]
+    });
+    alert.present();
+  }
+  ShowToast(msg:string) {
+  let toast = this.toastCtrl.create({
+    message: msg,
+    duration: 2000,
+    position: 'top'
+  });
+  toast.onDidDismiss(() => {
+     this.nav.setRoot(this.enquiriesPage.component);
+     //this.nav.getro.setRoot(this.main_page.component);
+  });
+  toast.present();
+}
 }

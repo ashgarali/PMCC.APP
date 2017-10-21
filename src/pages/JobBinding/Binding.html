@@ -89,7 +89,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row no-padding class="multi-input-row">
+          <ion-row *ngIf="!hideJobSize" no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >No of copies</ion-label>
             </ion-col>
@@ -112,7 +112,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row no-padding class="multi-input-row">
+          <ion-row *ngIf="showCovertType" no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >Cover type</ion-label>
             </ion-col>
@@ -127,7 +127,7 @@
           </ion-row>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
-                <ion-label >No required </ion-label>
+                <ion-label >Numbering required </ion-label>
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item" style="border-bottom: none;">
@@ -195,3 +195,22 @@
           </ion-row>
     </section>
   </form>
+    <div class="sample-form event-form" >
+        <section class="form-section" style="padding-top:20px;">
+          <ion-row *ngIf="!isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button"  >Clear</button>
+              </ion-col>
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onBindingSave()" type="button" [disabled]="!(this.bindingForm.valid && this.bindingForm.dirty)" >Save</button>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-100>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onRespondClick()" type="button" >Send Response</button>
+              </ion-col>
+          </ion-row>
+        </section>
+     </div>
+   </div>
+</ion-content>

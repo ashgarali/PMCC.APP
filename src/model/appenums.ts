@@ -37,6 +37,21 @@ export enum DataSourceMasters{
     BindingJobType=10008,
     OFSJobSize = 10009,
     OFSColorType=10010,
+    DTPJobLang=10011,
+    DTPJobType=10012,
+    DTPJobWork=10013,
+    ICardJobType = 10014,
+    ICardJobQuality=10015,
+    ICardLesstype=10016,
+    ICardHolderQuality=10017,
+    FlexJobtype =10018,
+    FlexJobQuality=10019,
+    FlexMountingRequired=10020,
+    BindingJobSize = 10021,
+    BindingNoOfCopy = 10022,
+    BindingCoverType=10023,
+    DTPOutput=10024,
+    FlexNoofDesign=10025
 
     
     
