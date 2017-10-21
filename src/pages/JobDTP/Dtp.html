@@ -1,0 +1,187 @@
+<style>
+  hr{
+    height: 2px !important;
+    background-color: #ae75e7;
+  }
+  ion-label {
+    font-size: 1.4rem !important;;
+    color: #ae75e7;
+}
+.select-md {
+    padding: 0px 5px 0px 0px;
+    width: 200px;
+}
+  .item-md {
+    font-size: 1.4rem !important;
+}
+  </style>
+<ion-header>
+  <ion-navbar>
+    <ion-title>DTP</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div  class="event-example-view">
+  <form class="sample-form event-form" [formGroup]="dtpForm">
+      <section class="form-section">
+          <h1 class="section-title">Mandatory</h1>
+          <hr>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Job Type</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="jobType" placeholder="Select" style="max-width:100%">
+                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let jobType of jobTypeList" 
+                    [value]="jobType.Value" >{{jobType.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Job Language</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="jobLanguage" placeholder="Select" style="max-width:100%">
+                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let language of jobLanguageList" 
+                    [value]="language.Value" >{{language.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+           <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Job Work</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="jobWork" placeholder="Select" style="max-width:100%">
+                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let work of jobWorkList" 
+                    [value]="work.Value" >{{work.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Job size</ion-label>
+            </ion-col>
+            <ion-col no-padding width-15>
+              <ion-item class="multi-input time-item">
+               <ion-input type="number" formControlName="jobDim1"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding style="text-align: center;" width-10>
+              <label>X</label>
+            </ion-col>
+            <ion-col no-padding width-15>
+              <ion-item class="multi-input time-item">
+               <ion-input type="number" formControlName="jobDim2"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding width-20>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="jobUom" placeholder="Unit" style="max-width:100%">
+                    <ion-option *ngFor="let umo of umoList" 
+                    [value]="umo.Value" >{{umo.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+           <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >No of design</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-input type="number" placeholder="e.g. 100" formControlName="noOfDesign"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >No of Pages</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-input type="number" placeholder="e.g. 100" formControlName="noOfPage"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Expected delivery</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-datetime formControlName="expDelivery" min="{{currentDate}}" placeholder="Select Date" displayFormat="DD/MM/YY" pickerFormat="DD-MM-YYYY"></ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Payment mode</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="payMode" placeholder="Select" style="max-width:100%">
+                    <ion-option *ngFor="let payment of paymentModeList" 
+                    [value]="payment.Value" >{{payment.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Expected cost</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-input type="number" formControlName="expCost"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <h2 class="section-title">Optional</h2>
+          <hr>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Output required</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="outputReq" placeholder="Select" style="max-width:100%">
+                    <ion-option *ngFor="let output of outputList" 
+                    [value]="output.Value" >{{output.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Delivery at</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="deliveryAt" placeholder="Select" style="max-width:100%">
+                    <ion-option *ngFor="let delivery of deliveryList" 
+                    [value]="delivery.Value" >{{delivery.Name}}</ion-option>
+              </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-100>
+                <ion-label >Details/Special instructions</ion-label>
+            </ion-col>
+            <ion-col no-padding width-100>
+              <ion-item class="multi-input time-item">
+                <ion-textarea formControlName="details" rows="3" placeholder="Your description here..."></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+    </section>
+  </form>

@@ -4,6 +4,10 @@ import { NavController, SegmentButton, AlertController ,LoadingController } from
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import {PrintingPage} from '../JobPrinting/Printing';
 import {JobOffsetPage} from '../JobOffset/JobOffset';
+import {BindingPage} from '../JobBinding/Binding';
+import {DtpPage} from '../JobDTP/Dtp';
+import {ICardPage} from '../JobICard/ICard';
+import {FlexPage} from '../JobFlex/Flex';
 import {JobType} from '../../model/appenums';
 import { counterRangeValidator } from '../../components/counter-input/counter-input';
 import {ServiceHelper} from '../../services/serviceHelper';
@@ -16,43 +20,14 @@ import {Status} from '../../model/status.model';
 export class JobSelectionPage {
      printingPage : { component: any };
      jobOffsetPage :{component:any};
+     bindingPage :{component:any};
+     dtpPage :{component:any};
+     icardPage : {component:any};
+     flexPage : {component:any};
      populars:any;
      loading:any;
 
     connctionErrorCount:number=0;
-    //  populars = [
-    //     {
-    //         "type":JobType.ScreenPrinting,
-    //         "title": "Screen Printing",
-    //         "image": "../assets/images/jobType/ScreenPrinting.jpg"
-    //     },
-    //     {
-    //         "type":JobType.OffsetPrinting,
-    //         "title": "Offset Printing",
-    //         "image": "../assets/images/jobType/OffSetPrinting.jpg"
-    //     },
-    //     {
-    //         "type":JobType.IdentityCard,
-    //         "title": "Identity Card",
-    //         "image": "../assets/images/jobType/IdentityCard.jpg"
-    //     },
-    //     {
-    //         "type":JobType.Binding,
-    //         "title": "Binding",
-    //         "image": "../assets/images/jobType/Binding.jpg"
-    //     },
-    //     {
-    //         "type":JobType.DTP,
-    //         "title": "DTP",
-    //         "image": "../assets/images/jobType/DTP.jpg"
-    //     },
-    //     {
-    //         "type":JobType.FlexPrinting,
-    //         "title": "Flex Printing",
-    //         "image": "../assets/images/jobType/Flex.jpg"
-    //     }
-    // ];
-
 constructor(public nav: NavController, 
     public alertCtrl: AlertController,
     public serviceHelper:ServiceHelper,
@@ -62,6 +37,10 @@ constructor(public nav: NavController,
     this.loading =this.loadCtrl.create();
     this.printingPage = { component: PrintingPage };
     this.jobOffsetPage={component:JobOffsetPage};
+    this.bindingPage = {component:BindingPage };
+    this.dtpPage = {component:DtpPage };
+    this.icardPage = {component:ICardPage };
+    this.flexPage ={ component:FlexPage};
     this.LoadModules();
 
 }
@@ -108,20 +87,16 @@ public OnError(error:any)
             this.nav.push(this.jobOffsetPage.component);
           break;
            case JobType.IdentityCard:
-            this.ShowAlert("Message","Work in progress")
-            //this.nav.push(this.printingPage.component);
+            this.nav.push(this.icardPage.component);
           break;
            case JobType.Binding:
-            this.ShowAlert("Message","Work in progress")
-            //this.nav.push(this.printingPage.component);
+           this.nav.push(this.bindingPage.component);
           break;
            case JobType.DTP:
-            this.ShowAlert("Message","Work in progress")
-            //this.nav.push(this.printingPage.component);
+             this.nav.push(this.dtpPage.component);
           break;
            case JobType.FlexPrinting:
-            this.ShowAlert("Message","Work in progress")
-           // this.nav.push(this.printingPage.component);
+           this.nav.push(this.flexPage.component);
           break;
       }
     

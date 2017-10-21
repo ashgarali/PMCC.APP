@@ -20,7 +20,11 @@ import {ByePage} from '../pages/Bye/Bye';
 import {PaymentPage} from '../pages/Payment/Payment';
 import {JobSelectionPage } from '../pages/JobSelection/JobSelection';
 import {JobOffsetPage } from '../pages/JobOffset/JobOffset';
-
+import {BindingPage} from '../pages/JobBinding/Binding';
+import {DtpPage} from  '../pages/JobDTP/Dtp';
+import {ICardPage} from '../pages/JobICard/ICard';
+import { FlexPage } from "../pages/JobFlex/Flex";
+ 
 import { TermsOfServicePage } from '../pages/terms-of-service/terms-of-service';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 
@@ -65,6 +69,10 @@ import {CallNumber} from '@ionic-native/call-number';
     PaymentPage,
     JobSelectionPage,
     JobOffsetPage,
+    BindingPage,
+    DtpPage,
+    ICardPage,
+    FlexPage,
 
     PreloadImage,
     BackgroundImage,
@@ -101,7 +109,11 @@ import {CallNumber} from '@ionic-native/call-number';
     ByePage,
     PaymentPage,
     JobSelectionPage,
-    JobOffsetPage
+    JobOffsetPage,
+    BindingPage,
+    DtpPage,
+    ICardPage,
+    FlexPage
 
   ],
   providers: [
