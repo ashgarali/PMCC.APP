@@ -11,7 +11,7 @@ import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
 import {JobType} from '../../model/appenums';
 import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
-//import {JobPrintingModel} from './Binding.model';
+import {DTPModel} from './Dtp.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
   selector: 'Dtp-Page',
@@ -25,7 +25,7 @@ export class DtpPage {
     editId="";
     common = new AppCommon();
     loading: any;
-    //currentJob:JobPrintingModel;
+    currentJob:DTPModel;
     currentDate:string;
     responedPage : { component: any };
     enquiriesPage:{component:any}
@@ -76,26 +76,28 @@ public CreateForm()
       jobUom: new FormControl('', Validators.required),
       noOfDesign: new FormControl('',Validators.required),
       noOfPage: new FormControl('',Validators.required),
-      
+      outputReq: new FormControl('',Validators.required),
       expDelivery: new FormControl('', Validators.required),
       payMode: new FormControl('', Validators.required),
       expCost: new FormControl('', Validators.required),
 
-      outputReq: new FormControl(),
+      
       deliveryAt:new FormControl(),
       details:new FormControl()
     });
   }
    ionViewWillEnter()
   {
+     this.loading.present();
     this.GetDataSource(DataSourceMasters.DTPJobType);
     this.GetDataSource(DataSourceMasters.DTPJobLang);
+    this.GetDataSource(DataSourceMasters.DTPJobWork);
     this.GetDataSource(DataSourceMasters.DTPOutput);
     this.GetDataSource(DataSourceMasters.DeliveryAt);
     this.GetDataSource(DataSourceMasters.PaymentMode);
     this.GetDataSource(DataSourceMasters.UMO);
-    // if(this.isEditMode)
-    //   this.LoadCurrentJob(this.editId);
+    if(this.isEditMode)
+      this.LoadCurrentJob(this.editId);
   }
   private GetDataSource(id:number)
   {
@@ -114,11 +116,15 @@ public CreateForm()
           case DataSourceMasters.DTPJobLang.toString():
             this.jobLanguageList= AppCommon.CreateDataSource(response);
             break;
+          case DataSourceMasters.DTPJobWork.toString():
+            this.jobWorkList= AppCommon.CreateDataSource(response);
+            break;
            case DataSourceMasters.DTPOutput.toString():
             this.outputList= AppCommon.CreateDataSource(response);
             break;
           case DataSourceMasters.UMO.toString():
             this.umoList= AppCommon.CreateDataSource(response);
+            this.loading.dismiss();
             break;
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
@@ -132,6 +138,141 @@ public CreateForm()
        this.ShowAlert(MsgType.ErrorType,response.Message);
      }
       
+  }
+ public LoadCurrentJob(id:string)
+  {
+    this.loading.present();
+    let job= new JobGetRequest();
+    job.JobType=JobType.DTP;
+    job.Id=id;
+    this.serviceHelper.GetJob(job)
+    .then( response => this.onJobSuccess(response) ,
+        error => this.OnError(error));
+  }
+public onJobSuccess(response:Status)
+  {
+      if(response.Status)
+      {
+        let job=response.Value.Data;
+        setTimeout(()=>{this.onJobWorkChange(job.JobType);},500);
+        setTimeout(()=>{this.SetFormValues(job);},500);
+      }
+      this.loading.dismiss();
+      this.loading = this.loadingCtrl.create();
+  }
+  SetFormValues(job:DTPModel)
+  {
+     this.currentJob=job;
+      this.dtpForm.patchValue({  //patchValue//setValue
+        jobType:job.JobType,
+        jobLanguage: job.JobLungage,
+        jobWork:job.JobWork,
+        jobDim1:job.JobSizeDimension1,
+        jobDim2 :job.JobSizeDimension2,
+        jobUom:job.UOM,
+        noOfDesign:job.NumbersOfDesigns,
+        noOfPage:job.NumbersOfPages,
+        outputReq:job.OutputRequired,
+        expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
+        payMode:job.PaymentMode,
+        expCost:job.ExpectedCost,
+        deliveryAt:job.DeliveryAt,
+        details:job.specialInstructions
+      });
+      if(this.isEditDesiable)
+        this.dtpForm.disable();
+  }
+public onJobWorkChange(event:any)
+ {
+    let item = AppCommon.GetElementFromArray(this.jobWorkList,event);
+    if(parseInt(item.Value) ==1)
+    {
+      this.dtpForm.controls.noOfDesign.enable({onlySelf: true});
+      this.dtpForm.controls.noOfPage.enable({onlySelf: true});
+    }else if(parseInt(item.Value) ==2)
+    {
+       this.dtpForm.controls.noOfDesign.enable({onlySelf: true});
+       this.dtpForm.controls.noOfPage.disable({onlySelf: true});
+    }else if(parseInt(item.Value) ==3)
+    {
+       this.dtpForm.controls.noOfDesign.disable({onlySelf: true});
+       this.dtpForm.controls.noOfPage.enable({onlySelf: true});
+    }
+ }
+public onDTPSave()
+{
+   this.loading.present();
+    if(!this.isEditMode){
+      let jobRequest= this.CreateReqest(this.dtpForm.value);
+      this.serviceHelper.CreateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }else
+    {
+       let jobRequest= this.UpdateRequest(this.dtpForm.value);
+      this.serviceHelper.UpdateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }
+} 
+public onSaveSuccess(response:Status)
+ {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.SaveSuccess);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+ } 
+private CreateReqest(formValues:any):JobCreateRequest
+ {
+    let jobRequest = new JobCreateRequest();
+    jobRequest.JobType= JobType.DTP;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+ }
+  private UpdateRequest(formValues:any):JobUpdateRequest
+  {
+    let jobRequest = new JobUpdateRequest();
+    jobRequest.JobType= JobType.DTP;
+    jobRequest.Id=this.editId;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+  }
+  private SetProperties(formValues:any):DTPModel
+  {
+    let screenObj = new DTPModel();
+    screenObj.JobType= formValues.jobType;
+    screenObj.JobLungage =formValues.jobLanguage;
+    screenObj.JobWork =formValues.jobWork;
+    screenObj.JobSizeDimension1 = formValues.jobDim1;
+    screenObj.JobSizeDimension2 = formValues.jobDim2;
+    screenObj.UOM = formValues.jobUom;
+    screenObj.NumbersOfDesigns = formValues.noOfDesign;
+    screenObj.NumbersOfPages = formValues.noOfPage;
+    screenObj.OutputRequired = formValues.outputReq;
+    screenObj.ExpectedDeliverDate = formValues.expDelivery;
+    screenObj.PaymentMode = formValues.payMode;
+    screenObj.ExpectedCost = formValues.expCost;
+    screenObj.DeliveryAt =formValues.deliveryAt;
+    screenObj.specialInstructions=formValues.details;
+    return screenObj;
+  }
+  onRespondClick()
+  {
+    let responed = AppCommon.CreateResponedData(
+      this.currentJob.Id,
+      this.currentJob.DocName,
+      this.currentJob.JobType,
+      this.currentJob.ExpectedCost,
+      this.currentJob.ExpectedDeliverDate,
+      this.currentJob.DeliveryAt,
+      this.currentJob.PaymentMode
+    );
+    this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
     public OnError(error:any)
   {

@@ -34,7 +34,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobType" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let jobType of jobTypeList" 
+                    <ion-option *ngFor="let jobType of jobTypeList" 
                     [value]="jobType.Value" >{{jobType.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -47,7 +47,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobLanguage" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let language of jobLanguageList" 
+                    <ion-option *ngFor="let language of jobLanguageList" 
                     [value]="language.Value" >{{language.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -60,7 +60,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobWork" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let work of jobWorkList" 
+                    <ion-option (ionSelect)="onJobWorkChange($event)" *ngFor="let work of jobWorkList" 
                     [value]="work.Value" >{{work.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -109,6 +109,19 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-input type="number" placeholder="e.g. 100" formControlName="noOfPage"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+           <ion-row no-padding class="multi-input-row">
+            <ion-col no-padding width-40>
+                <ion-label >Output requiredk</ion-label>
+            </ion-col>
+            <ion-col no-padding width-60>
+              <ion-item class="multi-input time-item">
+               <ion-select formControlName="outputReq" placeholder="Select" style="max-width:100%">
+                    <ion-option *ngFor="let output of outputList" 
+                    [value]="output.Value" >{{output.Name}}</ion-option>
+              </ion-select>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -185,3 +198,22 @@
           </ion-row>
     </section>
   </form>
+  <div class="sample-form event-form" >
+        <section class="form-section" style="padding-top:20px;">
+          <ion-row *ngIf="!isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button"  >Clear</button>
+              </ion-col>
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onDTPSave()" type="button" [disabled]="!(this.dtpForm.valid && this.dtpForm.dirty)" >Save</button>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-100>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onRespondClick()" type="button" >Send Response</button>
+              </ion-col>
+          </ion-row>
+        </section>
+     </div>
+   </div>
+</ion-content>
