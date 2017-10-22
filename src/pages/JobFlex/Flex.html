@@ -44,7 +44,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="noOfDesign" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let design of noOfDesignList" 
+                    <ion-option (ionSelect)="onDesignChange($event)" *ngFor="let design of noOfDesignList" 
                     [value]="design.Value" >{{design.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -73,13 +73,13 @@
             </ion-col>
           </ion-row>
           <hr style="height: 1px !important;margin-top: -10px;">
-           <ion-row no-padding class="multi-input-row">
+           <ion-row no-padding class="multi-input-row" *ngFor="let item of noOfDesigns;">
             <ion-col no-padding width-30>
-                <ion-label >Design1</ion-label>
+                <ion-label >Design-{{item}}</ion-label>
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim11"></ion-input>
+               <ion-input type="number" formControlName="jobDim{{item}}1"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding style="text-align: center;" width-10>
@@ -87,15 +87,12 @@
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim12"></ion-input>
+               <ion-input type="number" formControlName="jobDim{{item}}2"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-select formControlName="jobUom13" placeholder="Unit" style="max-width:100%">
-                    <ion-option *ngFor="let umo of umoList" 
-                    [value]="umo.Value" >{{umo.Name}}</ion-option>
-              </ion-select>
+               <ion-input type="number" formControlName="jobUom{{item}}3"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -204,3 +201,22 @@
           </ion-item>
     </section>
   </form>
+  <div class="sample-form event-form" >
+        <section class="form-section" style="padding-top:20px;">
+          <ion-row *ngIf="!isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button"  >Clear</button>
+              </ion-col>
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onFlexSave()" type="button" [disabled]="!(this.flexForm.valid && this.flexForm.dirty)" >Save</button>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-100>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onRespondClick()" type="button" >Send Response</button>
+              </ion-col>
+          </ion-row>
+        </section>
+     </div>
+   </div>
+</ion-content>

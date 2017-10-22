@@ -11,7 +11,7 @@ import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
 import {JobType} from '../../model/appenums';
 import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
-//import {JobPrintingModel} from './Binding.model';
+import {FlexModel} from './Flex.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
   selector: 'Flex-Page',
@@ -25,7 +25,7 @@ export class FlexPage {
     editId="";
     common = new AppCommon();
     loading: any;
-    //currentJob:JobPrintingModel;
+    currentJob:FlexModel;
     currentDate:string;
     responedPage : { component: any };
     enquiriesPage:{component:any}
@@ -35,8 +35,10 @@ export class FlexPage {
     mountingList:DataSourceList[]=[];
     paymentModeList: DataSourceList[]=[];
     deliveryList:DataSourceList[]=[];
-  
+
+    errorInDim:boolean=false;
     connctionErrorCount:number=0;
+    noOfDesigns: number[]=[1];
    constructor(
    public nav: NavController,
    public alertCtrl: AlertController,
@@ -99,12 +101,14 @@ public CreateForm()
   }
    ionViewWillEnter()
   {
+     this.loading.present();
+    this.GetDataSource(DataSourceMasters.FlexNoofDesign);
     this.GetDataSource(DataSourceMasters.FlexJobQuality);
     this.GetDataSource(DataSourceMasters.FlexMountingRequired);
     this.GetDataSource(DataSourceMasters.DeliveryAt);
     this.GetDataSource(DataSourceMasters.PaymentMode);
-    // if(this.isEditMode)
-    //   this.LoadCurrentJob(this.editId);
+    if(this.isEditMode)
+      this.LoadCurrentJob(this.editId);
   }
   private GetDataSource(id:number)
   {
@@ -117,6 +121,9 @@ public CreateForm()
     if(response.Status){
       switch(response.SourceId.toString())
       {
+        case DataSourceMasters.FlexNoofDesign.toString():
+            this.noOfDesignList= AppCommon.CreateDataSource(response);
+            break;
           case DataSourceMasters.FlexJobQuality.toString():
             this.jobQualityList= AppCommon.CreateDataSource(response);
             break;
@@ -125,6 +132,7 @@ public CreateForm()
             break;
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
+            this.loading.dismiss();
             break;
            case DataSourceMasters.DeliveryAt.toString():
             this.deliveryList= AppCommon.CreateDataSource(response);
@@ -136,7 +144,199 @@ public CreateForm()
      }
       
   }
-    public OnError(error:any)
+  public LoadCurrentJob(id:string)
+  {
+    this.loading.present();
+    let job= new JobGetRequest();
+    job.JobType=JobType.FlexPrinting;
+    job.Id=id;
+    this.serviceHelper.GetJob(job)
+    .then( response => this.onJobSuccess(response) ,
+        error => this.OnError(error));
+  }
+public onJobSuccess(response:Status)
+  {
+      if(response.Status)
+      {
+        let job=response.Value.Data;
+        setTimeout(()=>{this.onDesignChange(job.NumberOfDesigns);},500);
+        setTimeout(()=>{this.SetFormValues(job);},500);
+      }
+      this.loading.dismiss();
+      this.loading = this.loadingCtrl.create();
+  }
+  SetFormValues(job:FlexModel)
+  {
+     this.currentJob=job;
+      this.flexForm.patchValue({  //patchValue//setValue
+        noOfFlex:job.NumberOfFlex,
+        noOfDesign: job.NumberOfDesigns,
+        jobDim11:job.JobDim11==0?'':job.JobDim11,
+        jobDim12:job.JobDim12==0?'':job.JobDim12,
+        jobUom13: job.JobDim13==0?'':job.JobDim11,
+        jobDim21:job.JobDim21==0?'':job.JobDim13,
+        jobDim22:job.JobDim22==0?'':job.JobDim22,
+        jobUom23: job.JobDim23==0?'':job.JobDim23,
+        jobDim31:job.JobDim31==0?'':job.JobDim31,
+        jobDim32:job.JobDim32==0?'':job.JobDim32,
+        jobUom33: job.JobDim33==0?'':job.JobDim33,
+        jobDim41:job.JobDim41==0?'':job.JobDim41,
+        jobDim42:job.JobDim42==0?'':job.JobDim42,
+        jobUom43: job.JobDim43==0?'':job.JobDim43,
+        jobDim51:job.JobDim51==0?'':job.JobDim51,
+        jobDim52:job.JobDim52==0?'':job.JobDim52,
+        jobUom53: job.JobDim53==0?'':job.JobDim53,
+        jobQuality:job.JobQuality,
+        mountingReq:job.MountingRequired,
+        installationReq:job.InstallationRequired,
+        dtpReq:job.DTPRequired,
+        expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
+        payMode:job.PaymentMode,
+        expCost:job.ExpectedCost,
+        deliveryAt:job.DeliveryAt,
+        details:job.specialInstructions
+      });
+      if(this.isEditDesiable)
+        this.flexForm.disable();
+  }
+public onDesignChange(event:any)
+ {
+    let item = AppCommon.GetElementFromArray(this.noOfDesignList,event);
+   this.SetNoOfDesigns(parseInt(item.Value));
+
+ }
+ public SetNoOfDesigns(count:number)
+ {
+     this.noOfDesigns= [];
+    for(var i=1 ;i<=count;i++ ){
+        this.noOfDesigns.push(i);
+      }
+ }
+public onFlexSave()
+{
+  
+    if(!this.isEditMode){
+      let jobRequest= this.CreateReqest(this.flexForm.value);
+       if(this.errorInDim){
+        this.ShowAlert(MsgType.InfoType,Msg.FlexDimError);
+      return false;
+     }
+     this.loading.present();
+      this.serviceHelper.CreateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }else
+    {
+       let jobRequest= this.UpdateRequest(this.flexForm.value);
+       if(this.errorInDim){
+        this.ShowAlert(MsgType.InfoType,Msg.FlexDimError);
+      return false;
+     }
+     this.loading.present();
+      this.serviceHelper.UpdateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }
+} 
+public onSaveSuccess(response:Status)
+ {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.SaveSuccess);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+ } 
+private CreateReqest(formValues:any):JobCreateRequest
+ {
+    let jobRequest = new JobCreateRequest();
+    jobRequest.JobType= JobType.FlexPrinting;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+ }
+  private UpdateRequest(formValues:any):JobUpdateRequest
+  {
+    let jobRequest = new JobUpdateRequest();
+    jobRequest.JobType= JobType.FlexPrinting;
+    jobRequest.Id=this.editId;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+  }
+  private SetProperties(formValues:any):FlexModel
+  {
+    let screenObj = new FlexModel();
+    this.errorInDim=false;
+    screenObj.NumberOfFlex= formValues.noOfFlex;
+    screenObj.NumberOfDesigns =formValues.noOfDesign;
+    if(screenObj.NumberOfDesigns>=1)
+    {
+        screenObj.JobDim11=formValues.jobDim11;
+        screenObj.JobDim12=formValues.jobDim12;
+        screenObj.JobDim13=formValues.jobUom13;
+        if(formValues.jobDim11==""||formValues.jobDim12==""||formValues.jobUom13=="")
+          this.errorInDim=true;
+
+    }
+    if(screenObj.NumberOfDesigns>=2)
+    {
+        screenObj.JobDim21=formValues.jobDim21;
+        screenObj.JobDim22=formValues.jobDim22;
+        screenObj.JobDim23=formValues.jobUom23;
+        if(formValues.jobDim21==""||formValues.jobDim22==""||formValues.jobUom23=="")
+          this.errorInDim=true;
+    }
+    if(screenObj.NumberOfDesigns>=3)
+    {
+        screenObj.JobDim31=formValues.jobDim31;
+        screenObj.JobDim32=formValues.jobDim32;
+        screenObj.JobDim33=formValues.jobUom33;
+         if(formValues.jobDim31==""||formValues.jobDim32==""||formValues.jobUom33=="")
+          this.errorInDim=true;
+    }
+    if(screenObj.NumberOfDesigns>=4)
+    {
+        screenObj.JobDim41=formValues.jobDim41;
+        screenObj.JobDim42=formValues.jobDim42;
+        screenObj.JobDim43=formValues.jobUom43;
+        if(formValues.jobDim41==""||formValues.jobDim42==""||formValues.jobUom43=="")
+          this.errorInDim=true;
+    }
+    if(screenObj.NumberOfDesigns>=5)
+    {
+        screenObj.JobDim51=formValues.jobDim51;
+        screenObj.JobDim52=formValues.jobDim52;
+        screenObj.JobDim53=formValues.jobUom53;
+        if(formValues.jobDim51==""||formValues.jobDim52==""||formValues.jobUom53=="")
+          this.errorInDim=true;
+    }
+    screenObj.JobQuality =formValues.jobQuality;
+    screenObj.MountingRequired = formValues.mountingReq;
+    screenObj.InstallationRequired = formValues.installationReq;
+    screenObj.DTPRequired = formValues.dtpReq;
+    screenObj.ExpectedDeliverDate = formValues.expDelivery;
+    screenObj.PaymentMode = formValues.payMode;
+    screenObj.ExpectedCost = formValues.expCost;
+    screenObj.DeliveryAt =formValues.deliveryAt;
+    screenObj.specialInstructions=formValues.details;
+    return screenObj;
+  }
+  // onRespondClick()
+  // {
+  //   let responed = AppCommon.CreateResponedData(
+  //     this.currentJob.Id,
+  //     this.currentJob.DocName,
+  //     this.currentJob.JobType,
+  //     this.currentJob.ExpectedCost,
+  //     this.currentJob.ExpectedDeliverDate,
+  //     this.currentJob.DeliveryAt,
+  //     this.currentJob.PaymentMode
+  //   );
+  //   this.nav.push(this.responedPage.component,{"currentJob":responed});
+  // }
+  public OnError(error:any)
   {
     this.loading.dismiss();
     if(this.connctionErrorCount==0)

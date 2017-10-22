@@ -40,5 +40,6 @@ export class MsgType
 export class Msg
 {
     public static PlatesCountError="Please select all colors plates.";
+    public static FlexDimError="Please fillup all the details of designs";
     public static SaveSuccess="Save successfuly."
 }
