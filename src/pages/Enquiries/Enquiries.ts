@@ -7,6 +7,7 @@ import {PrintingPage } from'../JobPrinting/Printing';
 import {JobOffsetPage} from '../JobOffset/JobOffset';
 import {BindingPage } from '../JobBinding/Binding';
 import {DtpPage} from '../JobDTP/Dtp';
+import {ICardPage} from '../JobICard/ICard';
 import {ResponsesPage } from'../Responses/Responses';
 import {JobSelectionPage} from '../JobSelection/JobSelection';
 import {ServiceHelper} from '../../services/serviceHelper';
@@ -29,6 +30,7 @@ export class EnquiriesPage {
   jobOffsetPage :{component:any};
   jobBindingPage:{component:any};
   jobdtpPage:{component:any};
+  jobICardPage: {component:any};
   jobSelectionPage :{component:any};
 
    connctionErrorCount:number=0;
@@ -46,7 +48,8 @@ export class EnquiriesPage {
      this.jobSelectionPage ={component : JobSelectionPage};
      this.jobOffsetPage ={component:JobOffsetPage};
      this.jobBindingPage ={component:BindingPage};
-     this.jobdtpPage ={component:DtpPage}
+     this.jobdtpPage ={component:DtpPage};
+     this.jobICardPage ={component:ICardPage};
   }
   ionViewWillEnter() {
     this.loading.present();
@@ -96,6 +99,9 @@ public GetEnquiries(IsClosed:boolean=false)
         break;
         case JobType.DTP:
           this.nav.push(this.jobdtpPage.component,{id:item.Id});
+        break;
+        case JobType.IdentityCard:
+          this.nav.push(this.jobICardPage.component,{id:item.Id});
         break;
      }
   }

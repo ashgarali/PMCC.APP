@@ -34,7 +34,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobType" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let jobType of jobTypeList" 
+                    <ion-option *ngFor="let jobType of jobTypeList" 
                     [value]="jobType.Value" >{{jobType.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -47,7 +47,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobQuality" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let jQuality of jobQualityList" 
+                    <ion-option *ngFor="let jQuality of jobQualityList" 
                     [value]="jQuality.Value" >{{jQuality.Name}}</ion-option>
               </ion-select>
               </ion-item>
@@ -69,7 +69,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item" >
-                <ion-toggle formControlName="lessRequired"></ion-toggle>
+                <ion-toggle (ionChange)="onLessRequiredChange()" formControlName="lessRequired"></ion-toggle>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -102,7 +102,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item" >
-                <ion-toggle formControlName="holderRequired"></ion-toggle>
+                <ion-toggle (ionChange)="onHolderRequiredChange()" formControlName="holderRequired"></ion-toggle>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -179,3 +179,22 @@
           </ion-row>
     </section>
   </form>
+   <div class="sample-form event-form" >
+        <section class="form-section" style="padding-top:20px;">
+          <ion-row *ngIf="!isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button"  >Clear</button>
+              </ion-col>
+              <ion-col no-padding width-50>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onICardSave()" type="button" [disabled]="!(this.icardForm.valid && this.icardForm.dirty)" >Save</button>
+              </ion-col>
+          </ion-row>
+          <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">
+              <ion-col no-padding width-100>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onRespondClick()" type="button" >Send Response</button>
+              </ion-col>
+          </ion-row>
+        </section>
+     </div>
+   </div>
+</ion-content>

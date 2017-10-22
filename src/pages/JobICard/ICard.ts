@@ -11,7 +11,7 @@ import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
 import {JobType} from '../../model/appenums';
 import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
-//import {JobPrintingModel} from './Binding.model';
+import {ICardModel} from './ICard.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
   selector: 'ICard-Page',
@@ -25,7 +25,7 @@ export class ICardPage {
     editId="";
     common = new AppCommon();
     loading: any;
-    //currentJob:JobPrintingModel;
+    currentJob:ICardModel;
     currentDate:string;
     responedPage : { component: any };
     enquiriesPage:{component:any}
@@ -84,17 +84,21 @@ public CreateForm()
       deliveryAt:new FormControl(),
       details:new FormControl()
     });
+    this.icardForm.controls.lessType.disable({onlySelf: true});
+    this.icardForm.controls.lessPrintRequired.disable({onlySelf: true});
+    this.icardForm.controls.holderQuality.disable({onlySelf: true});
   }
    ionViewWillEnter()
   {
+    this.loading.present();
     this.GetDataSource(DataSourceMasters.ICardJobType);
     this.GetDataSource(DataSourceMasters.ICardJobQuality);
     this.GetDataSource(DataSourceMasters.ICardLesstype);
     this.GetDataSource(DataSourceMasters.ICardHolderQuality);
     this.GetDataSource(DataSourceMasters.DeliveryAt);
     this.GetDataSource(DataSourceMasters.PaymentMode);
-    // if(this.isEditMode)
-    //   this.LoadCurrentJob(this.editId);
+    if(this.isEditMode)
+      this.LoadCurrentJob(this.editId);
   }
   private GetDataSource(id:number)
   {
@@ -107,7 +111,7 @@ public CreateForm()
     if(response.Status){
       switch(response.SourceId.toString())
       {
-          case DataSourceMasters.BindingJobType.toString():
+          case DataSourceMasters.ICardJobType.toString():
             this.jobTypeList= AppCommon.CreateDataSource(response);
             break;
           case DataSourceMasters.ICardJobQuality.toString():
@@ -118,6 +122,7 @@ public CreateForm()
             break;
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
+             this.loading.dismiss();
             break;
           case DataSourceMasters.ICardHolderQuality.toString():
             this.holderQualityList= AppCommon.CreateDataSource(response);
@@ -131,6 +136,150 @@ public CreateForm()
        this.ShowAlert(MsgType.ErrorType,response.Message);
      }
       
+  }
+public LoadCurrentJob(id:string)
+  {
+    this.loading.present();
+    let job= new JobGetRequest();
+    job.JobType=JobType.IdentityCard;
+    job.Id=id;
+    this.serviceHelper.GetJob(job)
+    .then( response => this.onJobSuccess(response) ,
+        error => this.OnError(error));
+  }
+public onJobSuccess(response:Status)
+  {
+      if(response.Status)
+      {
+        let job=response.Value.Data;
+        setTimeout(()=>{this.SetFormValues(job);},500);
+      }
+      this.loading.dismiss();
+      this.loading = this.loadingCtrl.create();
+  }
+ public  SetFormValues(job:ICardModel)
+  {
+     this.currentJob=job;
+      this.icardForm.patchValue({  //patchValue//setValue
+        jobType:job.JobType,
+        jobQuality: job.JobQuality,
+        jobQuantity:job.JobQuantity,
+        lessRequired:job.LessRequired,
+        lessType :job.LessType,
+        lessPrintRequired:job.LessPrintingRequired,
+        holderRequired:job.HolderRequired,
+        holderQuality:job.HolderQuality,
+        expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
+        payMode:job.PaymentMode,
+        expCost:job.ExpectedCost,
+        deliveryAt:job.DeliveryAt,
+        details:job.specialInstructions
+      });
+      this.onLessRequiredChange();
+      this.onHolderRequiredChange();
+      if(this.isEditDesiable)
+        this.icardForm.disable();
+  }
+  public onLessRequiredChange()
+  {
+      if(this.icardForm.controls.lessRequired.value)
+        {
+          this.icardForm.controls.lessType.enable({onlySelf: true});
+          this.icardForm.controls.lessPrintRequired.enable({onlySelf: true});
+
+        }else
+        {
+          this.icardForm.controls.lessType.disable({onlySelf: true});
+          this.icardForm.controls.lessPrintRequired.disable({onlySelf: true});
+        }
+  }
+  public onHolderRequiredChange()
+  {
+    if(this.icardForm.controls.holderRequired.value)
+      this.icardForm.controls.holderQuality.enable({onlySelf: true});
+    else
+       this.icardForm.controls.holderQuality.disable({onlySelf: true});
+
+  }
+  public onICardSave()
+{
+   this.loading.present();
+    if(!this.isEditMode){
+      let jobRequest= this.CreateReqest(this.icardForm.value);
+      this.serviceHelper.CreateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }else
+    {
+       let jobRequest= this.UpdateRequest(this.icardForm.value);
+      this.serviceHelper.UpdateJob(jobRequest)
+        .then( response => this.onSaveSuccess(response) ,
+            error => this.OnError(error));
+    }
+} 
+public onSaveSuccess(response:Status)
+ {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.SaveSuccess);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+ } 
+private CreateReqest(formValues:any):JobCreateRequest
+ {
+    let jobRequest = new JobCreateRequest();
+    jobRequest.JobType= JobType.IdentityCard;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+ }
+  private UpdateRequest(formValues:any):JobUpdateRequest
+  {
+    let jobRequest = new JobUpdateRequest();
+    jobRequest.JobType= JobType.IdentityCard;
+    jobRequest.Id=this.editId;
+    jobRequest.Data=this.SetProperties(formValues);
+    return jobRequest;
+  }
+  private SetProperties(formValues:any):ICardModel
+  {
+    let screenObj = new ICardModel();
+    screenObj.JobType= formValues.jobType;
+    screenObj.JobQuality =formValues.jobQuality;
+    screenObj.JobQuantity =formValues.jobQuantity;
+    if(formValues.lessRequired)
+    {
+      screenObj.LessRequired = formValues.lessRequired;
+      screenObj.LessType = formValues.lessType;
+      screenObj.LessPrintingRequired = formValues.lessPrintRequired;
+    }
+    if(formValues.holderRequired)
+      {
+        screenObj.HolderRequired = formValues.holderRequired;
+        screenObj.HolderQuality = formValues.holderQuality;
+      }
+    screenObj.ExpectedDeliverDate = formValues.expDelivery;
+    screenObj.PaymentMode = formValues.payMode;
+    screenObj.ExpectedCost = formValues.expCost;
+    screenObj.DeliveryAt =formValues.deliveryAt;
+    screenObj.specialInstructions=formValues.details;
+    return screenObj;
+  }
+  onRespondClick()
+  {
+    let responed = AppCommon.CreateResponedData(
+      this.currentJob.Id,
+      this.currentJob.DocName,
+      this.currentJob.JobType,
+      this.currentJob.ExpectedCost,
+      this.currentJob.ExpectedDeliverDate,
+      this.currentJob.DeliveryAt,
+      this.currentJob.PaymentMode
+    );
+    this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
     public OnError(error:any)
   {
