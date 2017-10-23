@@ -266,7 +266,7 @@ private CreateReqest(formValues:any):JobCreateRequest
     let responed = AppCommon.CreateResponedData(
       this.currentJob.Id,
       this.currentJob.DocName,
-      this.currentJob.JobType,
+      JobType.DTP,//this.currentJob.JobType,
       this.currentJob.ExpectedCost,
       this.currentJob.ExpectedDeliverDate,
       this.currentJob.DeliveryAt,

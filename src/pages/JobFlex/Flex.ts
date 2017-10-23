@@ -323,19 +323,19 @@ private CreateReqest(formValues:any):JobCreateRequest
     screenObj.specialInstructions=formValues.details;
     return screenObj;
   }
-  // onRespondClick()
-  // {
-  //   let responed = AppCommon.CreateResponedData(
-  //     this.currentJob.Id,
-  //     this.currentJob.DocName,
-  //     this.currentJob.JobType,
-  //     this.currentJob.ExpectedCost,
-  //     this.currentJob.ExpectedDeliverDate,
-  //     this.currentJob.DeliveryAt,
-  //     this.currentJob.PaymentMode
-  //   );
-  //   this.nav.push(this.responedPage.component,{"currentJob":responed});
-  // }
+  onRespondClick()
+  {
+    let responed = AppCommon.CreateResponedData(
+      this.currentJob.Id,
+      this.currentJob.DocName,
+      JobType.FlexPrinting,//this.currentJob.JobType,
+      this.currentJob.ExpectedCost,
+      this.currentJob.ExpectedDeliverDate,
+      this.currentJob.DeliveryAt,
+      this.currentJob.PaymentMode
+    );
+    this.nav.push(this.responedPage.component,{"currentJob":responed});
+  }
   public OnError(error:any)
   {
     this.loading.dismiss();

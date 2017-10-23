@@ -7,6 +7,10 @@ import {JobGetsRequest} from '../../model/JobRequest';
 import {JobType,ViewsType,Operators} from '../../model/appenums';
 import {PrintingPage } from'../JobPrinting/Printing';
 import {JobOffsetPage} from '../JobOffset/JobOffset';
+import {BindingPage } from '../JobBinding/Binding';
+import {DtpPage} from '../JobDTP/Dtp';
+import {ICardPage} from '../JobICard/ICard';
+import {FlexPage } from '../JobFlex/Flex';
 import {ServiceHelper} from '../../services/serviceHelper';
 import { Filter} from '../../model/datasource.model';
 import {Msg,MsgType} from '../../app.config'
@@ -20,8 +24,12 @@ export class NotificationPage {
   loading: any;
   printingPage : { component: any };
   jobOffsetPage :{component:any};
+  jobBindingPage:{component:any};
+  jobdtpPage:{component:any};
+  jobICardPage: {component:any};
+  jobFlexPage:{component:any};
   connctionErrorCount:number=0;
- 
+  _refresher:any;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
@@ -32,14 +40,19 @@ export class NotificationPage {
     this.loading = this.loadingCtrl.create();
     this.printingPage = { component: PrintingPage };
     this.jobOffsetPage ={component:JobOffsetPage};
+     this.jobBindingPage ={component:BindingPage};
+     this.jobdtpPage ={component:DtpPage};
+     this.jobICardPage ={component:ICardPage};
+     this.jobFlexPage = { component:FlexPage};
   }
 ionViewWillEnter()
 {
     this.loading.present();
     setTimeout(()=>{this.LoadNotification();},500);
 }
-doRefresh(event:any){
+doRefresh(refresher:any){
   this.LoadNotification();
+  this._refresher=refresher;
 }
 LoadNotification()
 {
@@ -52,6 +65,8 @@ public GetNotifications(isresponed:boolean=false)
       .then(response => {
          this.notifications.notifications = response.Value.Data;
         this.loading.dismiss();
+        if(this._refresher!=undefined)
+          this._refresher.complete();
         this.loading = this.loadingCtrl.create();
       },error => this.OnError(error));
 }
@@ -63,6 +78,8 @@ public GetNotifications(isresponed:boolean=false)
     if(error.status==0)
       this.connctionErrorCount++;
     this.loading = this.loadingCtrl.create();
+     if(this._refresher!=undefined)
+          this._refresher.complete();
   }
   ShowAlert(title:string,msg:string) {
     let alert = this.alertCtrl.create({
@@ -98,6 +115,18 @@ private CreateNotificationsRequest(isresponed:boolean):JobGetsRequest
         break;
         case JobType.OffsetPrinting:
           this.nav.push(this.jobOffsetPage.component,{id:item.JobTypeId,isDisable:true});
+        break;
+        case JobType.Binding:
+          this.nav.push(this.jobBindingPage.component,{id:item.JobTypeId,isDisable:true});
+        break;
+        case JobType.DTP:
+          this.nav.push(this.jobdtpPage.component,{id:item.JobTypeId,isDisable:true});
+        break;
+        case JobType.IdentityCard:
+          this.nav.push(this.jobICardPage.component,{id:item.JobTypeId,isDisable:true});
+        break;
+        case JobType.FlexPrinting:
+          this.nav.push(this.jobFlexPage.component,{id:item.JobTypeId,isDisable:true});
         break;
      }
   }

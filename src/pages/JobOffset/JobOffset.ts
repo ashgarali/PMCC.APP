@@ -364,7 +364,7 @@ public onJobTypeChange(event:any)
     let responed = AppCommon.CreateResponedData(
       this.currentJob.Id,
       this.currentJob.DocName,
-      this.currentJob.JobType,
+      JobType.OffsetPrinting,//this.currentJob.JobType,
       this.currentJob.ExpectedCost,
       this.currentJob.ExpectedDeliverDate,
       this.currentJob.DeliveryAt,
