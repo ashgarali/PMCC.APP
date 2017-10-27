@@ -233,7 +233,7 @@ constructor(
   let toast = this.toastCtrl.create({
     message: msg,
     duration: 2000,
-    position: 'top'
+    position: 'middle'
   });
   toast.onDidDismiss(() => {
      this.nav.setRoot(this.enquiriesPage.component);

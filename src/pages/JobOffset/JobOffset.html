@@ -25,7 +25,7 @@
   <div  class="event-example-view">
   <form class="sample-form event-form" [formGroup]="jobOffsetForm">
         <section class="form-section">
-          <h1 class="section-title">Mandatory</h1>
+          <h1 class="section-title">Please provide below details</h1>
           <hr>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
@@ -136,7 +136,7 @@
           <hr>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
-                <ion-label >Output required</ion-label>
+                <ion-label >Output provided</ion-label>
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
@@ -179,7 +179,7 @@
                   <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button" [disabled]="isEditMode" >Clear</button>
               </ion-col>
               <ion-col no-padding width-50>
-                  <button ion-button block class="form-action-button create-event-button" (click)="onOffsetPrintingSave()" type="button" [disabled]="!(this.jobOffsetForm.valid && this.jobOffsetForm.dirty)" >Save</button>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onOffsetPrintingSave()" type="button" [disabled]="!(this.jobOffsetForm.valid && this.jobOffsetForm.dirty)" >Post</button>
               </ion-col>
           </ion-row>
           <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">

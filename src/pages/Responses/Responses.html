@@ -38,12 +38,17 @@ font-size:11px;
   </ion-navbar>
 </ion-header>
 <ion-content class="responses-content">
+   <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-segment class="responses-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
-    <ion-segment-button value="Active" width-15 (ionSelect)="onSegmentSelected($event)">
-      Date
-    </ion-segment-button>
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
-      Delivery on
+      Delivery
     </ion-segment-button>
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
       Cost

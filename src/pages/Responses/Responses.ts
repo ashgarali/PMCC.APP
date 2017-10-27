@@ -19,6 +19,7 @@ export class ResponsesPage {
   loading: any;
   printingPage : { component: any };
   currentJob :any;
+  _refresher:any;
   public currentRow:number;
   constructor(
     public nav: NavController,
@@ -35,14 +36,25 @@ export class ResponsesPage {
 
   ionViewDidLoad() {
     this.loading.present();
-    
-    this.serviceHelper
+    this.LoadResponses();
+  }
+doRefresh(refresher:any){
+  this.LoadResponses();
+  this._refresher=refresher;
+}
+LoadResponses()
+{
+   this.serviceHelper
       .GetViews(this.CreateEnquiriesRequest())
       .then(response => {
         this.responses.responses = response.Value.Data;
-        this.loading.dismiss();
+        if(this._refresher!=undefined)
+          this._refresher.complete();
+        else
+          this.loading.dismiss();
+        this.loading = this.loadingCtrl.create();
       });
-  }
+}
 private CreateEnquiriesRequest():JobGetsRequest
  {
     let filter :Filter[]=[];

@@ -22,7 +22,7 @@
       refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-segment class="notification-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
+  <ion-segment *ngIf="!showBuyPanal" class="notification-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(false)">
       Active Enquiries
     </ion-segment-button>
@@ -31,7 +31,7 @@
     </ion-segment-button>
   </ion-segment>
 
-  <div [ngSwitch]="segment">
+  <div *ngIf="!showBuyPanal" [ngSwitch]="segment">
     <div *ngSwitchCase="'Active'">
       <ion-list class="notification-list">
         <ion-item class="notification-item" *ngFor="let item of notifications.notifications">
@@ -79,5 +79,11 @@
         </ion-item>
       </ion-list>
     </div>
+  </div>
+  <div *ngIf="showBuyPanal" >
+    <h1>Oops!</h1>
+    <h3>No notifications to show…</h3>
+    <h5>Please purchase modules to start getting notifications for
+    new enquiries.</h5>
   </div>
 </ion-content>

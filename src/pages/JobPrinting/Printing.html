@@ -25,7 +25,7 @@
   <div  class="event-example-view">
   <form class="sample-form event-form" [formGroup]="screenPrintingForm">
         <section class="form-section">
-          <h1 class="section-title">Mandatory</h1>
+          <h1 class="section-title">Please provide below details</h1>
           <hr>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
@@ -180,7 +180,7 @@
           </ion-row>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
-                <ion-label >Output required</ion-label>
+                <ion-label >Output provided</ion-label>
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
@@ -223,7 +223,7 @@
                   <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button"  >Clear</button>
               </ion-col>
               <ion-col no-padding width-50>
-                  <button ion-button block class="form-action-button create-event-button" (click)="onScreenPrintingSave()" type="button" [disabled]="!(this.screenPrintingForm.valid && this.screenPrintingForm.dirty)" >Save</button>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onScreenPrintingSave()" type="button" [disabled]="!(this.screenPrintingForm.valid && this.screenPrintingForm.dirty)" >Post</button>
               </ion-col>
           </ion-row>
           <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">

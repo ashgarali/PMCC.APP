@@ -29,6 +29,7 @@ export class NotificationPage {
   jobICardPage: {component:any};
   jobFlexPage:{component:any};
   connctionErrorCount:number=0;
+  showBuyPanal:boolean =false;
   _refresher:any;
   constructor(
     public nav: NavController,
@@ -48,7 +49,7 @@ export class NotificationPage {
 ionViewWillEnter()
 {
     this.loading.present();
-    setTimeout(()=>{this.LoadNotification();},500);
+    setTimeout(()=>{this.LoadNotification();},1000);
 }
 doRefresh(refresher:any){
   this.LoadNotification();
@@ -64,9 +65,11 @@ public GetNotifications(isresponed:boolean=false)
       .GetViews(this.CreateNotificationsRequest(isresponed))
       .then(response => {
          this.notifications.notifications = response.Value.Data;
-        this.loading.dismiss();
+         this.showBuyPanal = this.notifications.notifications.length==0 ?true:false;
         if(this._refresher!=undefined)
           this._refresher.complete();
+        else
+          this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
       },error => this.OnError(error));
 }
