@@ -44,6 +44,7 @@ ionViewWillEnter()
         this.ShortArray();
         this.CallOfferValues();
         this.loading.dismiss();
+        this.loading = this.loadingCtrl.create()
       });
 }
 ShortArray(){

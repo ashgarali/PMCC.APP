@@ -2,6 +2,14 @@
   .col{
     padding:0px;
   }
+  .opps{
+    text-align: center;
+    color: #ae75e7;
+    padding-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 15px;
+  }
 </style>
 
 <ion-header>
@@ -80,10 +88,17 @@
       </ion-list>
     </div>
   </div>
-  <div *ngIf="showBuyPanal" >
+  <div class="opps" *ngIf="showBuyPanal" >
     <h1>Oops!</h1>
-    <h3>No notifications to show…</h3>
-    <h5>Please purchase modules to start getting notifications for
-    new enquiries.</h5>
+    <h5>No notifications to show…</h5>
+    <h6>Please purchase modules to start getting notifications for
+    new enquiries.</h6>
+      <Br>
+        To buy subscription CALL ADMIN
+      <br>
+      <br>
+        Or
+       <br>
+      <button style="margin: 7px;" (click)="onAddModules()" ion-button small outline>Click here</button>
   </div>
 </ion-content>

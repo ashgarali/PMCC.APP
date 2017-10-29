@@ -62,6 +62,7 @@ export class ProfilePage {
       .then(response => {
         this.profile.user =response.Value.Data[0];
          this.loading.dismiss();
+         this.loading = this.loadingCtrl.create()
       },error => this.OnError(error));
   }
   public LoadUsersModules()
@@ -71,7 +72,8 @@ export class ProfilePage {
       .then(response => {
          this.modelList.modules =response.Value.Data;
           this.loading.dismiss();
-      });
+          this.loading = this.loadingCtrl.create()
+      },error => this.OnError(error));
   }
 private CreateProfileRequest():JobGetsRequest
  {

@@ -7,6 +7,8 @@ import { TabsNavigationPage } from '../pages/tabs-navigation/tabs-navigation';
 import { LoginPage } from '../pages/login/login';
 
 import { SettingsPage } from '../pages/settings/settings';
+import { EnquiriesPage } from '../pages/Enquiries/Enquiries';
+import { ProfilePage } from '../pages/profile/profile';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,7 @@ export class MyApp {
   // make LoginPage the root (or first) page
   rootPage: any = LoginPage;
 
-  pages: Array<{title: string, icon: string, component: any}>;
+  pages: Array<{title: string, icon: string, component: any,index:number}>;
   pushPages: Array<{title: string, icon: string, component: any}>;
 
   constructor(
@@ -37,11 +39,14 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: 'Home', icon: 'home', component: TabsNavigationPage },
+      { title: 'Notifications', icon: 'notifications', component: TabsNavigationPage , index: 0 },
+      { title: 'Enquiries', icon: 'apps', component: TabsNavigationPage ,index: 1 },
+      { title: 'Account', icon: 'person', component: TabsNavigationPage ,index: 2 },
     ];
 
     this.pushPages = [
-      { title: 'Settings', icon: 'settings', component: SettingsPage }
+      { title: 'Settings', icon: 'settings', component: SettingsPage },
+      
     ];
   }
 
@@ -49,7 +54,7 @@ export class MyApp {
     // close the menu when clicking a link from the menu
     this.menu.close();
     // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component, {id:page.index});
   }
 
   pushPage(page) {

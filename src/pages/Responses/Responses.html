@@ -47,24 +47,24 @@ font-size:11px;
     </ion-refresher-content>
   </ion-refresher>
   <ion-segment class="responses-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(1)">
       Delivery
     </ion-segment-button>
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected($event)">
+    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(2)">
       Cost
     </ion-segment-button>
   </ion-segment>
   <div [ngSwitch]="segment">
     <div *ngSwitchCase="'Active'">
       <ion-list class="responses-list">
-        <ion-item class="responses-item" *ngFor="let item of responses.responses">
+        <ion-item class="responses-item" *ngFor="let item of responses.responses ;let srNo = index;">
           <ion-row>
             <ion-col width-100 class="responses-data">
               <div class="data-item">
                 <div class="item-content">
                   <ion-row>
                     <ion-col width-85 style="padding: 0px;">
-                      <h2 class="item-title one-line">{{item.RowNo}}) {{item.Name}}</h2>
+                      <h2 class="item-title one-line">{{srNo + 1}}) {{item.Name}}</h2>
                     </ion-col>
                     <ion-col width-15 style="padding: 0px;">
                       <ion-icon style="font-size: 1.6em;" class="item-icon" name="call" (click)='onCallNumber(item);' ></ion-icon>

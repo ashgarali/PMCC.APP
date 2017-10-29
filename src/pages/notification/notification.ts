@@ -14,6 +14,7 @@ import {FlexPage } from '../JobFlex/Flex';
 import {ServiceHelper} from '../../services/serviceHelper';
 import { Filter} from '../../model/datasource.model';
 import {Msg,MsgType} from '../../app.config'
+import {ModulesPage} from '../Modules/Modules';
 @Component({
   selector: 'notification-page',
   templateUrl: 'notification.html'
@@ -28,6 +29,7 @@ export class NotificationPage {
   jobdtpPage:{component:any};
   jobICardPage: {component:any};
   jobFlexPage:{component:any};
+  modulesPage : { component: any };
   connctionErrorCount:number=0;
   showBuyPanal:boolean =false;
   _refresher:any;
@@ -45,6 +47,7 @@ export class NotificationPage {
      this.jobdtpPage ={component:DtpPage};
      this.jobICardPage ={component:ICardPage};
      this.jobFlexPage = { component:FlexPage};
+     this.modulesPage={component:ModulesPage};
   }
 ionViewWillEnter()
 {
@@ -141,6 +144,9 @@ private CreateNotificationsRequest(isresponed:boolean):JobGetsRequest
     this.loading.present();
     this.GetNotifications(segmentButton);
     // console.log('Segment selected', segmentButton.value);
+  }
+   onAddModules(){
+    this.nav.push(this.modulesPage.component);
   }
 
 }

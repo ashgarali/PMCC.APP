@@ -52,7 +52,7 @@ export class SettingsPage {
       phone: new FormControl('',[Validators.required, Validators.minLength(10),Validators.maxLength(10)]),
       email: new FormControl('', [Validators.required,Validators.email]),
       address1: new FormControl('', [Validators.required,Validators.maxLength(30)]),
-      address2: new FormControl('',[Validators.required,Validators.maxLength(30)]),
+      address2: new FormControl('',[Validators.maxLength(30)]),
       pincode: new FormControl('',[Validators.required,Validators.minLength(6),Validators.maxLength(6)]),
       state: new FormControl('',Validators.required),
       city: new FormControl('',Validators.required),
@@ -125,6 +125,7 @@ export class SettingsPage {
         this.profile.user = response.Value.Data;
         this.GetCities(parseInt(this.profile.user.StateId)) ;
         this.loading.dismiss();
+        this.loading = this.loadingCtrl.create()
       });
   }
 private SetUserDetails()
@@ -154,10 +155,12 @@ private UserDetailsRequest():JobGetsRequest
     this.serviceHelper.LogOut()
     .then( response => {
        this.loading.dismiss();
+       this.loading = this.loadingCtrl.create()
        this.nav.setRoot(this.rootPage);
     } ,
         error => {
            this.loading.dismiss();
+           this.loading = this.loadingCtrl.create()
            this.nav.setRoot(this.rootPage);
         });
     // navigate to the new page if it is not the current page

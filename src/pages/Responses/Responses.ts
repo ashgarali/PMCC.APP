@@ -18,6 +18,8 @@ export class ResponsesPage {
   responses: ResponsesList = new ResponsesList();
   loading: any;
   printingPage : { component: any };
+  storeData: Array<ResponsesModel> = [];
+  previusShort:number;
   currentJob :any;
   _refresher:any;
   public currentRow:number;
@@ -36,18 +38,19 @@ export class ResponsesPage {
 
   ionViewDidLoad() {
     this.loading.present();
-    this.LoadResponses();
+    this.LoadResponses(1);
   }
 doRefresh(refresher:any){
-  this.LoadResponses();
+  this.LoadResponses(this.previusShort);
   this._refresher=refresher;
 }
-LoadResponses()
+LoadResponses(value:number)
 {
    this.serviceHelper
       .GetViews(this.CreateEnquiriesRequest())
       .then(response => {
-        this.responses.responses = response.Value.Data;
+        this.storeData= response.Value.Data;
+        this.responses.responses = this.ShortData(value);
         if(this._refresher!=undefined)
           this._refresher.complete();
         else
@@ -98,8 +101,46 @@ private CreateEnquiriesRequest():JobGetsRequest
     // console.log('Segment changed to', segmentButton.value);
   }
 
-  onSegmentSelected(segmentButton: SegmentButton) {
-    // console.log('Segment selected', segmentButton.value);
+   onSegmentSelected(value:number){
+    this.loading.present();
+    this.ShortData(value)
+    setTimeout(()=>{this.DummyLoding();},500);
   }
+  DummyLoding()
+  {
+      this.loading.dismiss();
+      this.loading = this.loadingCtrl.create();
+  }
+  ShortData(value:number): Array<ResponsesModel>
+  {
+    let temData: Array<ResponsesModel> = [];
+    if(value==1){
+       temData = this.storeData.sort((n1,n2) => {
+          let date1 =n1.ReceivedDate.split("/");
+          let date2 =n2.ReceivedDate.split("/");
+          let dateCount1  =new Date(parseInt(date1[2]),parseInt(date1[1]),parseInt(date1[0])).getTime();//;n1.ReceivedDate.split("/");
+          let dateCount2 = new Date(parseInt(date2[2]),parseInt(date2[1]),parseInt(date2[0])).getTime();
 
+          if (dateCount1 > dateCount2) {
+              return 1;
+          }
+           if (dateCount1 < dateCount2) {
+              return -1;
+          }
+          return 0;
+      });
+    }else{
+      temData = this.storeData.sort((n1,n2) => {
+          if (n1.ReceivedCost > n2.ReceivedCost) {
+              return 1;
+          }
+            if (n1.ReceivedCost < n2.ReceivedCost) {
+              return -1;
+          }
+          return 0;
+      });
+    }
+   this.previusShort=value;
+    return temData;
+  }
 }

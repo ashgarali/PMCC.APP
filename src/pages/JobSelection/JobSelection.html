@@ -16,7 +16,7 @@
     <ion-row class="categories-row">
       <ion-col width-33 style="padding-bottom:5px;"  class="horizontal-item"  *ngFor="let popular of populars">
        <div class="jboItem" >
-        <preload-image [ratio]="{w:1, h:1}" (click)="onJobSelection(popular)" style="height: 50px; width: 50px;margin-left:30px" [src]="popular.Img" title="popular.Name"></preload-image>
+        <preload-image [ratio]="{w:1, h:1}" (click)="onJobSelection(popular)" style="height: 50px; width: 50px;margin-left:30px" [src]="popular.Img" title=""></preload-image>
        </div>
        <label >{{popular.Name}}</label>
       </ion-col>

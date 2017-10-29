@@ -42,6 +42,7 @@ ionViewWillEnter()
       .then(response => {
          this.modules.modules = response.Value.Data;
         this.loading.dismiss();
+        this.loading = this.loadingCtrl.create()
       });
     this.serviceHelper
       .GetOffers(true)

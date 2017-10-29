@@ -40,7 +40,7 @@ export class AddressPage {
     this.address = new FormGroup({
       companyName: new FormControl('',[Validators.required,Validators.maxLength(30)]),
       address1: new FormControl('', [Validators.required,Validators.maxLength(30)]),
-      address2: new FormControl('', [Validators.required,Validators.maxLength(30)]),
+      address2: new FormControl('', [Validators.maxLength(30)]),
       pincode: new FormControl('', [Validators.required,Validators.minLength(6),Validators.maxLength(6)]),
       state: new FormControl('',Validators.required),
       city: new FormControl('',Validators.required),
