@@ -27,7 +27,7 @@ export class SettingsPage {
   rootPage: any = LoginPage;
   loading: any;
   profile: ProfileModel = new ProfileModel();
-  profileImg ="assets/images/profile/user.png";
+  profileImg ="./assets/images/profile/user.png";
   states: KeyValueData[]=[]
   cites: KeyValueData[]=[];
   private userId :string;

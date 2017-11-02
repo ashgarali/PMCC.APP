@@ -26,7 +26,7 @@ export class LoginPage {
   public user;
   sub: any;
   loading:any;
-  banner_image: string = "assets/images/pmcclogo.jpg";
+  banner_image: string = "./assets/images/pmcclogo.png";
   constructor(public nav: NavController, 
               private loginService:LoginService,
               private storage : Storage,

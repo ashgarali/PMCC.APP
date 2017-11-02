@@ -27,7 +27,7 @@ export class ProfilePage {
    userId:string;
    errorMsg:string;
    isError:boolean=false;
-   profileImg ="assets/images/profile/user.png";
+   profileImg ="./assets/images/profile/user.png";
   constructor(
     public menu: MenuController,
     public app: App,
