@@ -2,6 +2,7 @@ import { Component ,ViewChild} from '@angular/core';
 import { NavController,AlertController,ModalController ,LoadingController} from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import {Storage} from '@ionic/storage';
+import {Device } from '@ionic-native/device';
 
 import { TabsNavigationPage } from '../tabs-navigation/tabs-navigation';
 import { SignupPage } from '../signup/signup';
@@ -12,6 +13,8 @@ import { AddressPage } from '../address/address';
 import {Login} from  '../../model/login.model';
 import {Status} from '../../model/status.model';
 import {StoreKey} from '../../app.config';
+import {AppCommon} from '../../model/appcommon';
+import {DeviceType} from '../../model/appenums';
 ///http://www.concretepage.com/angular-2/angular-2-http-post-example
 //https://www.npmjs.com/package/angular2-social-login
 @Component({
@@ -32,7 +35,8 @@ export class LoginPage {
               private storage : Storage,
               private alertCtr: AlertController,
               public modal: ModalController,
-              public loadingCtrl: LoadingController
+              public loadingCtrl: LoadingController,
+              private device:Device
              ) {
     this.main_page = { component: TabsNavigationPage };
     this.address_page = { component: AddressPage };
@@ -49,6 +53,10 @@ export class LoginPage {
     let login = new Login();
     login.UserName = this.login.value.email;
     login.PassWord = this.login.value.password;
+    if(AppCommon.IsCordovaAvailable()){
+        login.DeviceId=device.uuid;
+        login.DeviceType=DeviceType.Android;
+    }
     console.log(this.login.value);
     this.loginService.Login(login)
     .then( response => this.onLoginSuccess(response) ,

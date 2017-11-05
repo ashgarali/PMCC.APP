@@ -1,6 +1,8 @@
 export class Login{
     UserName:string;
     PassWord:string;
+    DeviceId:string;
+    DeviceType:number;
 }
 
 export class SignUp{

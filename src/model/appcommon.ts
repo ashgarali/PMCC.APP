@@ -50,4 +50,11 @@ export class AppCommon{
             let element = elements.find((data: DataSourceList) => parseInt(data.Value) === parseInt(id));
             return element ;
     }
+    public static IsCordovaAvailable() {
+	if (!(<any>window).cordova) {
+		alert('This is a native feature. Please use a device');
+		return false;
+	}
+	return true;
+};
 }

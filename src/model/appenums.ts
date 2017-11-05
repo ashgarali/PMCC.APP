@@ -82,3 +82,9 @@ export enum Operators
         Asc =1,
         Desc=2
     }
+    export enum DeviceType 
+    {
+        Android=1,
+        Apple=2,
+        Windows=3
+    }

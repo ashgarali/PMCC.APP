@@ -79,7 +79,7 @@ private CreateEnquiriesRequest():JobGetsRequest
   async onCallNumber(item:ResponsesModel):Promise<any>
   {
     try{
-        if (!this.IsCordovaAvailable()) {
+        if (!AppCommon.IsCordovaAvailable()) {
           return false;
         }
         await this.call.callNumber(String(item.MobileNo),true);
@@ -90,14 +90,7 @@ private CreateEnquiriesRequest():JobGetsRequest
     }
     
   }
-  private IsCordovaAvailable(){
-    if (!(<any>window).cordova) {
-      alert('This is a native feature. Please use a device');
-      return false;
-    }
-    return true;
-  }
-  onSegmentChanged(segmentButton: SegmentButton) {
+   onSegmentChanged(segmentButton: SegmentButton) {
     // console.log('Segment changed to', segmentButton.value);
   }
 

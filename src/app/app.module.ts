@@ -46,6 +46,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import {IonicStorageModule} from '@ionic/storage';
 import {CallNumber} from '@ionic-native/call-number';
+import {Device} from '@ionic-native/device';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import {CallNumber} from '@ionic-native/call-number';
     ServiceHelper,
     LoginService,
     CallNumber,
+    Device,
     SplashScreen, 
     StatusBar,
     InAppBrowser
