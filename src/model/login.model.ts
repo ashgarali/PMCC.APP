@@ -29,6 +29,7 @@ export  class Registration
         Email:string;
         Password:string;
         UserType:string;
-
+        DeviceId:string;
+        DeviceType:number;
     }
 

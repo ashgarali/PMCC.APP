@@ -33,6 +33,8 @@ export class NotificationPage {
   connctionErrorCount:number=0;
   showBuyPanal:boolean =false;
   _refresher:any;
+  _infiniteScroll:any;
+  startIndex:number=0;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
@@ -51,12 +53,20 @@ export class NotificationPage {
   }
 ionViewWillEnter()
 {
+    this.startIndex=0;
     this.loading.present();
+    this.notifications= new NotificationList();
     setTimeout(()=>{this.LoadNotification();},1000);
 }
 doRefresh(refresher:any){
+  this.startIndex=0;
+  this.notifications= new NotificationList();
   this.LoadNotification();
   this._refresher=refresher;
+}
+doInfinite(infiniteScroll){
+ this._refresher=infiniteScroll;
+ this.LoadNotification();
 }
 LoadNotification()
 {
@@ -67,12 +77,20 @@ public GetNotifications(isresponed:boolean=false)
     this.serviceHelper
       .GetViews(this.CreateNotificationsRequest(isresponed))
       .then(response => {
-         this.notifications.notifications = response.Value.Data;
-         this.showBuyPanal = this.notifications.notifications.length==0 ?true:false;
-        if(this._refresher!=undefined)
+        let didGetData=false;
+        for(let note of response.Value.Data) {
+            this.notifications.notifications.push(note);
+            didGetData=true;
+        }
+          if(didGetData)
+            this.startIndex +=5;
+         if(!isresponed)
+            this.showBuyPanal = this.notifications.notifications.length==0 ?true:false;
+        if(this._refresher!=undefined){
           this._refresher.complete();
-        else
-          this.loading.dismiss();
+          this._refresher=undefined;
+        }
+        this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
       },error => this.OnError(error));
 }
@@ -105,6 +123,7 @@ private CreateNotificationsRequest(isresponed:boolean):JobGetsRequest
     let request = new JobGetsRequest();
     request.JobType=JobType.ViewDocument;
     request.ViewId= ViewsType.ViewNotifications;
+    request.StartIndex=this.startIndex+1;
     if(isresponed){
       request.Filters.push(new Filter("IsViewed",Operators.Equals,true))
     }else
@@ -142,6 +161,8 @@ private CreateNotificationsRequest(isresponed:boolean):JobGetsRequest
 
   onSegmentSelected(segmentButton: boolean) {
     this.loading.present();
+    this.notifications= new NotificationList();
+    this.startIndex=0;
     this.GetNotifications(segmentButton);
     // console.log('Segment selected', segmentButton.value);
   }

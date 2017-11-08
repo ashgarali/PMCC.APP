@@ -13,6 +13,8 @@ export class JobGetsRequest
     {
         JobType: JobType;
         ViewId:ViewsType;
+        StartIndex:number;
+        Count:number;
         Filters: Filter[] = [];
         Orders :Shorting[] =[];
     }

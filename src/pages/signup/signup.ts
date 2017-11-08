@@ -12,6 +12,8 @@ import {Registration} from '../../model/login.model';
 import {Status } from '../../model/status.model';
 import {StoreKey} from '../../app.config';
 import {AppValidators} from '../../model/AppValidators'
+import {AppCommon} from '../../model/appcommon';
+import {DeviceType} from '../../model/appenums';
 
 @Component({
   selector: 'signup-page',
@@ -51,6 +53,10 @@ export class SignupPage {
     login.PhoneNo = this.signup.value.phone;
     login.Password = this.signup.value.password;
     login.UserType="C";
+    if(AppCommon.IsCordovaAvailable()){
+        login.DeviceId=device.uuid;
+        login.DeviceType=DeviceType.Android;
+    }
     this.loading.present();
     this.loginService.SignUp(login)
     .then( response => this.onSignUpSuccess(response) ,

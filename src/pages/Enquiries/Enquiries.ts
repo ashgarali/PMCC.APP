@@ -36,6 +36,9 @@ export class EnquiriesPage {
   jobSelectionPage :{component:any};
 
    connctionErrorCount:number=0;
+  _infiniteScroll:any;
+  startIndex:number=0;
+  lastLoadType:boolean=false;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
@@ -56,16 +59,27 @@ export class EnquiriesPage {
   }
   ionViewWillEnter() {
     this.loading.present();
+    this.enquiries = new EnquiriesModel();
     this.GetEnquiries(false);
     
   }
+  doInfinite(infiniteScroll){
+    this._infiniteScroll=infiniteScroll;
+    this.GetEnquiries(this.lastLoadType);
+}
 public GetEnquiries(IsClosed:boolean=false)
 {
+  this.lastLoadType=IsClosed;
   this.serviceHelper
       .GetViews(this.CreateEnquiriesRequest(IsClosed))
       .then(response => {
-         this.enquiries.enquiries = response.Value.Data;
-        // this.enquiries.responded = data.responded;
+        for(let enquirie of response.Value.Data) {
+           this.enquiries.enquiries.push(enquirie);
+        }
+        if(this._infiniteScroll!=undefined){
+          this._infiniteScroll.complete();
+           this._infiniteScroll=undefined;
+        }
         this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
       },error => this.OnError(error));
@@ -151,6 +165,7 @@ public GetEnquiries(IsClosed:boolean=false)
 
   onSegmentSelected(segmentButton: boolean) {
     this.loading.present();
+    this.enquiries = new EnquiriesModel();
     this.GetEnquiries(segmentButton);
     // console.log('Segment selected', segmentButton.value);
   }
