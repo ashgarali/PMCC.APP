@@ -15,7 +15,7 @@ import {ServiceHelper} from '../../services/serviceHelper';
 import {JobGetsRequest} from '../../model/JobRequest';
 import {JobType,ViewsType,Operators} from '../../model/appenums';
 import { Filter} from '../../model/datasource.model';
-import {Msg,MsgType} from '../../app.config'
+import {Msg,MsgType,AppConfig} from '../../app.config'
 
 @Component({
   selector: 'enquiries-page',
@@ -36,7 +36,7 @@ export class EnquiriesPage {
   jobSelectionPage :{component:any};
 
    connctionErrorCount:number=0;
-  _infiniteScroll:any;
+  _refresher:any;
   startIndex:number=0;
   lastLoadType:boolean=false;
   constructor(
@@ -59,12 +59,19 @@ export class EnquiriesPage {
   }
   ionViewWillEnter() {
     this.loading.present();
+     this.startIndex=0;
     this.enquiries = new EnquiriesModel();
     this.GetEnquiries(false);
     
   }
+  doRefresh(refresher:any){
+  this.startIndex=0;
+   this.enquiries = new EnquiriesModel();
+  this.GetEnquiries(this.lastLoadType);
+  this._refresher=refresher;
+}
   doInfinite(infiniteScroll){
-    this._infiniteScroll=infiniteScroll;
+    this._refresher=infiniteScroll;
     this.GetEnquiries(this.lastLoadType);
 }
 public GetEnquiries(IsClosed:boolean=false)
@@ -73,12 +80,16 @@ public GetEnquiries(IsClosed:boolean=false)
   this.serviceHelper
       .GetViews(this.CreateEnquiriesRequest(IsClosed))
       .then(response => {
+         let didGetData=false;
         for(let enquirie of response.Value.Data) {
            this.enquiries.enquiries.push(enquirie);
+            didGetData=true;
         }
-        if(this._infiniteScroll!=undefined){
-          this._infiniteScroll.complete();
-           this._infiniteScroll=undefined;
+        if(didGetData)
+          this.startIndex +=AppConfig.RecordCount;
+        if(this._refresher!=undefined){
+          this._refresher.complete();
+           this._refresher=undefined;
         }
         this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
@@ -89,6 +100,7 @@ public GetEnquiries(IsClosed:boolean=false)
     let request = new JobGetsRequest();
     request.JobType=JobType.ViewDocument;
     request.ViewId= ViewsType.ViewEnquiries;
+    request.StartIndex=this.startIndex+1;
     if(IsClosed)
       {
           request.Filters.push(new Filter("IsClosed",Operators.Equals,true))
@@ -165,6 +177,7 @@ public GetEnquiries(IsClosed:boolean=false)
 
   onSegmentSelected(segmentButton: boolean) {
     this.loading.present();
+    this.startIndex=0;
     this.enquiries = new EnquiriesModel();
     this.GetEnquiries(segmentButton);
     // console.log('Segment selected', segmentButton.value);

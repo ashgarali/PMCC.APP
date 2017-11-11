@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, SegmentButton, LoadingController,NavParams} from 'ionic-angular';
+import { NavController, SegmentButton, LoadingController,NavParams,AlertController} from 'ionic-angular';
 import 'rxjs/Rx';
 import {Filter,Shorting} from '../../model/datasource.model';
 import {JobType,ViewsType,Operators,SortingType} from '../../model/appenums';
@@ -9,6 +9,7 @@ import {PrintingPage } from'../JobPrinting/Printing';
 import {AppCommon} from '../../model/appcommon';
 import {JobGetsRequest} from '../../model/JobRequest';
 import {CallNumber} from '@ionic-native/call-number';
+import {Msg,MsgType,AppConfig} from '../../app.config'
 @Component({
   selector: 'responses-page',
   templateUrl: 'responses.html'
@@ -22,13 +23,16 @@ export class ResponsesPage {
   previusShort:number;
   currentJob :any;
   _refresher:any;
+  startIndex:number=0;
+  connctionErrorCount:number=0;
   public currentRow:number;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
     public loadingCtrl: LoadingController,
     public navParams :NavParams ,
-    private call:CallNumber
+    private call:CallNumber,
+    public alertCtrl: AlertController,
   ) {
     this.segment = "Active";
     this.loading = this.loadingCtrl.create();
@@ -37,27 +41,65 @@ export class ResponsesPage {
   }
 
   ionViewDidLoad() {
+    this.startIndex=0;
+    this.storeData = [];
     this.loading.present();
     this.LoadResponses(1);
   }
 doRefresh(refresher:any){
+  this.startIndex=0;
+  this.storeData = [];
   this.LoadResponses(this.previusShort);
   this._refresher=refresher;
+}
+doInfinite(infiniteScroll){
+    this._refresher=infiniteScroll;
+    this.LoadResponses(this.previusShort);
 }
 LoadResponses(value:number)
 {
    this.serviceHelper
       .GetViews(this.CreateEnquiriesRequest())
       .then(response => {
-        this.storeData= response.Value.Data;
+        let didGetData=false;
+        for(let value of response.Value.Data) {
+           this.storeData.push(value);
+            didGetData=true;
+        }
+        if(didGetData)
+          this.startIndex +=AppConfig.RecordCount;
         this.responses.responses = this.ShortData(value);
         if(this._refresher!=undefined)
           this._refresher.complete();
         else
           this.loading.dismiss();
         this.loading = this.loadingCtrl.create();
-      });
+      },error => this.OnError(error));
 }
+  public OnError(error:any)
+  {
+    this.loading.dismiss();
+    if(this.connctionErrorCount==0)
+      this.ShowAlert(MsgType.ErrorType,error.message);
+    if(error.status==0)
+      this.connctionErrorCount++;
+    this.loading = this.loadingCtrl.create();
+     if(this._refresher!=undefined)
+          this._refresher.complete();
+  }
+  ShowAlert(title:string,msg:string) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: msg,
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          this.connctionErrorCount=0;
+        }
+      }]
+    });
+    alert.present();
+  }
 private CreateEnquiriesRequest():JobGetsRequest
  {
     let filter :Filter[]=[];
@@ -66,6 +108,7 @@ private CreateEnquiriesRequest():JobGetsRequest
     let request = new JobGetsRequest();
     request.JobType=JobType.ViewDocument;
     request.ViewId= ViewsType.ViewResponses;
+    request.StartIndex=this.startIndex+1;
     request.Filters=filter;
     return request;
  }

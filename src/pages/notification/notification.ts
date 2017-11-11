@@ -13,7 +13,7 @@ import {ICardPage} from '../JobICard/ICard';
 import {FlexPage } from '../JobFlex/Flex';
 import {ServiceHelper} from '../../services/serviceHelper';
 import { Filter} from '../../model/datasource.model';
-import {Msg,MsgType} from '../../app.config'
+import {Msg,MsgType,AppConfig} from '../../app.config'
 import {ModulesPage} from '../Modules/Modules';
 @Component({
   selector: 'notification-page',
@@ -35,6 +35,7 @@ export class NotificationPage {
   _refresher:any;
   _infiniteScroll:any;
   startIndex:number=0;
+  lastLoadType:boolean=false;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
@@ -61,12 +62,12 @@ ionViewWillEnter()
 doRefresh(refresher:any){
   this.startIndex=0;
   this.notifications= new NotificationList();
-  this.LoadNotification();
+  this.GetNotifications( this.lastLoadType);
   this._refresher=refresher;
 }
 doInfinite(infiniteScroll){
  this._refresher=infiniteScroll;
- this.LoadNotification();
+ this.GetNotifications(this.lastLoadType);
 }
 LoadNotification()
 {
@@ -74,6 +75,7 @@ LoadNotification()
 }
 public GetNotifications(isresponed:boolean=false)
 {
+   this.lastLoadType=isresponed;
     this.serviceHelper
       .GetViews(this.CreateNotificationsRequest(isresponed))
       .then(response => {
@@ -83,7 +85,7 @@ public GetNotifications(isresponed:boolean=false)
             didGetData=true;
         }
           if(didGetData)
-            this.startIndex +=5;
+            this.startIndex +=AppConfig.RecordCount;
          if(!isresponed)
             this.showBuyPanal = this.notifications.notifications.length==0 ?true:false;
         if(this._refresher!=undefined){
