@@ -64,11 +64,11 @@ export class EnquiriesPage {
     this.GetEnquiries(false);
     
   }
-  doRefresh(refresher:any){
+  doRefresh(){
   this.startIndex=0;
+  this.loading.present();
    this.enquiries = new EnquiriesModel();
   this.GetEnquiries(this.lastLoadType);
-  this._refresher=refresher;
 }
   doInfinite(infiniteScroll){
     this._refresher=infiniteScroll;

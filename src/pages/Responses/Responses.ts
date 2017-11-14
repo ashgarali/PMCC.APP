@@ -49,8 +49,8 @@ export class ResponsesPage {
 doRefresh(refresher:any){
   this.startIndex=0;
   this.storeData = [];
+  this.loading.present();
   this.LoadResponses(this.previusShort);
-  this._refresher=refresher;
 }
 doInfinite(infiniteScroll){
     this._refresher=infiniteScroll;

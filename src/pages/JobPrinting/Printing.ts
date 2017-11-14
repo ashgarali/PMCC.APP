@@ -143,7 +143,7 @@ constructor(
   {
     this.GetDataSource(DataSourceMasters.SPJobType);
     this.GetDataSource(DataSourceMasters.SPColors);
-    this.GetDataSource(DataSourceMasters.SPOutPutProvide);
+    this.GetDataSource(DataSourceMasters.SPOutPutProvideNew);
     this.GetDataSource(DataSourceMasters.DeliveryAt);
     this.GetDataSource(DataSourceMasters.PaymentMode);
     this.GetDataSource(DataSourceMasters.UMO);
@@ -179,7 +179,7 @@ constructor(
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
             break;
-          case DataSourceMasters.SPOutPutProvide.toString():
+          case DataSourceMasters.SPOutPutProvideNew.toString():
             this.outputList= AppCommon.CreateDataSource(response);
             break;
            case DataSourceMasters.DeliveryAt.toString():

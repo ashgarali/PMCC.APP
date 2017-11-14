@@ -59,11 +59,11 @@ ionViewWillEnter()
     this.notifications= new NotificationList();
     setTimeout(()=>{this.LoadNotification();},1000);
 }
-doRefresh(refresher:any){
+doRefresh(){
   this.startIndex=0;
+  this.loading.present();
   this.notifications= new NotificationList();
   this.GetNotifications( this.lastLoadType);
-  this._refresher=refresher;
 }
 doInfinite(infiniteScroll){
  this._refresher=infiniteScroll;

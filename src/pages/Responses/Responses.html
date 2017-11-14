@@ -38,17 +38,14 @@ font-size:11px;
 <ion-header>
   <ion-navbar>
     <ion-title>Responses</ion-title>
+     <ion-buttons end (click)="doRefresh()">
+      <button style="font-size: 3rem;" ion-button>
+       <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content class="responses-content">
-   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-      refreshingText="Refreshing...">
-    </ion-refresher-content>
-  </ion-refresher>
   <ion-segment class="responses-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(1)">
       Delivery

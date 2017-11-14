@@ -51,7 +51,8 @@ export enum DataSourceMasters{
     BindingNoOfCopy = 10022,
     BindingCoverType=10023,
     DTPOutput=10024,
-    FlexNoofDesign=10025
+    FlexNoofDesign=10025,
+    SPOutPutProvideNew=10026
 
     
     

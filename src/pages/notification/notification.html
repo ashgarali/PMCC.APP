@@ -18,18 +18,15 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Notifications</ion-title>
+    <ion-buttons end (click)="doRefresh()">
+      <button style="font-size: 3rem;" ion-button>
+       <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="notification-content">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="bubbles"
-      refreshingText="Refreshing...">
-    </ion-refresher-content>
-  </ion-refresher>
   <ion-segment *ngIf="!showBuyPanal" class="notification-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(false)">
       Active Enquiries
