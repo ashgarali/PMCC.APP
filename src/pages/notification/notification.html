@@ -76,6 +76,24 @@
                     </ion-col>
                     
                   </ion-row>
+                  <div *ngIf="lastLoadType" class="item-description" >
+                    Reponded:
+                  </div>
+                  <ion-row *ngIf="lastLoadType">
+                    <ion-col width-60>
+                      <div class="item-description">
+                      <ion-icon class="description-icon" name="clock"></ion-icon>
+                      <p class="description-text">{{item.ReceivedDate}}</p>
+                  </div>
+                    </ion-col>
+                     <ion-col width-40>
+                      <div class="item-description">
+                         <span class="description-icon">&#x20B9;</span> 
+                          <p class="description-text one-line">{{item.ReceivedCost}}/-</p>
+                      </div>
+                    </ion-col>
+                    
+                  </ion-row>
                 </div>
                 
               </div>

@@ -14,6 +14,8 @@ export class NotificationModel {
   DocDay: string;
   DocMonth: string;
   DocTime: string;
+  ReceivedCost:string;
+  ReceivedDate:string;
   IsSend:boolean;
   IsViewed:boolean;
 }
