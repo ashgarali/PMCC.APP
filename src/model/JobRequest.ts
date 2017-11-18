@@ -1,4 +1,4 @@
-import {JobType,Operators,SortingType,ViewsType} from './appenums';
+import {JobType,Operators,SortingType,ViewsType,ActionType} from './appenums';
 import {Filter,Shorting} from './datasource.model';
 export class JobGetRequest
     {
@@ -29,6 +29,13 @@ export class JobUpdateRequest
         Id:string;
         JobType: JobType;
         Data:any;
+    }
+export class JobActionRequest
+    {
+        Id:string;
+        JobType: JobType;
+        Data:any;
+        ActionType:ActionType;
     }
  export class ScreenPrinting{
      JobType:number;

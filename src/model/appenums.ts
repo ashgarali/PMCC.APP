@@ -89,3 +89,8 @@ export enum Operators
         Apple=2,
         Windows=3
     }
+
+    export enum ActionType
+    {
+        CloseDocument=1,
+    }

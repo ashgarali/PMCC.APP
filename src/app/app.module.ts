@@ -47,6 +47,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {IonicStorageModule} from '@ionic/storage';
 import {CallNumber} from '@ionic-native/call-number';
 import {Device} from '@ionic-native/device';
+import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import {Device} from '@ionic-native/device';
     Device,
     SplashScreen, 
     StatusBar,
-    InAppBrowser
+    InAppBrowser,
+    ThemeableBrowser
     ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

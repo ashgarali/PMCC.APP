@@ -10,8 +10,8 @@ import { counterRangeValidator } from '../../components/counter-input/counter-in
 import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
-import {JobType} from '../../model/appenums';
-import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
+import {JobType,ActionType} from '../../model/appenums';
+import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest,JobActionRequest} from '../../model/JobRequest';
 import {JobPrintingModel} from './Printing.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
@@ -22,6 +22,7 @@ export class PrintingPage {
     screenPrintingForm: FormGroup;
     isEditMode=false;
     isEditDesiable=false;
+    clearBtnText:string="Clear";
     editId="";
     responedPage : { component: any };
     enquiriesPage:{component:any}
@@ -61,10 +62,12 @@ constructor(
     if(typeof id!='undefined' && id)
     {
       this.isEditMode=true;
+      this.clearBtnText="Close";
       this.editId = id;
       let isDisable = this.navParams.get('isDisable');
-      if(typeof isDisable!='undefined' && isDisable)
+      if(typeof isDisable!='undefined' && isDisable){
         this.isEditDesiable=true;
+      }
     }else{
       this.isEditMode=false;
     }
@@ -116,28 +119,37 @@ constructor(
       if(this.isEditDesiable)
         this.screenPrintingForm.disable();
   }
-
+  public ClearForm()
+  {
+    if( this.isEditMode)
+      {
+          this.CheckDoument();
+      }else{
+        this.CreateForm(new JobPrintingModel());
+      }
+    
+  }
   public CreateForm(job:JobPrintingModel)
   {
-    this.screenPrintingForm = new FormGroup({
-      jobType: new FormControl('',Validators.required),
-      jobQuantity : new FormControl('',Validators.required),
-      noOfColor:new FormControl('',Validators.required),
-      materialType:new FormControl('',Validators.required),
-      jobSize:new FormControl('',Validators.required),
-      jobDim1:new FormControl('',Validators.required),
-      jobDim2:new FormControl('',Validators.required),
-      jobUom: new FormControl('', Validators.required),
-      expDelivery: new FormControl('', Validators.required),
-      payMode: new FormControl('', Validators.required),
-      expCost: new FormControl('', Validators.required),
+        this.screenPrintingForm = new FormGroup({
+        jobType: new FormControl('',Validators.required),
+        jobQuantity : new FormControl('',Validators.required),
+        noOfColor:new FormControl('',Validators.required),
+        materialType:new FormControl('',Validators.required),
+        jobSize:new FormControl('',Validators.required),
+        jobDim1:new FormControl('',Validators.required),
+        jobDim2:new FormControl('',Validators.required),
+        jobUom: new FormControl('', Validators.required),
+        expDelivery: new FormControl('', Validators.required),
+        payMode: new FormControl('', Validators.required),
+        expCost: new FormControl('', Validators.required),
 
-      gummingReq:new FormControl(false),
-      pastingReq:new FormControl(false),
-      outputReq: new FormControl(),
-      deliveryAt:new FormControl(),
-      details:new FormControl()
-    });
+        gummingReq:new FormControl(false),
+        pastingReq:new FormControl(false),
+        outputReq: new FormControl(),
+        deliveryAt:new FormControl(),
+        details:new FormControl()
+      });
   }
   ionViewWillEnter()
   {
@@ -206,6 +218,51 @@ constructor(
             break;
         }
       }
+  }
+  public CloseDocument()
+  {
+    let jobRequest = new JobActionRequest();
+    jobRequest.JobType= JobType.ScreenPrinting;
+    jobRequest.Id=this.editId;
+    jobRequest.Data="";
+    jobRequest.ActionType= ActionType.CloseDocument;
+    this.serviceHelper.PerformAction(jobRequest)
+        .then( response => this.onCloseSuccess(response) ,
+            error => this.OnError(error));
+  }
+  public onCloseSuccess(response:Status)
+  {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.CloseDocument);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+  }
+  public CheckDoument()
+  {
+      let alert = this.alertCtrl.create({
+    title: 'Confirm',
+    message: 'Do you want to close this job?',
+    buttons: [
+      {
+        text: 'Yes',
+        handler: () => {
+          this.CloseDocument();
+        }
+      },
+      {
+        text: 'No',
+         handler: () => {
+          console.log("NO");
+        }
+      }
+    ]
+  });
+  alert.present();
   }
   public OnError(error:any)
   {

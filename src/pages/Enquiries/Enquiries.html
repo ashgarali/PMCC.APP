@@ -48,7 +48,7 @@
                     </div>
                     </ion-col>
                     <ion-col width-10>
-                      <ion-icon style="font-size: 1.6em;"  class="item-icon" name="arrow-forward" (click)='onActiveItemClick(item);' ></ion-icon>
+                      <ion-icon *ngIf="!lastLoadType" style="font-size: 1.6em;"  class="item-icon" name="arrow-forward" (click)='onActiveItemClick(item);' ></ion-icon>
                     </ion-col>
                   </ion-row>
                   <ion-row>
@@ -65,7 +65,7 @@
                       </div>
                     </ion-col>
                   </ion-row>
-                  <div class="item-description" style="width: 130px;" >
+                  <div *ngIf="!lastLoadType" class="item-description" style="width: 130px;" >
                     <ion-badge style="border-radius: 10px;margin:0px" item-right>{{item.ResponseCount}}</ion-badge>
                     <button ion-button small clear [disabled]="item.ResponseCount == 0" (click)="onResponsesClick(item)" >
                        Responses >>

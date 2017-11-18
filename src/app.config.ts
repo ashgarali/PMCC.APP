@@ -18,6 +18,7 @@ export class EndPoints
     public static GETSJOB ='api/jobs/GetJobs';
     public static CREATEJOB='api/jobs/CreateJob';
     public static UPDATEJOB='api/jobs/UpdateJob';
+    public static JOBACTION='api/jobs/JobAction';
     public static GETVIEWS='api/jobs/GetViews';
     public static MODULES= 'api/Module/GetModules';
     public static GETOFFERS= 'api/Offer/GetOffersByModule';
@@ -41,5 +42,6 @@ export class Msg
 {
     public static PlatesCountError="Please select all colors plates.";
     public static FlexDimError="Please fillup all the details of designs";
-    public static SaveSuccess="Your enquiry posted successfully"
+    public static SaveSuccess="Your enquiry posted successfully";
+    public static CloseDocument="Your enquiry closed successfully"
 }

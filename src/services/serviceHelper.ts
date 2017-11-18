@@ -7,7 +7,7 @@ import {Login,Registration,UserAddress} from '../model/login.model';
 import {AppConfig,EndPoints,StoreKey} from '../app.config';
 import {JobGetsRequest} from '../model/JobRequest';
 import {AppCommon} from '../model/appcommon';
-import {JobCreateRequest,JobGetRequest,JobUpdateRequest,InItPayment} from '../model/JobRequest'
+import {JobCreateRequest,JobGetRequest,JobUpdateRequest,InItPayment,JobActionRequest} from '../model/JobRequest'
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -76,6 +76,13 @@ export class ServiceHelper{
   UpdateJob(request:JobUpdateRequest)
   {
          let requestPoint = this.BaseUrl+EndPoints.UPDATEJOB;
+        return this.http.post(requestPoint, request,this.requestOptions()).toPromise()
+        .then(response => response.json() as Status)
+        .catch(this.handleError);
+  }
+  PerformAction(request:JobActionRequest)
+  {
+      let requestPoint = this.BaseUrl+EndPoints.JOBACTION;
         return this.http.post(requestPoint, request,this.requestOptions()).toPromise()
         .then(response => response.json() as Status)
         .catch(this.handleError);
