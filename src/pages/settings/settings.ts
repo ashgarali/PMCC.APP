@@ -16,6 +16,7 @@ import {StoreKey} from '../../app.config';
 import 'rxjs/Rx';
 import {AppValidators} from '../../model/AppValidators'
 import { ProfileModel } from '../profile/profile.model';
+import {EmailValidator} from 'ng-email-validation';
 
 @Component({
   selector: 'settings-page',
@@ -50,7 +51,7 @@ export class SettingsPage {
 
     this.settingsForm = new FormGroup({
       phone: new FormControl('',[Validators.required, Validators.minLength(10),Validators.maxLength(10)]),
-      email: new FormControl('', [Validators.required,Validators.email]),
+      email: new FormControl('', [Validators.required,EmailValidator.emailValidator]),
       address1: new FormControl('', [Validators.required,Validators.maxLength(30)]),
       address2: new FormControl('',[Validators.maxLength(30)]),
       pincode: new FormControl('',[Validators.required,Validators.minLength(6),Validators.maxLength(6)]),

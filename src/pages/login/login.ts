@@ -15,6 +15,7 @@ import {Status} from '../../model/status.model';
 import {StoreKey} from '../../app.config';
 import {AppCommon} from '../../model/appcommon';
 import {DeviceType} from '../../model/appenums';
+import {EmailValidator} from 'ng-email-validation';
 ///http://www.concretepage.com/angular-2/angular-2-http-post-example
 //https://www.npmjs.com/package/angular2-social-login
 @Component({
@@ -42,7 +43,7 @@ export class LoginPage {
     this.address_page = { component: AddressPage };
     this.loading = this.loadingCtrl.create();
     this.login = new FormGroup({
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required,EmailValidator.emailValidator]),
       password: new FormControl('', Validators.required)
     });
     this.storage.clear();

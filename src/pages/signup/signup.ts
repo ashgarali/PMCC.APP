@@ -14,6 +14,7 @@ import {StoreKey} from '../../app.config';
 import {AppValidators} from '../../model/AppValidators'
 import {AppCommon} from '../../model/appcommon';
 import {DeviceType} from '../../model/appenums';
+import {EmailValidator} from 'ng-email-validation';
 
 @Component({
   selector: 'signup-page',
@@ -36,7 +37,7 @@ export class SignupPage {
     this.signup = new FormGroup({
       name: new FormControl('',[Validators.required,Validators.maxLength(20)]),
       phone: new FormControl('',[Validators.required, Validators.minLength(10),Validators.maxLength(10)]),
-      email: new FormControl('', [Validators.required,Validators.email]),
+      email: new FormControl('', [Validators.required,EmailValidator.emailValidator]),
       password: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]),
       confirm_password: new FormControl('', [Validators.required,this.ConformPassword('password')])
     });
