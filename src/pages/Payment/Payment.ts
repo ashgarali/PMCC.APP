@@ -66,11 +66,28 @@ LoadPayment(){
 				showPageTitle: true
 			},
 			closeButton: {
-				wwwImage: 'assets/img/close.png',
+				wwwImage: 'assets/images/close.png',
 				wwwImageDensity: 2,
 				align: 'left',
 				event: 'closePressed'
-			},
+      },
+    //   menu: {
+	// 			wwwImage: 'assets/images/menu.png',
+	// 			wwwImageDensity: 2,
+	// 			align: 'right',
+	// 			title: 'Test',
+	// 			cancel: 'Cancel',
+	// 			items: [
+	// 				{
+	// 					event: 'helloPressed',
+	// 					label: 'Hello World!'
+	// 				},
+	// 				{
+	// 					event: 'testPressed',
+	// 					label: 'Test!'
+	// 				}
+	// 			]
+	// 		},
 			backButtonCanClose: true
 		};
 //Old options
@@ -82,5 +99,14 @@ let params=  "amount="+ this.paymentOptions.Amount+ "&Pinfo="+this.paymentOption
 //   ); 
 //New options
 let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'views/payU.html?'+params, '_blank', options);
+
+browser.on('helloPressed').subscribe(x => {
+			alert('Hello button pressed');
+		});
+
+		browser.on('testPressed').subscribe(x => {
+			alert('Test button pressed');
+		});
+
 }
 }
