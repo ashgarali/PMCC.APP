@@ -176,7 +176,7 @@
         <section class="form-section" style="padding-top:20px;">
           <ion-row *ngIf="!isEditDesiable" no-padding class="multi-input-row">
               <ion-col no-padding width-50>
-                  <button ion-button block class="form-action-button create-event-button" (click)="CreateForm()" type="button" [disabled]="isEditMode" >Clear</button>
+                  <button ion-button block class="form-action-button create-event-button" (click)="ClearForm()" type="button">{{clearBtnText}}</button>
               </ion-col>
               <ion-col no-padding width-50>
                   <button ion-button block class="form-action-button create-event-button" (click)="onOffsetPrintingSave()" type="button" [disabled]="!(this.jobOffsetForm.valid && this.jobOffsetForm.dirty)" >Post</button>

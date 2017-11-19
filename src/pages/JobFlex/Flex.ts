@@ -9,8 +9,8 @@ import { counterRangeValidator } from '../../components/counter-input/counter-in
 import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
-import {JobType} from '../../model/appenums';
-import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest} from '../../model/JobRequest';
+import {JobType,ActionType} from '../../model/appenums';
+import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest,JobActionRequest} from '../../model/JobRequest';
 import {FlexModel} from './Flex.model';
 import {Msg,MsgType} from '../../app.config'
 @Component({
@@ -23,6 +23,7 @@ export class FlexPage {
     isEditMode=false;
     isEditDesiable=false;
     editId="";
+    clearBtnText:string="Clear";
     common = new AppCommon();
     loading: any;
     currentJob:FlexModel;
@@ -56,6 +57,7 @@ export class FlexPage {
     if(typeof id!='undefined' && id)
     {
       this.isEditMode=true;
+      this.clearBtnText="Close";
       this.editId = id;
       let isDisable = this.navParams.get('isDisable');
       if(typeof isDisable!='undefined' && isDisable)
@@ -198,6 +200,62 @@ public onJobSuccess(response:Status)
       });
       if(this.isEditDesiable)
         this.flexForm.disable();
+  }
+  public ClearForm()
+  {
+    if( this.isEditMode)
+      {
+          this.CheckDoument();
+      }else{
+        this.CreateForm();
+      }
+    
+  }
+public CloseDocument()
+  {
+    this.loading.present();
+    let jobRequest = new JobActionRequest();
+    jobRequest.JobType= JobType.FlexPrinting;
+    jobRequest.Id=this.editId;
+    jobRequest.Data="";
+    jobRequest.ActionType= ActionType.CloseDocument;
+    this.serviceHelper.PerformAction(jobRequest)
+        .then( response => this.onCloseSuccess(response) ,
+            error => this.OnError(error));
+  }
+  public onCloseSuccess(response:Status)
+  {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.CloseDocument);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+  }
+  public CheckDoument()
+  {
+      let alert = this.alertCtrl.create({
+    title: 'Confirm',
+    message: 'Do you want to close this job?',
+    buttons: [
+      {
+        text: 'Yes',
+        handler: () => {
+          this.CloseDocument();
+        }
+      },
+      {
+        text: 'No',
+         handler: () => {
+          console.log("NO");
+        }
+      }
+    ]
+  });
+  alert.present();
   }
 public onDesignChange(event:any)
  {

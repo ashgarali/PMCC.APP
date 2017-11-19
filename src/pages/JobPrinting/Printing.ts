@@ -221,6 +221,7 @@ constructor(
   }
   public CloseDocument()
   {
+    this.loading.present();
     let jobRequest = new JobActionRequest();
     jobRequest.JobType= JobType.ScreenPrinting;
     jobRequest.Id=this.editId;

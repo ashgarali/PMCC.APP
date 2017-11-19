@@ -10,9 +10,9 @@ import { counterRangeValidator } from '../../components/counter-input/counter-in
 import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
-import {JobType} from '../../model/appenums';
+import {JobType,ActionType} from '../../model/appenums';
 import {JobOffSetModel} from './JobOffset.model';
-import {JobCreateRequest,OffSetPrinting ,JobGetRequest,JobUpdateRequest} from '../../model/JobRequest';
+import {JobCreateRequest,OffSetPrinting ,JobGetRequest,JobUpdateRequest,JobActionRequest} from '../../model/JobRequest';
 import {Msg,MsgType} from '../../app.config'
 @Component({
   selector: 'joboffset-Page',
@@ -34,6 +34,7 @@ export class JobOffsetPage {
     currentDate:string;
     isEditMode:boolean=false;
     editId="";
+    clearBtnText:string="Clear";
     isEditDesiable:boolean=false;
     isPlatesUsed:boolean=false;
     noOfPlates: number[];
@@ -57,6 +58,7 @@ constructor(
     if(typeof id!='undefined' && id)
     {
       this.isEditMode=true;
+       this.clearBtnText="Close";
       this.editId = id;
       let isDisable = this.navParams.get('isDisable');
       if(typeof isDisable!='undefined' && isDisable)
@@ -66,6 +68,7 @@ constructor(
     }
     this.CreateForm();
 }
+  
   public CreateForm()
   {
     this.jobOffsetForm = new FormGroup({
@@ -158,6 +161,62 @@ constructor(
       }
       if(this.isEditDesiable)
         this.jobOffsetForm.disable();
+  }
+  public ClearForm()
+  {
+    if( this.isEditMode)
+      {
+          this.CheckDoument();
+      }else{
+        this.CreateForm();
+      }
+    
+  }
+public CloseDocument()
+  {
+    this.loading.present();
+    let jobRequest = new JobActionRequest();
+    jobRequest.JobType= JobType.OffsetPrinting;
+    jobRequest.Id=this.editId;
+    jobRequest.Data="";
+    jobRequest.ActionType= ActionType.CloseDocument;
+    this.serviceHelper.PerformAction(jobRequest)
+        .then( response => this.onCloseSuccess(response) ,
+            error => this.OnError(error));
+  }
+  public onCloseSuccess(response:Status)
+  {
+     this.loading.dismiss();
+     if(response.Status)
+       {
+         this.ShowToast(Msg.CloseDocument);
+       }
+       else{
+       this.ShowAlert(MsgType.ErrorType,response.Message);
+     }
+     this.loading = this.loadingCtrl.create();
+  }
+  public CheckDoument()
+  {
+      let alert = this.alertCtrl.create({
+    title: 'Confirm',
+    message: 'Do you want to close this job?',
+    buttons: [
+      {
+        text: 'Yes',
+        handler: () => {
+          this.CloseDocument();
+        }
+      },
+      {
+        text: 'No',
+         handler: () => {
+          console.log("NO");
+        }
+      }
+    ]
+  });
+  alert.present();
   }
   private GetDataSource(id:number)
   {
