@@ -87,7 +87,7 @@ public GetNotifications(isresponed:boolean=false)
           if(didGetData)
             this.startIndex +=AppConfig.RecordCount;
          if(!isresponed)
-            this.showBuyPanal = this.notifications.notifications.length==0 ?true:false;
+            this.showBuyPanal = response.Value.ResponedStatus==false?true:false;
         if(this._refresher!=undefined){
           this._refresher.complete();
           this._refresher=undefined;
