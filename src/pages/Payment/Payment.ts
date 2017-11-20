@@ -59,10 +59,10 @@ LoadPayment(){
 			},
 			toolbar: {
 				height: 44,
-				color: '#FF7A05'
+				color: '#3ea3bd'
 			},
 			title: {
-				color: '#003264ff',
+				color: '#ffffffff',
 				showPageTitle: true
 			},
 			closeButton: {
