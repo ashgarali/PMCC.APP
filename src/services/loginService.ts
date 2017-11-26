@@ -47,6 +47,13 @@ export class LoginService{
         .then(response => response.json() as Status)
         .catch(this.handleError);
   }
+  ForgetPassword(login:Login)
+  {
+    let requestPoint = this.BaseUrl+EndPoints.FORGETPASSWORD;
+        return this.http.post(requestPoint, login, this.requestOptions()).toPromise()
+        .then(response => response.json() as Status)
+        .catch(this.handleError);
+  }
 //#endregion
   //#region Helping Methods
    private requestOptions():RequestOptions{
