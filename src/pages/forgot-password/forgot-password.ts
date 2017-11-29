@@ -37,6 +37,7 @@ export class ForgotPasswordPage {
     this.loginService.ForgetPassword(login)
     .then( response => this.onLoginSuccess(response) ,
         error => this.onLoginError(error));
+        
     //this.nav.setRoot(this.main_page.component);
   }
   onLoginSuccess(response:Status)

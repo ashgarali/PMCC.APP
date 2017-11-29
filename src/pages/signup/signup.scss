@@ -14,4 +14,15 @@ signup-page {
 			}
 		}
 	}
+
+	.auth-title
+	{
+		font-size: 1.6rem;
+		line-height: 1.2;
+		letter-spacing: 1.1px;
+		text-align: left;
+		color: $theme-color-2;
+		font-weight: 400;
+		margin: 0!important;
+	}
 }

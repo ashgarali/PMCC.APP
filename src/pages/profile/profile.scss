@@ -104,12 +104,25 @@ profile-page {
 					font-size: 1.2rem;
 					line-height: 1.2;
 					letter-spacing: 0.2px;
-					color: $white-d;
+					color: $white-e;
 					margin: 5px 0px 0px;
 				}
 			}
 		}
 	}
+	.label-md
+	{
+		font-size: 1.6rem;
+		line-height: 1.2;
+		letter-spacing: 1.1px;
+		text-align: left;
+		color:$theme-color-2;
+		font-weight: 400;
+		margin: 0px;
+	}
+
+
+
 
 	.list-mini-content
 	{
@@ -138,6 +151,7 @@ profile-page {
 
 							.item-description
 							{
+								color:$white-e;
 								overflow: hidden;
 								text-overflow: ellipsis;
 								white-space: nowrap;

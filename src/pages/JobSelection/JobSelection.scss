@@ -10,11 +10,15 @@ JobSelection-Page {
 		background-color: color($colors, background, base);
 		.categories-title
 		{
-			font-size: 1.2rem;
+			font-size: 1.6rem;
+			line-height: 1.2;
+			letter-spacing: 1.1px;
+			text-align: left;
+			color: $theme-color-2;
 			font-weight: 400;
-			letter-spacing: 0.7px;
-			color: $white-d;
-			margin: 8px 16px 16px;
+			padding:13px 8px 13px 16px;
+			margin: 0;
+			border-bottom: 1px solid #dedede;
 		}
 		.horizontal-categories
 		{
