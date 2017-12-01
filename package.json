@@ -1,8 +1,8 @@
 {
-    "name": "PMCC.APP",
+    "name": "PMCC APP",
     "version": "0.0.1",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
+    "author": "Ashgar ali",
+    "homepage": "http://pmccqa.azurewebsites.net",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
@@ -50,7 +50,7 @@
         "@ionic/app-scripts": "2.1.4",
         "typescript": "2.3.4"
     },
-    "description": "PMCC.APP",
+    "description": "PMCC APP",
     "cordova": {
         "plugins": {
             "cordova-plugin-inappbrowser": {},
