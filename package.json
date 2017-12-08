@@ -1,6 +1,6 @@
 {
-    "name": "PMCC APP",
-    "version": "0.0.1",
+    "name": "Pmcc.App",
+    "version": "1.1.0",
     "author": "Ashgar ali",
     "homepage": "http://pmccqa.azurewebsites.net",
     "private": true,
