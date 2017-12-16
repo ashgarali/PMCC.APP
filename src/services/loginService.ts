@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http,URLSearchParams,Headers,RequestOptions} from  '@angular/http';
-import {Storage} from '@ionic/storage';
+//import {Storage} from '@ionic/storage';
 
 import {Status} from  '../model/status.model';
 import {Login,Registration} from '../model/login.model';
@@ -15,7 +15,8 @@ export class LoginService{
   private errorMsg :string="Auth error";
   private isError :boolean =true;
   constructor(private http:Http,
-              private storage :Storage  )
+             // private storage :Storage  
+            )
   {
         
   }

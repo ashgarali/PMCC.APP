@@ -49,6 +49,7 @@ import {CallNumber} from '@ionic-native/call-number';
 import {Device} from '@ionic-native/device';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import {EmailValidator} from 'ng-email-validation';
+import {Localstorage} from '../services/storageService';
 
 @NgModule({
   declarations: [
@@ -128,7 +129,8 @@ import {EmailValidator} from 'ng-email-validation';
     StatusBar,
     InAppBrowser,
     ThemeableBrowser,
-    EmailValidator
+    EmailValidator,
+    Localstorage
     ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

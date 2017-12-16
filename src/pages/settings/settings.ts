@@ -157,11 +157,13 @@ private UserDetailsRequest():JobGetsRequest
     .then( response => {
        this.loading.dismiss();
        this.loading = this.loadingCtrl.create()
+       this.storage.clear();
        this.nav.setRoot(this.rootPage);
     } ,
         error => {
            this.loading.dismiss();
            this.loading = this.loadingCtrl.create()
+           this.storage.clear();
            this.nav.setRoot(this.rootPage);
         });
     // navigate to the new page if it is not the current page

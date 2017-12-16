@@ -16,13 +16,14 @@ import {StoreKey} from '../../app.config';
 import {AppCommon} from '../../model/appcommon';
 import {DeviceType} from '../../model/appenums';
 import {EmailValidator} from 'ng-email-validation';
+import {Localstorage  } from "../../services/storageService";
 ///http://www.concretepage.com/angular-2/angular-2-http-post-example
 //https://www.npmjs.com/package/angular2-social-login
 @Component({
   selector: 'login-page',
   templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage  {
   login: FormGroup;
   main_page: { component: any };
   address_page: { component: any };
@@ -31,13 +32,15 @@ export class LoginPage {
   sub: any;
   loading:any;
   banner_image: string = "./assets/images/pmcclogo-img.png";
+  private authKey :string ="";
   constructor(public nav: NavController, 
               private loginService:LoginService,
-              private storage : Storage,
+              //private storage : Storage,
               private alertCtr: AlertController,
               public modal: ModalController,
               public loadingCtrl: LoadingController,
-              private device:Device
+              private device:Device,
+              private storage:Localstorage
              ) {
     this.main_page = { component: TabsNavigationPage };
     this.address_page = { component: AddressPage };
@@ -46,9 +49,8 @@ export class LoginPage {
       email: new FormControl('', [Validators.required,EmailValidator.emailValidator]),
       password: new FormControl('', Validators.required)
     });
-    this.storage.clear();
+    
   }
-
   doLogin(){
     this.loading.present();
     let login = new Login();
@@ -67,8 +69,8 @@ export class LoginPage {
   {
     this.loading.dismiss();
      if(response.Status){
-       this.storage.set(StoreKey.AuthKey, response.Value.AuthKey);
-       this.storage.set(StoreKey.UserId, response.Value.ClientId);
+       this.storage.SetValue(StoreKey.AuthKey, response.Value.AuthKey);
+       this.storage.SetValue(StoreKey.UserId, response.Value.ClientId);
        if(response.Value.IsSet=="1")
           this.nav.setRoot(this.main_page.component);
        else

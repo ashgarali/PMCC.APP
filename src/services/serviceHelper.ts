@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http,URLSearchParams,Headers,RequestOptions} from  '@angular/http';
-import {Storage} from '@ionic/storage';
+//import {Storage} from '@ionic/storage';
+import {Localstorage} from'./storageService';
 
 import {Status} from  '../model/status.model';
 import {Login,Registration,UserAddress} from '../model/login.model';
@@ -17,9 +18,9 @@ export class ServiceHelper{
   private errorMsg :string="Auth error";
   private isError :boolean =true;
   constructor(private http:Http,
-              private storage :Storage  )
+              private storage :Localstorage  )
   {
-       this.storage.get(StoreKey.AuthKey)
+       this.storage.GetValues(StoreKey.AuthKey)
       .then((value) => this.authKey=value)
       .catch(() => {this.errorMsg = "Auntaction key not found!",this.isError=true});  
   }

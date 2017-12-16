@@ -15,6 +15,7 @@ import {AppValidators} from '../../model/AppValidators'
 import {AppCommon} from '../../model/appcommon';
 import {DeviceType} from '../../model/appenums';
 import {EmailValidator} from 'ng-email-validation';
+import {Localstorage} from '../../services/storageService';
 
 @Component({
   selector: 'signup-page',
@@ -28,7 +29,7 @@ export class SignupPage {
   constructor(public nav: NavController,
    public modal: ModalController,
    public loginService: LoginService,
-   private storage : Storage,
+   private storage : Localstorage,
    public alertCtr :AlertController,
    public loadingCtrl: LoadingController
   ) {
@@ -41,8 +42,7 @@ export class SignupPage {
       password: new FormControl('', [Validators.required, Validators.minLength(3),Validators.maxLength(15)]),
       confirm_password: new FormControl('', [Validators.required,this.ConformPassword('password')])
     });
-      this.storage.clear();
-  }
+    }
   private ConformPassword(field_name): any
   {
       return AppValidators.CheckConformPassword(field_name);
@@ -67,8 +67,8 @@ export class SignupPage {
   {
      this.loading.dismiss();
      if(response.Status){
-        this.storage.set(StoreKey.AuthKey, response.Value.AuthKey);
-        this.storage.set(StoreKey.UserId, response.Value.UserId);
+        this.storage.SetValue(StoreKey.AuthKey, response.Value.AuthKey);
+        this.storage.SetValue(StoreKey.UserId, response.Value.UserId);
         this.nav.push(this.address_page.component);
      }else
      {

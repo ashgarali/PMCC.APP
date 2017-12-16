@@ -13,6 +13,7 @@ import {JobType,Operators,SortingType} from '../../model/appenums';
 import {AppCommon} from '../../model/appcommon';
 import {Shorting,DataSourceList,MasterDataSource,Filter} from '../../model/datasource.model';
 import {AppValidators} from '../../model/AppValidators'
+import {Localstorage} from '../../services/storageService'
 @Component({
   selector: 'page-address',
   templateUrl: 'address.html',
@@ -31,7 +32,7 @@ export class AddressPage {
               public navParams: NavParams,
               public alertCtr: AlertController,
               public serviceHelper :ServiceHelper,
-              private storage : Storage,
+              private storage : Localstorage,
               public loadingCtrl: LoadingController
               ) 
   {
@@ -45,11 +46,11 @@ export class AddressPage {
       state: new FormControl('',Validators.required),
       city: new FormControl('',Validators.required),
     });
-     this.storage.get(StoreKey.UserId)
+     this.storage.GetValues(StoreKey.UserId)
       .then((value) => this.userId=value)
       .catch(() => {this.errorMsg = "User not found!",this.isError=true});
       
-       this.storage.get(StoreKey.AuthKey)
+       this.storage.GetValues(StoreKey.AuthKey)
       .then((value) =>AppCommon.HoldAuthKey =value)
       .catch(() => {this.errorMsg = "User not found!",this.isError=true});
   }
