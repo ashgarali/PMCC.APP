@@ -92,6 +92,8 @@ export class SettingsPage {
      }else
      {
        this.ShowAlert("Error",response.Message);
+       this.loading.dismiss();
+       this.loading = this.loadingCtrl.create()
      }
       
   }

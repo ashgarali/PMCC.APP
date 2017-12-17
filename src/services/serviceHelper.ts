@@ -21,10 +21,20 @@ export class ServiceHelper{
               private storage :Localstorage  )
   {
        this.storage.GetValues(StoreKey.AuthKey)
-      .then((value) => this.authKey=value)
+      .then(
+          (value) => this.authKey=value
+        )
       .catch(() => {this.errorMsg = "Auntaction key not found!",this.isError=true});  
   }
   //#region Serivce Methods for Users
+  public LoadSessionKey()
+  {
+    this.storage.GetValues(StoreKey.AuthKey)
+      .then(
+          (value) => this.authKey=value
+        )
+      .catch(() => {this.errorMsg = "Auntaction key not found!",this.isError=true});  
+  }
   LogOut()
   {
       let requestPoint = this.BaseUrl+EndPoints.LOGOUT;

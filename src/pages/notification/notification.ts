@@ -15,6 +15,9 @@ import {ServiceHelper} from '../../services/serviceHelper';
 import { Filter} from '../../model/datasource.model';
 import {Msg,MsgType,AppConfig} from '../../app.config'
 import {ModulesPage} from '../Modules/Modules';
+import { Localstorage } from "../../services/storageService";
+import {StoreKey} from '../../app.config';
+import {LoginPage} from '../login/login';
 @Component({
   selector: 'notification-page',
   templateUrl: 'notification.html'
@@ -30,6 +33,7 @@ export class NotificationPage {
   jobICardPage: {component:any};
   jobFlexPage:{component:any};
   modulesPage : { component: any };
+  rootPage: any = LoginPage;
   connctionErrorCount:number=0;
   showBuyPanal:boolean =false;
   _refresher:any;
@@ -41,6 +45,7 @@ export class NotificationPage {
     public serviceHelper: ServiceHelper,
     public loadingCtrl: LoadingController,
      public alertCtrl: AlertController,
+     public storage:Localstorage
   ) {
     this.segment = "Active";
     this.loading = this.loadingCtrl.create();
@@ -51,8 +56,21 @@ export class NotificationPage {
      this.jobICardPage ={component:ICardPage};
      this.jobFlexPage = { component:FlexPage};
      this.modulesPage={component:ModulesPage};
+     this.serviceHelper.LoadSessionKey();
+     this.storage.GetValues(StoreKey.AuthKey)
+      .then(
+        (value) => {
+           if(value==null){
+              this.storage.ClearStorage();
+              this.nav.setRoot(this.rootPage);
+           }else
+            {
+                this.LoadViewWillEnter();
+            }
+        }
+      );
   }
-ionViewWillEnter()
+LoadViewWillEnter()
 {
     this.startIndex=0;
     this.loading.present();
@@ -79,6 +97,13 @@ public GetNotifications(isresponed:boolean=false)
     this.serviceHelper
       .GetViews(this.CreateNotificationsRequest(isresponed))
       .then(response => {
+        if(response.Status==false){
+          this.ShowAlert(MsgType.ErrorType,response.Message);
+          this.loading.dismiss();
+          this.loading = this.loadingCtrl.create();
+          return;
+        }
+
         let didGetData=false;
         for(let note of response.Value.Data) {
             this.notifications.notifications.push(note);
