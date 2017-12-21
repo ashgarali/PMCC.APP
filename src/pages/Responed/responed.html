@@ -1,11 +1,28 @@
 <style>
-   EnqHeader {
-    font-size: 1.6rem !important;
-    font-weight: 500 !important;
+   .EnqHeader {
+    font-size: 1.4rem !important;
+    font-weight: bold !important;
     letter-spacing: 0.2px !important;
-    color: #ae75e7 !important;
-    margin-bottom: 5px !important;
-    margin-top:5px !important;
+    color: #ae75e7 !important;  
+    text-align: center;
+}
+  h3 {
+ font-size: 1.4rem!important;
+  }
+.text-input[disabled]{
+  opacity: 1!important;
+}
+.select-disabled, .item-select-disabled ion-label {
+    opacity: 1!important;
+    pointer-events: none;
+}
+ .switcher-item .item-inner ion-label {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 1.6rem!important;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+   
 }
 </style>
 
@@ -17,7 +34,8 @@
 
 <ion-content class="forms-examples-content">
   <ion-segment class="forms-examples-segment">
-    <h3 class="EnqHeader" >Enquiry No : {{currentJob.DocName}}</h3>
+    <h3># {{currentJob.DocName}}</h3><br/>
+    <h3 class="EnqHeader">Hello</h3>
   </ion-segment>
   <div class="forms-wrapper">
     <div class="card-example-view">

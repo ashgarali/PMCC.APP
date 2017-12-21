@@ -41,7 +41,7 @@ Responed-Page {
 						margin-top: 0px;
 
 						ion-label {
-							color: $white-d;
+							color: $white-e;
 						}
 					}
 
@@ -110,9 +110,14 @@ Responed-Page {
 
 					.multi-input
 					{
-						color: $white-d;
+						color:#000000!important;
 						margin: 0px;
 					}
+
+					ion-label {
+								color:  $white-e!important;
+							}
+
 				}
 
 				ion-datetime {
@@ -130,7 +135,7 @@ Responed-Page {
 				{
 					margin: 10px 0px 0px;
 
-					@include switcher-item-styles($white-d, $theme-color-1);
+					@include switcher-item-styles($white-e, $theme-color-1);
 
 					.switcher-item
 					{
@@ -140,7 +145,7 @@ Responed-Page {
 						.item-inner
 						{
 							ion-label {
-								opacity: 1;
+								color: $theme-color-2;
 							}
 
 							ion-toggle {
