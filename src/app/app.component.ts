@@ -39,6 +39,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.splashScreen.hide();
       this.statusBar.styleDefault();
+      this.onNotification();
     });
      this.storage.GetValues(StoreKey.AuthKey)
       .then(
@@ -75,5 +76,19 @@ export class MyApp {
         this.rootPage =TabsNavigationPage;
      else
         this.rootPage =LoginPage
+  }
+  onNotification()
+  {
+    try{
+       if (typeof FCMPlugin != 'undefined')
+        {
+          FCMPlugin.onNotification((data)=>{
+          console.log(data)
+          },(error)=>console.error(error));
+       }
+    }catch(e)
+    {
+      console.error(e);
+    }
   }
 }

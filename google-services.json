@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "838629191997",
+    "firebase_url": "https://pmcctest-c5164.firebaseio.com",
+    "project_id": "pmcctest-c5164",
+    "storage_bucket": "pmcctest-c5164.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838629191997:android:d5ae09d39ab66a7b",
+        "android_client_info": {
+          "package_name": "PmccApp.apk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838629191997-ead2al6ateessmde3qsbq62m57l36j2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn0GytboRK3YIr1_dUX8UmWMVfOSFfUos"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838629191997:android:e713647ef8916d81",
+        "android_client_info": {
+          "package_name": "io.ionic.PmccApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838629191997-ead2al6ateessmde3qsbq62m57l36j2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn0GytboRK3YIr1_dUX8UmWMVfOSFfUos"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
