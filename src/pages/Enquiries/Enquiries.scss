@@ -1,7 +1,7 @@
 enquiries-page {
-	/*ion-header {
-		@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
-	}*/
+	// ion-header {
+	// 	@include header-styles(color($colors, header-alt, base), color($colors, header-alt, contrast));
+	// }
 
 	.enquiries-content
 	{
@@ -9,7 +9,7 @@ enquiries-page {
 
 		.enquiries-segment
 		{
-			padding: 6px 0px;
+			//padding: 6px 0px;
 			background-color: $white;
 			@include element-shadow();
 

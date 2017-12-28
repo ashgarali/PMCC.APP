@@ -48,10 +48,12 @@ font-size:11px;
 <ion-content class="responses-content">
   <ion-segment class="responses-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(1)">
-      Delivery
+      <ion-icon ios="ios-calendar" md="md-calendar"></ion-icon>
+       &nbsp;Delivery
     </ion-segment-button>
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(2)">
-      Cost
+    <ion-segment-button value="Cost" (ionSelect)="onSegmentSelected(2)">
+      <span class="description-icon" style="font-size: 26px;" >&#x20B9;</span> 
+      &nbsp;Cost
     </ion-segment-button>
   </ion-segment>
   <div [ngSwitch]="segment">
@@ -125,12 +127,85 @@ font-size:11px;
           </ion-row>
         </ion-item>
       </ion-list>
-      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+     
+    </div>
+    <div *ngSwitchCase="'Cost'">
+      <ion-list class="responses-list">
+        <ion-item class="responses-item" *ngFor="let item of responses.responses ;let srNo = index;">
+          <ion-row>
+            <ion-col width-100 class="responses-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <ion-row>
+                    <ion-col width-85 style="padding: 0px;">
+                      <h2 class="item-title one-line">{{srNo + 1}}) {{item.Name}}</h2>
+                    </ion-col>
+                    <ion-col width-15 style="padding: 0px;">
+                      <ion-icon style="font-size: 1.6em;" class="item-icon" name="call" (click)='onCallNumber(item);' ></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col width-60>
+                      <div class="item-description">
+                         <ion-icon class="description-icon" name="clock"></ion-icon>
+                         <p class="description-text one-line">{{item.ReceivedDate}}</p>
+                      </div>
+                    </ion-col>
+                    <ion-col width-40>
+                     <div class="item-description">
+                      <span class="description-icon">&#x20B9;</span> 
+                      <p class="description-text one-line">{{item.ReceivedCost}}/</p>
+                    </div>
+                    </ion-col>
+                  </ion-row>
+                  <div class="item-description" >
+                    <button ion-button small clear 
+                    style="font-size: 1rem;padding:0px" 
+                    (click)="ExpandResponse(item);" >
+                       View details &nbsp;
+                        <ion-icon name="ios-arrow-down"></ion-icon>
+                    </button>
+                  </div>
+                  <ion-row *ngIf="currentRow ==item.RowNo">
+                    <ion-col width-100>
+                      <div class="container">
+                        <div class="column-left">
+                        <h1>Response</h1><br>
+                        <span>Delivery On</span><br>
+                        <span>Location</span><br>
+                        <span>Mode</span><br>
+                        <span>Cost</span>
+                        </div>
+                        <div class="column-center">
+                        <h1>Expected</h1><br>
+                        <span>{{item.ExpectedDeliverDate}}</span><br>
+                        <span>{{item.ExpectedLoc}}</span><br>
+                        <span>{{item.ExpectedMode}}</span><br>
+                        <span>&#x20B9; {{item.ExpectedCost}}/-</span>
+                        </div>
+                        <div class="column-right">
+                        <h1>Offered</h1><br>
+                        <span>{{item.ReceivedDate}}</span><br>
+                        <span>{{item.ReceivedLoc}}</span><br>
+                        <span>{{item.ReceivedMode}}</span><br>
+                        <span>&#x20B9; {{item.ReceivedCost}}/-</span>
+                        </div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+     
+    </div>
+     <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
           loadingText="Loading more data...">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
-    </div>
   </div>
 </ion-content>

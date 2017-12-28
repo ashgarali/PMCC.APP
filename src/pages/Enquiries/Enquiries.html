@@ -20,10 +20,12 @@
 <ion-content class="enquiries-content">
   <ion-segment class="enquiries-segment" [(ngModel)]="segment" (ionChange)="onSegmentChanged($event)">
     <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(false)">
-      Active Enquiries
+      <ion-icon ios="ios-checkmark-circle-outline" md="md-checkmark-circle-outline"></ion-icon>
+      &nbsp;Active 
     </ion-segment-button>
-    <ion-segment-button value="Active" (ionSelect)="onSegmentSelected(true)">
-      Closed Enquiries
+    <ion-segment-button value="Closed" (ionSelect)="onSegmentSelected(true)">
+      <ion-icon ios="ios-lock" md="md-lock"></ion-icon>
+      &nbsp;Closed
     </ion-segment-button>
   </ion-segment>
 
@@ -77,13 +79,63 @@
           </ion-row>
         </ion-item>
       </ion-list>
-       <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    </div>
+    <div *ngSwitchCase="'Closed'">
+      <ion-list class="enquiries-list">
+        <ion-item class="enquiries-item" *ngFor="let item of enquiries.enquiries">
+          <ion-row>
+            <ion-col width-15 class="enquiries-date">
+              <h2 class="enquiries-day">{{item.DocDay}}</h2>
+              <h3 class="enquiries-month">{{item.DocMonth}}</h3>
+              <h4 class="enquiries-time">{{item.DocTime}}</h4>
+            </ion-col>
+            <ion-col width-85 class="enquiries-data">
+              <div class="data-item">
+                <div class="item-content">
+                  <h2 class="item-title one-line">{{item.DocName}}</h2>
+                  <ion-row>
+                    <ion-col width-90>
+                      <div class="item-description">
+                      <p class="description-text">{{item.JobType}}</p>
+                    </div>
+                    </ion-col>
+                    <!-- <ion-col width-10>
+                      <ion-icon *ngIf="!lastLoadType" style="font-size: 1.6em;"  class="item-icon" name="arrow-forward" (click)='onActiveItemClick(item);' ></ion-icon>
+                    </ion-col> -->
+                  </ion-row>
+                  <ion-row>
+                    <ion-col width-60>
+                      <div class="item-description">
+                      <ion-icon class="description-icon" name="clock"></ion-icon>
+                      <p class="description-text">{{item.ExpectedDate}}</p>
+                  </div>
+                    </ion-col>
+                     <ion-col width-40>
+                      <div class="item-description">
+                          <span class="description-icon">&#x20B9;</span> 
+                          <p class="description-text one-line">{{item.ExpectedCost}}/-</p>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <!-- <div *ngIf="!lastLoadType" class="item-description" style="width: 130px;" >
+                    <ion-badge style="border-radius: 10px;margin:0px" item-right>{{item.ResponseCount}}</ion-badge>
+                    <button ion-button small clear [disabled]="item.ResponseCount == 0" (click)="onResponsesClick(item)" >
+                       Responses >>
+                    </button>
+                  </div> -->
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+    </div>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
           loadingText="Loading more data...">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
-    </div>
   </div>
 <ion-fab bottom right>
  <button mini ion-fab (click)="onSelectJobType()" >
