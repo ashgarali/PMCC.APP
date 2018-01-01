@@ -3,11 +3,14 @@ export class ICardModel{
      JobType:number;
      JobQuantity:number;
      JobQuality:number;
-     LessRequired:boolean;
+     LessRequired:number;
      LessType:number;
      LessPrintingRequired:boolean;
      HolderRequired:boolean;
      HolderQuality:number;
+     HolderType:number;
+     HookType:number;
+     AccessCardRequired:boolean;
      ExpectedDeliverDate:string;
      PaymentMode:number;    
      ExpectedCost:number;

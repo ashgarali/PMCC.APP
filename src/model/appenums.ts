@@ -52,7 +52,12 @@ export enum DataSourceMasters{
     BindingCoverType=10023,
     DTPOutput=10024,
     FlexNoofDesign=10025,
-    SPOutPutProvideNew=10026
+    SPOutPutProvideNew=10026,
+    ICardHolderType =10027,
+    ICardLessReq=10028,
+    ICardHookType=10029,
+    FlexJobType=10030,
+    VinylJobQuality=10031
 
     
     

@@ -33,7 +33,10 @@ export class ICardPage {
     jobTypeList: DataSourceList[]=[];
     jobQualityList:DataSourceList[]=[];
     lessTypeList:DataSourceList[]=[];
+    lessPrintingType:DataSourceList[]=[];
     holderQualityList:DataSourceList[]=[];
+    holderTypeList:DataSourceList[]=[];
+    hookTypeList:DataSourceList[]=[];
     paymentModeList: DataSourceList[]=[];
     deliveryList:DataSourceList[]=[];
 
@@ -75,10 +78,12 @@ public CreateForm()
       jobQuantity:new FormControl('',Validators.required),
       lessRequired:new FormControl(false),
       lessType:new FormControl('',Validators.required),
-      lessPrintRequired:new FormControl(false),
+      lessPrintRequired:new FormControl('',Validators.required),
       holderRequired:new FormControl(false),
+      holderType :new FormControl('',Validators.required),
       holderQuality:new FormControl('',Validators.required),
-
+      hookType: new FormControl('',Validators.required),
+      accessCardReq:new FormControl(false),
       expDelivery: new FormControl('', Validators.required),
       payMode: new FormControl('', Validators.required),
       expCost: new FormControl('', Validators.required),
@@ -89,6 +94,9 @@ public CreateForm()
     this.icardForm.controls.lessType.disable({onlySelf: true});
     this.icardForm.controls.lessPrintRequired.disable({onlySelf: true});
     this.icardForm.controls.holderQuality.disable({onlySelf: true});
+    this.icardForm.controls.holderType.disable({onlySelf: true});
+    this.icardForm.controls.hookType.disable({onlySelf: true});
+    this.icardForm.controls.accessCardReq.disable({onlySelf: true});
   }
    ionViewWillEnter()
   {
@@ -97,6 +105,9 @@ public CreateForm()
     this.GetDataSource(DataSourceMasters.ICardJobQuality);
     this.GetDataSource(DataSourceMasters.ICardLesstype);
     this.GetDataSource(DataSourceMasters.ICardHolderQuality);
+    this.GetDataSource(DataSourceMasters.ICardHolderType);
+    this.GetDataSource(DataSourceMasters.ICardHookType);
+    this.GetDataSource(DataSourceMasters.ICardLessReq);
     this.GetDataSource(DataSourceMasters.DeliveryAt);
     this.GetDataSource(DataSourceMasters.PaymentMode);
     if(this.isEditMode)
@@ -132,6 +143,17 @@ public CreateForm()
            case DataSourceMasters.DeliveryAt.toString():
             this.deliveryList= AppCommon.CreateDataSource(response);
             break;
+           case DataSourceMasters.ICardHolderType.toString():
+            this.holderTypeList= AppCommon.CreateDataSource(response);
+            break;
+          case DataSourceMasters.ICardHookType.toString():
+            this.hookTypeList= AppCommon.CreateDataSource(response);
+            break;
+         case DataSourceMasters.ICardLessReq.toString():
+            this.lessPrintingType= AppCommon.CreateDataSource(response);
+            break;
+
+
       }
      }else
      {
@@ -174,7 +196,10 @@ public onJobSuccess(response:Status)
         lessType :job.LessType,
         lessPrintRequired:job.LessPrintingRequired,
         holderRequired:job.HolderRequired,
+        holderType:job.HolderType,
         holderQuality:job.HolderQuality,
+        hookType:job.HookType,
+        accessCardReq:job.AccessCardRequired,
         expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
         payMode:job.PaymentMode,
         expCost:job.ExpectedCost,
@@ -257,10 +282,19 @@ public CloseDocument()
   }
   public onHolderRequiredChange()
   {
-    if(this.icardForm.controls.holderRequired.value)
+    if(this.icardForm.controls.holderRequired.value){
       this.icardForm.controls.holderQuality.enable({onlySelf: true});
-    else
+      this.icardForm.controls.holderType.enable({onlySelf: true});
+      this.icardForm.controls.hookType.enable({onlySelf: true});
+      this.icardForm.controls.accessCardReq.enable({onlySelf: true});
+    }
+    else{
        this.icardForm.controls.holderQuality.disable({onlySelf: true});
+      this.icardForm.controls.holderType.disable({onlySelf: true});
+      this.icardForm.controls.hookType.disable({onlySelf: true});
+      this.icardForm.controls.accessCardReq.disable({onlySelf: true});
+       
+    }
 
   }
   public onICardSave()
@@ -322,6 +356,9 @@ private CreateReqest(formValues:any):JobCreateRequest
       {
         screenObj.HolderRequired = formValues.holderRequired;
         screenObj.HolderQuality = formValues.holderQuality;
+        screenObj.HolderType=formValues.holderType;
+        screenObj.HookType=formValues.hookType;
+        screenObj.AccessCardRequired=formValues.accessCardReq;
       }
     screenObj.ExpectedDeliverDate = formValues.expDelivery;
     screenObj.PaymentMode = formValues.payMode;
