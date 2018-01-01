@@ -156,6 +156,10 @@ public onJobSuccess(response:Status)
         let job=response.Value.Data;
         setTimeout(()=>{this.SetFormValues(job);},500);
       }
+     setTimeout(()=>{this.HideLoad();},600);
+  }
+  HideLoad()
+  {
       this.loading.dismiss();
       this.loading = this.loadingCtrl.create();
   }

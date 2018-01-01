@@ -44,6 +44,8 @@ export class PrintingPage {
     gummingRequired:boolean=false; 
     pastingRequired:boolean=false; 
     connctionErrorCount:number=0;
+    _isBagPrnting=false;
+
 
 constructor(
    public nav: NavController,
@@ -90,8 +92,13 @@ constructor(
       {
         let job=response.Value.Data;
         setTimeout(()=>{this.onJobTypeChange(job.JobType);},500);
-        setTimeout(()=>{this.SetFormValues(job);},500);
+        setTimeout(()=>{this.onMaterialTypeChange(job.MaterialType);},700);
+        setTimeout(()=>{this.SetFormValues(job);},900);
       }
+      setTimeout(()=>{this.HideLoad();},1000);
+  }
+  HideLoad()
+  {
       this.loading.dismiss();
       this.loading = this.loadingCtrl.create();
   }
@@ -212,7 +219,7 @@ constructor(
         {
             case DataSourceGroup.MaterialType.toString():
               this.materialTypeList= AppCommon.CreateDataSource(response);
-            break;
+              
             case DataSourceGroup.JobSize.toString():
                this.jobSizeList= AppCommon.CreateDataSource(response);
             break;
@@ -347,7 +354,8 @@ constructor(
         this.hideMaterialType=true;
       }
 
-    if(parseInt(item.Value) < 3){
+    if(parseInt(item.Value) < 3 || parseInt(item.Value) == 5){
+      this._isBagPrnting = parseInt(item.Value) == 5?true:false;
       this.GetDataSourceChild(item.Id,DataSourceGroup.JobSize);
       this.hideJobSize=false;
        this.screenPrintingForm.patchValue({  //patchValue//setValue
@@ -438,5 +446,13 @@ constructor(
       this.currentJob.PaymentMode
     );
     this.nav.push(this.responedPage.component,{"currentJob":responed});
+  }
+  onMaterialTypeChange(event:any)
+  {
+    if(this._isBagPrnting ){
+      let item = AppCommon.GetElementFromArray(this.materialTypeList,event);
+      this.GetDataSourceChild(item.Id,DataSourceGroup.JobSize);
+    }
+      
   }
 }

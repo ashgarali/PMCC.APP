@@ -86,7 +86,7 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="materialType" placeholder="Select" style="max-width:100%">
-                    <ion-option *ngFor="let material of materialTypeList" 
+                    <ion-option *ngFor="let material of materialTypeList" (ionSelect)="onMaterialTypeChange($event)"
                     [value]="material.Value" >{{material.Name}}</ion-option>
               </ion-select>
               </ion-item>

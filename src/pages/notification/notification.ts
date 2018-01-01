@@ -40,6 +40,7 @@ export class NotificationPage {
   _infiniteScroll:any;
   startIndex:number=0;
   lastLoadType:boolean=false;
+  _gotoLogin=false;
   constructor(
     public nav: NavController,
     public serviceHelper: ServiceHelper,
@@ -101,6 +102,10 @@ public GetNotifications(isresponed:boolean=false)
           this.ShowAlert(MsgType.ErrorType,response.Message);
           this.loading.dismiss();
           this.loading = this.loadingCtrl.create();
+          if(response.Message=="Invalid userid/password.")
+          {
+            this._gotoLogin =true;
+          }
           return;
         }
 
@@ -140,6 +145,11 @@ public GetNotifications(isresponed:boolean=false)
         text: 'OK',
         handler: () => {
           this.connctionErrorCount=0;
+          if(this._gotoLogin)
+            {
+               this.storage.ClearStorage();
+               this.nav.setRoot(this.rootPage);
+            }
         }
       }]
     });

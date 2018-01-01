@@ -164,6 +164,10 @@ public onJobSuccess(response:Status)
         setTimeout(()=>{this.onDesignChange(job.NumberOfDesigns);},500);
         setTimeout(()=>{this.SetFormValues(job);},500);
       }
+     setTimeout(()=>{this.HideLoad();},600);
+  }
+  HideLoad()
+  {
       this.loading.dismiss();
       this.loading = this.loadingCtrl.create();
   }
