@@ -24,7 +24,7 @@
   </style>
 <ion-header>
   <ion-navbar>
-    <ion-title>Flex Printing</ion-title>
+    <ion-title>Flex & Vinyl Printing</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -36,11 +36,14 @@
           <hr>
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
-                <ion-label >No of Flex</ion-label>
+                <ion-label >Job Type</ion-label>
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" placeholder="e.g. 100" formControlName="noOfFlex"></ion-input>
+               <ion-select formControlName="noOfFlex" placeholder="Select" style="max-width:100%">
+                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let jobType of jobTypeList" 
+                    [value]="jobType.Value" >{{jobType.Name}}</ion-option>
+              </ion-select>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -111,25 +114,25 @@
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="jobQuality" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let quality of jobQualityList" 
+                    <ion-option  *ngFor="let quality of jobQualityList" 
                     [value]="quality.Value" >{{quality.Name}}</ion-option>
               </ion-select>
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row no-padding class="multi-input-row">
+          <!-- <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >Mounting required</ion-label>
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
                <ion-select formControlName="mountingReq" placeholder="Select" style="max-width:100%">
-                    <ion-option (ionSelect)="onJobTypeChange($event)" *ngFor="let mounting of mountingList" 
+                    <ion-option *ngFor="let mounting of mountingList" 
                     [value]="mounting.Value" >{{mounting.Name}}</ion-option>
               </ion-select>
               </ion-item>
             </ion-col>
-          </ion-row>
+          </ion-row> -->
          <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >Expected delivery</ion-label>
@@ -165,7 +168,7 @@
           </ion-row>
           <h2 class="section-title">Optional</h2>
           <hr>
-          <ion-row no-padding class="multi-input-row">
+          <!-- <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >Installation required</ion-label>
             </ion-col>
@@ -174,7 +177,7 @@
                 <ion-toggle formControlName="installationReq"  ></ion-toggle>
               </ion-item>
             </ion-col>
-          </ion-row>
+          </ion-row> -->
           <ion-row no-padding class="multi-input-row">
             <ion-col no-padding width-40>
                 <ion-label >DTP required </ion-label>

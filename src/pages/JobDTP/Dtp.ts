@@ -37,6 +37,8 @@ export class DtpPage {
     paymentModeList: DataSourceList[]=[];
     outputList:DataSourceList[]=[];
     deliveryList:DataSourceList[]=[];
+
+    hideDesign:boolean = false;
     
     connctionErrorCount:number=0;
    constructor(
@@ -247,18 +249,19 @@ public CloseDocument()
 public onJobWorkChange(event:any)
  {
     let item = AppCommon.GetElementFromArray(this.jobWorkList,event);
-    if(parseInt(item.Value) ==1)
-    {
-      this.dtpForm.controls.noOfDesign.enable({onlySelf: true});
-      this.dtpForm.controls.noOfPage.enable({onlySelf: true});
-    }else if(parseInt(item.Value) ==2)
-    {
-       this.dtpForm.controls.noOfDesign.enable({onlySelf: true});
-       this.dtpForm.controls.noOfPage.disable({onlySelf: true});
-    }else if(parseInt(item.Value) ==3)
-    {
-       this.dtpForm.controls.noOfDesign.disable({onlySelf: true});
-       this.dtpForm.controls.noOfPage.enable({onlySelf: true});
+    if(parseInt(item.Value) ==2){
+      this.hideDesign  =true;
+       this.dtpForm.patchValue({  //patchValue//setValue
+               noOfDesign:"",
+               noOfPage:0,
+      });
+    }
+    else {
+     this.hideDesign  =false;
+      this.dtpForm.patchValue({  //patchValue//setValue
+               noOfPage:"",
+               noOfDesign:0,
+      });
     }
  }
 public onDTPSave()

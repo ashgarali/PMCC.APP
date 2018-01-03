@@ -30,6 +30,7 @@ export class FlexPage {
     currentDate:string;
     responedPage : { component: any };
     enquiriesPage:{component:any}
+    jobTypeList :DataSourceList[]=[];
     noOfDesignList: DataSourceList[]=[];
     jobQualityList:DataSourceList[]=[];
     umoList:DataSourceList[]=[];
@@ -89,13 +90,13 @@ public CreateForm()
       jobDim52:new FormControl(''),
       jobUom53: new FormControl(''),
       jobQuality : new FormControl('',Validators.required),
-      mountingReq : new FormControl('',Validators.required),
+     // mountingReq : new FormControl('',Validators.required),
       
       expDelivery: new FormControl('', Validators.required),
       payMode: new FormControl('', Validators.required),
       expCost: new FormControl('', Validators.required),
 
-      installationReq:new FormControl(false),
+     // installationReq:new FormControl(false),
       dtpReq:new FormControl(false),
       deliveryAt:new FormControl(),
       details:new FormControl()
@@ -104,6 +105,7 @@ public CreateForm()
    ionViewWillEnter()
   {
      this.loading.present();
+     this.GetDataSource(DataSourceMasters.FlexJobType)
     this.GetDataSource(DataSourceMasters.FlexNoofDesign);
     this.GetDataSource(DataSourceMasters.FlexJobQuality);
     this.GetDataSource(DataSourceMasters.FlexMountingRequired);
@@ -123,10 +125,14 @@ public CreateForm()
     if(response.Status){
       switch(response.SourceId.toString())
       {
+        case DataSourceMasters.FlexJobType.toString():
+            this.jobTypeList= AppCommon.CreateDataSource(response);
+            break;
         case DataSourceMasters.FlexNoofDesign.toString():
             this.noOfDesignList= AppCommon.CreateDataSource(response);
             break;
           case DataSourceMasters.FlexJobQuality.toString():
+          case DataSourceMasters.VinylJobQuality.toString():
             this.jobQualityList= AppCommon.CreateDataSource(response);
             break;
           case DataSourceMasters.FlexMountingRequired.toString():
@@ -134,7 +140,7 @@ public CreateForm()
             break;
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
-            this.loading.dismiss();
+            this.HideLoad();
             break;
            case DataSourceMasters.DeliveryAt.toString():
             this.deliveryList= AppCommon.CreateDataSource(response);
@@ -161,10 +167,11 @@ public onJobSuccess(response:Status)
       if(response.Status)
       {
         let job=response.Value.Data;
-        setTimeout(()=>{this.onDesignChange(job.NumberOfDesigns);},500);
-        setTimeout(()=>{this.SetFormValues(job);},500);
+        setTimeout(()=>{this.onJobTypeChange(job.NumberOfFlex);},500);
+        setTimeout(()=>{this.onDesignChange(job.NumberOfDesigns);},700);
+        setTimeout(()=>{this.SetFormValues(job);},900);
       }
-     setTimeout(()=>{this.HideLoad();},600);
+     setTimeout(()=>{this.HideLoad();},1000);
   }
   HideLoad()
   {
@@ -193,8 +200,8 @@ public onJobSuccess(response:Status)
         jobDim52:job.JobDim52==0?'':job.JobDim52,
         jobUom53: job.JobDim53==0?'':job.JobDim53,
         jobQuality:job.JobQuality,
-        mountingReq:job.MountingRequired,
-        installationReq:job.InstallationRequired,
+        //mountingReq:job.MountingRequired,
+       // installationReq:job.InstallationRequired,
         dtpReq:job.DTPRequired,
         expDelivery:AppCommon.ParseJsonDate(job.ExpectedDeliverDate),
         payMode:job.PaymentMode,
@@ -267,6 +274,15 @@ public onDesignChange(event:any)
    this.SetNoOfDesigns(parseInt(item.Value));
 
  }
+  public   onJobTypeChange(event:any)
+  {
+    let item = AppCommon.GetElementFromArray(this.jobTypeList,event);
+    if(parseInt(item.Value) == 1)
+      this.GetDataSource(DataSourceMasters.FlexJobQuality);
+    else
+      this.GetDataSource(DataSourceMasters.VinylJobQuality)
+     
+  }
  public SetNoOfDesigns(count:number)
  {
      this.noOfDesigns= [];
@@ -398,6 +414,7 @@ private CreateReqest(formValues:any):JobCreateRequest
     );
     this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
+
   public OnError(error:any)
   {
     this.loading.dismiss();

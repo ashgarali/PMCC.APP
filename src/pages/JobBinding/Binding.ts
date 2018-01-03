@@ -148,7 +148,7 @@ public CreateForm()
  public onJobTypeChange(event:any)
  {
     let item = AppCommon.GetElementFromArray(this.jobTypeList,event);
-    if(parseInt(item.Value) <=3 )
+    if(parseInt(item.Value) <3 )
     {
         this.hideJobSize=false;
         this.bindingForm.patchValue({  //patchValue//setValue
