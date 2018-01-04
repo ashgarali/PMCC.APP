@@ -4,25 +4,37 @@
     font-weight: bold !important;
     letter-spacing: 0.2px !important;
     color: #ae75e7 !important;  
-    text-align: center;
+    text-align: right;
 }
+
   h3 {
  font-size: 1.4rem!important;
   }
-.text-input[disabled]{
-  opacity: 1!important;
-}
-.select-disabled, .item-select-disabled ion-label {
-    opacity: 1!important;
-    pointer-events: none;
-}
+
  .switcher-item .item-inner ion-label {
     margin-top: 16px;
     margin-bottom: 16px;
     font-size: 1.6rem!important;
     font-weight: 500;
     letter-spacing: 0.2px;
-   
+}
+.multi-input-row{
+  border-radius: 0 0 6px 6px;
+    background-color: #FFFFFF;
+    padding: 12px 14px;
+    -webkit-box-shadow: inset 0 -0.5px 0 0 grey;
+    box-shadow: inset 0 -0.5px 0 0 grey;
+} 
+.text-input[disabled] {
+    opacity: 1;
+}
+.forms-examples-content .sample-form ion-item.item.item-label-floating ion-label {
+    color: #000000;
+    opacity: 1;
+}
+.select-disabled, .item-select-disabled ion-label {
+    opacity: 1;
+    pointer-events: none;
 }
 </style>
 
@@ -34,7 +46,7 @@
 
 <ion-content class="forms-examples-content">
   <ion-segment class="forms-examples-segment">
-    <h3># {{currentJob.DocName}}</h3><br/>
+    <h3 style="text-align: left" ># {{currentJob.DocName}}</h3>
     <h3 class="EnqHeader">Hello</h3>
   </ion-segment>
   <div class="forms-wrapper">
@@ -42,14 +54,14 @@
       <form class="sample-form card-form" [formGroup]="responed_form" (ngSubmit)="sendResponed()">
          <section class="form-section">
           <ion-list class="card-preferences" style="margin-top:0px">
-          <ion-item class="switcher-item">
-            <ion-label>Delivery Date Accepted</ion-label>
+          <ion-item class="switcher-item" >
+            <ion-label >Delivery Date Accepted</ion-label>
             <ion-toggle formControlName="expectedDate_option" ></ion-toggle>
           </ion-item>
         </ion-list>
         <ion-row no-padding class="multi-input-row">
-            <ion-col no-padding width-50>
-              <ion-item class="multi-input">
+            <ion-col no-padding width-50 >
+              <ion-item class="multi-input" style="background:#FFFFFF">
                 <ion-label floating>Expected Date</ion-label>
                 <ion-input type="text" formControlName="expected_date"></ion-input>
               </ion-item>
@@ -133,7 +145,7 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-item>
+          <ion-item class="multi-input time-item">
             <ion-label floating>Your Openion</ion-label>
             <ion-input type="text" formControlName="your_opinion"></ion-input>
           </ion-item>

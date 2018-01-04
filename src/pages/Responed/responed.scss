@@ -41,7 +41,7 @@ Responed-Page {
 						margin-top: 0px;
 
 						ion-label {
-							color: $white-e;
+							color:#000000;
 						}
 					}
 
@@ -112,10 +112,11 @@ Responed-Page {
 					{
 						color:#000000!important;
 						margin: 0px;
+						background: $white;
 					}
 
 					ion-label {
-								color:  $white-e!important;
+								color:  #000000;
 							}
 
 				}
@@ -127,7 +128,8 @@ Responed-Page {
 
 					.datetime-text
 					{
-						color: $theme-color-3;
+						
+						color:#000000!important;
 					}
 				}
 
@@ -141,9 +143,11 @@ Responed-Page {
 					{
 						padding: 0px 14px;
 					  background: $white;
+						border-radius: 6px 6px 0 0;
 
 						.item-inner
 						{
+							
 							ion-label {
 								color: $theme-color-2;
 							}
