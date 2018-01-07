@@ -99,3 +99,12 @@ export enum Operators
     {
         CloseDocument=1,
     }
+    export class JobNames
+    {
+      static ScreenPrinting:string = "Screen Printing";
+      static OffsetPrinting:string = "Offset Printing";
+      static IdentityCard:string = "Identity Card";
+      static Binding:string = "Binding";
+      static Dtp:string = "DTP";
+      static FlexPrinting:string = "Flex Printing";
+    }

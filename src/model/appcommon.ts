@@ -6,6 +6,8 @@ import {Status,ResponedJob} from './status.model';
 export class AppCommon{
 
     public static HoldAuthKey:string;
+    public static ToastDuration:number =1000;
+    public static ToastPosition:string ='middle';
     public static  CreateDataSource(response:Status):DataSourceList[]
     {
        return response.Value.map(item => new DataSourceList(item));
@@ -25,7 +27,7 @@ export class AppCommon{
     /**
      * static CreateResponedData
      */
-    public static CreateResponedData(jobId:string,docName:string, jobType:number,cost:number,date:string,loc:number,payment:number):ResponedJob 
+    public static CreateResponedData(jobId:string,docName:string, jobType:number,cost:number,date:string,loc:number,payment:number,jobName:string):ResponedJob 
     {
         let job = new ResponedJob();
         job.JobId=jobId;
@@ -35,6 +37,7 @@ export class AppCommon{
         job.ExpectedData=date;
         job.ExpectedLoc=loc;
         job.ExpectedPayment=payment;
+        job.JobName=jobName;
         return job;
     }
     public static ParseJsonDate(jsonDateString){

@@ -16,5 +16,6 @@ export class ResponedJob
     ExpectedLoc: number;
     ExpectedPayment:number;
     ExpectedCost:number;
+    JobName:string;
 }
 

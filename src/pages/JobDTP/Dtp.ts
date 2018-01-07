@@ -9,7 +9,7 @@ import { counterRangeValidator } from '../../components/counter-input/counter-in
 import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
-import {JobType,ActionType} from '../../model/appenums';
+import {JobType,ActionType,JobNames} from '../../model/appenums';
 import {JobCreateRequest,ScreenPrinting,JobGetRequest ,JobUpdateRequest,JobActionRequest} from '../../model/JobRequest';
 import {DTPModel} from './Dtp.model';
 import {Msg,MsgType} from '../../app.config'
@@ -128,7 +128,7 @@ public CreateForm()
             break;
           case DataSourceMasters.UMO.toString():
             this.umoList= AppCommon.CreateDataSource(response);
-            this.loading.dismiss();
+            this.HideLoad();
             break;
           case DataSourceMasters.PaymentMode.toString():
             this.paymentModeList= AppCommon.CreateDataSource(response);
@@ -335,7 +335,8 @@ private CreateReqest(formValues:any):JobCreateRequest
       this.currentJob.ExpectedCost,
       this.currentJob.ExpectedDeliverDate,
       this.currentJob.DeliveryAt,
-      this.currentJob.PaymentMode
+      this.currentJob.PaymentMode,
+      JobNames.Dtp
     );
     this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
@@ -364,8 +365,8 @@ private CreateReqest(formValues:any):JobCreateRequest
   ShowToast(msg:string) {
   let toast = this.toastCtrl.create({
     message: msg,
-    duration: 2000,
-    position: 'middle'
+   duration: AppCommon.ToastDuration,
+    position: AppCommon.ToastPosition
   });
   toast.onDidDismiss(() => {
      this.nav.setRoot(this.enquiriesPage.component);

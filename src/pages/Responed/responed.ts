@@ -27,6 +27,7 @@ export class ResponedPage {
     currentJob:ResponedJob;
     currentDate:string;
     connctionErrorCount:number=0;
+    
 constructor(public nav: NavController, 
   public alertCtrl: AlertController,
   public serviceHelper:ServiceHelper,
@@ -51,17 +52,17 @@ constructor(public nav: NavController,
 
       expectedLocation_option:new FormControl(true, Validators.required),
       expected_location: new FormControl({value:'',disabled: true}, Validators.required),
-      your_location: new FormControl({value:''}, Validators.required),
+      your_location: new FormControl({value:''}),
 
       paymentMode_option:new FormControl(true, Validators.required),
       payment_mode: new FormControl({value:'',disabled: true}, Validators.required),
-      your_paymentMode: new FormControl({value:''}, Validators.required),
+      your_paymentMode: new FormControl({value:''}),
       
       paymentCost_option:new FormControl(true, Validators.required),
       given_cost: new FormControl({value:this.currentJob.ExpectedCost,disabled: true}, Validators.required),
-      your_cost: new FormControl({value:''}, Validators.required),
+      your_cost: new FormControl({value:''}),
 
-      your_opinion:new FormControl('', Validators.required),
+      your_opinion:new FormControl(''),
 
     });
  }
@@ -151,13 +152,37 @@ public onSaveSuccess(response:Status)
   ShowToast(msg:string) {
   let toast = this.toastCtrl.create({
     message: msg,
-    duration: 2000,
-    position: 'top'
+    duration: AppCommon.ToastDuration,
+    position: AppCommon.ToastPosition
   });
   toast.onDidDismiss(() => {
     this.nav.setRoot(this.notificationPage.component);
   });
   toast.present();
+}
+public onExpactedDateChange()
+{
+      this.responed_form.patchValue({  //patchValue//setValue
+                your_date:''
+              });
+}
+public onLocationChange()
+{
+      this.responed_form.patchValue({  //patchValue//setValue
+                your_location:''
+              });
+}
+public onPaymentChange()
+{
+      this.responed_form.patchValue({  //patchValue//setValue
+                your_paymentMode:''
+              });
+}
+public onCostChange()
+{
+      this.responed_form.patchValue({  //patchValue//setValue
+                your_cost:''
+              });
 }
   private SetResponedValues(responedValues:any):JobCreateRequest
   {

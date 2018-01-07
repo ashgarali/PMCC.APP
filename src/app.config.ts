@@ -4,6 +4,7 @@ export class AppConfig{
     //public static BaseUrl :string ="http://aliash002-001-site1.etempurl.com/";
     public static RecordCount:number=10;
     
+    
 }
 export class EndPoints
 {

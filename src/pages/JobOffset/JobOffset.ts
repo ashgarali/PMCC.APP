@@ -10,7 +10,7 @@ import { counterRangeValidator } from '../../components/counter-input/counter-in
 import {ServiceHelper} from '../../services/serviceHelper';
 import {Status} from '../../model/status.model';
 import {AppCommon} from '../../model/appcommon';
-import {JobType,ActionType} from '../../model/appenums';
+import {JobType,ActionType,JobNames} from '../../model/appenums';
 import {JobOffSetModel} from './JobOffset.model';
 import {JobCreateRequest,OffSetPrinting ,JobGetRequest,JobUpdateRequest,JobActionRequest} from '../../model/JobRequest';
 import {Msg,MsgType} from '../../app.config'
@@ -92,6 +92,7 @@ constructor(
   }
   ionViewWillEnter()
   {
+    this.loading.present();
     this.GetDataSource(DataSourceMasters.OFSJobType);
     this.GetDataSource(DataSourceMasters.OFSJobSize);
     this.GetDataSource(DataSourceMasters.PaymentMode);
@@ -253,6 +254,7 @@ public CloseDocument()
             break;
            case DataSourceMasters.DeliveryAt.toString():
             this.deliveryList= AppCommon.CreateDataSource(response);
+            this.HideLoad();
             break;
            case DataSourceMasters.OFSColorType.toString():
             this.colorsList= AppCommon.CreateDataSource(response);
@@ -300,8 +302,8 @@ public CloseDocument()
   ShowToast(msg:string) {
   let toast = this.toastCtrl.create({
     message: msg,
-    duration: 2000,
-    position: 'middle'
+    duration: AppCommon.ToastDuration,
+    position: AppCommon.ToastPosition
   });
   toast.onDidDismiss(() => {
      this.nav.setRoot(this.enquiriesPage.component);
@@ -432,7 +434,8 @@ public onJobTypeChange(event:any)
       this.currentJob.ExpectedCost,
       this.currentJob.ExpectedDeliverDate,
       this.currentJob.DeliveryAt,
-      this.currentJob.PaymentMode
+      this.currentJob.PaymentMode,
+      JobNames.OffsetPrinting
     );
     this.nav.push(this.responedPage.component,{"currentJob":responed});
   }
