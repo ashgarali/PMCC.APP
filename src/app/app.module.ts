@@ -24,6 +24,7 @@ import {BindingPage} from '../pages/JobBinding/Binding';
 import {DtpPage} from  '../pages/JobDTP/Dtp';
 import {ICardPage} from '../pages/JobICard/ICard';
 import { FlexPage } from "../pages/JobFlex/Flex";
+import {ContactusPage }from '../pages/contactus/contactus';
  
 import { TermsOfServicePage } from '../pages/terms-of-service/terms-of-service';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
@@ -77,6 +78,7 @@ import {Localstorage} from '../services/storageService';
     DtpPage,
     ICardPage,
     FlexPage,
+    ContactusPage,
 
     PreloadImage,
     BackgroundImage,
@@ -117,7 +119,8 @@ import {Localstorage} from '../services/storageService';
     BindingPage,
     DtpPage,
     ICardPage,
-    FlexPage
+    FlexPage,
+    ContactusPage,
 
   ],
   providers: [

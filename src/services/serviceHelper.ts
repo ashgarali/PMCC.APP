@@ -119,6 +119,13 @@ export class ServiceHelper{
         .then(response => response.json() as Status)
         .catch(this.handleError);
   }
+  ContactUs(request:any)
+  {
+    let requestPoint = this.BaseUrl+EndPoints.CONTACTUS;
+    return this.http.post(requestPoint,request,this.requestOptions()).toPromise()
+    .then(response => response.json() as Status)
+    .catch(this.handleError);
+  }
   PaymentInIt(request:InItPayment)
   {
       let requestPoint = this.BaseUrl+EndPoints.PAYMENTINIT;

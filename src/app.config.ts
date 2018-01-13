@@ -1,6 +1,6 @@
 export class AppConfig{
-    //public static BaseUrl :string ="http://localhost:44300/";
-    public static BaseUrl :string ="http://pmccqa.azurewebsites.net/";
+    public static BaseUrl :string ="http://localhost:44300/";
+   // public static BaseUrl :string ="http://pmccqa.azurewebsites.net/";
     //public static BaseUrl :string ="http://aliash002-001-site1.etempurl.com/";
     public static RecordCount:number=10;
     
@@ -21,6 +21,7 @@ export class EndPoints
     public static CREATEJOB='api/jobs/CreateJob';
     public static UPDATEJOB='api/jobs/UpdateJob';
     public static JOBACTION='api/jobs/JobAction';
+    public static CONTACTUS='api/Customer/ContactUs';
     public static GETVIEWS='api/jobs/GetViews';
     public static MODULES= 'api/Module/GetModules';
     public static GETOFFERS= 'api/Offer/GetOffersByModule';

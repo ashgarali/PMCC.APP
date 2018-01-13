@@ -1,0 +1,52 @@
+<style>
+    .error{
+      color:red;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+    .details{
+      font-size: 1.6rem;
+    font-weight: normal;
+    text-transform: none;
+     color:#3ea3bd;
+     padding: 15px 0px 0px 5px;
+    }
+    /* .text-input-md {
+     margin: 0px !important;
+} */
+  </style>
+  
+  <ion-header class="signup-header auth-header">
+    <ion-navbar>
+      <ion-title>Contact us</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content class="signup-content auth-content">
+      <h2 class="auth-title">Contact us</h2>
+      <hr>
+    <form class="signup-form auth-form" [formGroup]="contactusForm" (ngSubmit)="doContactUs()">
+      <ion-item>
+        <ion-label color="primary" floating>Name</ion-label>
+        <ion-input type="text" formControlName="name" (ionBlur)="onNameBlur()" ></ion-input>
+      </ion-item>
+       <small *ngIf="$validateName" class="error" >
+         You are Exceeding max length.
+        </small>
+      <ion-item>
+        <ion-label color="primary" floating>Email</ion-label>
+        <ion-input type="email" formControlName="email" (ionBlur)="onEmailBlur()"></ion-input>
+      </ion-item>
+      <small *ngIf="$validateEmail" class="error" >
+        Not a valid email.
+      </small>
+      <div class="details">
+          <ion-label style="margin: 0px;"  >Details</ion-label>
+      </div>
+      <ion-item class="multi-input time-item">
+        <ion-textarea style="margin: 0px;" formControlName="details" rows="3"></ion-textarea>
+      </ion-item>
+      <button ion-button block class="auth-action-button signup-button" type="submit" [disabled]="!contactusForm.valid">Send Message</button>
+    </form>
+  </ion-content>
+  

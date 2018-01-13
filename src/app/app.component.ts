@@ -11,6 +11,7 @@ import { EnquiriesPage } from '../pages/Enquiries/Enquiries';
 import { ProfilePage } from '../pages/profile/profile';
 import { Localstorage } from "../services/storageService";
 import {StoreKey} from '../app.config';
+import {ContactusPage }from '../pages/contactus/contactus';
 
 @Component({
   selector: 'app-root',
@@ -53,6 +54,7 @@ export class MyApp {
 
     this.pushPages = [
       { title: 'Settings', icon: 'settings', component: SettingsPage },
+      { title: 'ContactUs', icon: 'mail', component: ContactusPage },
       
     ];
   }
