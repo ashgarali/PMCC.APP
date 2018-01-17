@@ -1,6 +1,6 @@
 export class AppConfig{
-    public static BaseUrl :string ="http://localhost:44300/";
-   // public static BaseUrl :string ="http://pmccqa.azurewebsites.net/";
+    //public static BaseUrl :string ="http://localhost:44300/";
+   public static BaseUrl :string ="http://pmccqa.azurewebsites.net/";
     //public static BaseUrl :string ="http://aliash002-001-site1.etempurl.com/";
     public static RecordCount:number=10;
     

@@ -8,7 +8,7 @@ import {ServiceHelper} from '../../services/serviceHelper'
 import {Status} from '../../model/status.model';
 import {InItPayment} from '../../model/JobRequest'
 import { counterRangeValidator } from '../../components/counter-input/counter-input';
-import {Storage} from '@ionic/storage';
+import { Localstorage } from "../../services/storageService";
 import {StoreKey,AppConfig} from '../../app.config';
 import {AppCommon} from '../../model/appcommon';
 
@@ -30,23 +30,23 @@ constructor(
    private loadingCtrl:LoadingController,
    private serviceHelper:ServiceHelper,
    public navParams :NavParams,
-   private storage :Storage ,
+   public storage:Localstorage ,
    private themeableBrowser: ThemeableBrowser
      ) {
       this.loading = loadingCtrl.create();
-      this.paymentOptions = this.navParams.get('payment');
-       this.storage.get(StoreKey.AuthKey)
-      .then((value) => this.authKey=value)
-      .catch(() => {this.errorMsg = "Auntaction key not found!",this.isError=true});  
+	  this.paymentOptions = this.navParams.get('payment');
+	  this.storage.GetValues(StoreKey.AuthKey)
+      .then(
+		(value) => this.StartPayment(value)
+      );
 }
 ngOnInit() {
-	if (AppCommon.IsCordovaAvailable()) {
-		return false;
-	}
+	
 }
 
-ionViewWillEnter()
+StartPayment(value:string)
 {
+   this.authKey=value
   if(AppCommon.IsCordovaAvailable()){
         this.LoadPayment();
     }
@@ -90,23 +90,25 @@ LoadPayment(){
 	// 		},
 			backButtonCanClose: true
 		};
+
+		let productInfo=this.paymentOptions.ProductInfo.replace("&","");
+		let params=  "amount="+ this.paymentOptions.Amount+ "&Pinfo="+productInfo+"&PIds="+this.paymentOptions.ProductIds.toString()+"&months="+this.paymentOptions.Months+"&auth="+this.authKey;
 //Old options
-let params=  "amount="+ this.paymentOptions.Amount+ "&Pinfo="+this.paymentOptions.ProductInfo+"&PIds="+this.paymentOptions.ProductIds.toString()+"&months="+this.paymentOptions.Months+"&auth="+this.authKey;
 //  const browser = this.iab.create(
 //    AppConfig.BaseUrl +'views/payU.html?'+params,
 //    '_self',
 //    {location:'yes'}
 //   ); 
 //New options
-let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'views/payU.html?'+params, '_blank', options);
+ let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'views/payU.html?'+params, '_blank', options);
 
-browser.on('helloPressed').subscribe(x => {
-			alert('Hello button pressed');
-		});
+// browser.on('helloPressed').subscribe(x => {
+// 			alert('Hello button pressed');
+// 		});
 
-		browser.on('testPressed').subscribe(x => {
-			alert('Test button pressed');
-		});
+// 		browser.on('testPressed').subscribe(x => {
+// 			alert('Test button pressed');
+// 		});
 
 }
 }
