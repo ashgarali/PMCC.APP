@@ -41,6 +41,7 @@ export class FlexPage {
     errorInDim:boolean=false;
     connctionErrorCount:number=0;
     noOfDesigns: number[]=[1];
+    _isSaving=false;
    constructor(
    public nav: NavController,
    public alertCtrl: AlertController,
@@ -292,14 +293,15 @@ public onDesignChange(event:any)
  }
 public onFlexSave()
 {
-  
+  this._isSaving=true;
+  this.loading.present();
     if(!this.isEditMode){
       let jobRequest= this.CreateReqest(this.flexForm.value);
        if(this.errorInDim){
         this.ShowAlert(MsgType.InfoType,Msg.FlexDimError);
       return false;
      }
-     this.loading.present();
+     
       this.serviceHelper.CreateJob(jobRequest)
         .then( response => this.onSaveSuccess(response) ,
             error => this.OnError(error));
@@ -325,6 +327,7 @@ public onSaveSuccess(response:Status)
        }
        else{
        this.ShowAlert(MsgType.ErrorType,response.Message);
+       this._isSaving=false;
      }
      this.loading = this.loadingCtrl.create();
  } 
@@ -419,6 +422,7 @@ private CreateReqest(formValues:any):JobCreateRequest
   public OnError(error:any)
   {
     this.loading.dismiss();
+    this._isSaving=false;
     if(this.connctionErrorCount==0)
       this.ShowAlert(MsgType.ErrorType,error.message);
     if(error.status==0)

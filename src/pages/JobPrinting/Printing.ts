@@ -45,6 +45,7 @@ export class PrintingPage {
     pastingRequired:boolean=false; 
     connctionErrorCount:number=0;
     _isBagPrnting=false;
+    _isSaving=false;
 
 
 constructor(
@@ -277,6 +278,7 @@ constructor(
   public OnError(error:any)
   {
     this.loading.dismiss();
+    this._isSaving=false;
     if(this.connctionErrorCount==0)
       this.ShowAlert(MsgType.ErrorType,error.message);
     if(error.status==0)
@@ -309,6 +311,7 @@ constructor(
   toast.present();
 }
  onScreenPrintingSave(){
+   this._isSaving=true;
     console.log(this.screenPrintingForm.value);
     this.loading.present();
     if(!this.isEditMode){
@@ -334,6 +337,7 @@ constructor(
        }
        else{
        this.ShowAlert(MsgType.ErrorType,response.Message);
+       this._isSaving=false;
      }
      this.loading = this.loadingCtrl.create();
  }

@@ -47,9 +47,11 @@ ngOnInit() {
 StartPayment(value:string)
 {
    this.authKey=value
+  
   if(AppCommon.IsCordovaAvailable()){
         this.LoadPayment();
-    }
+	}
+	this.LoadPayment();
 }
 LoadPayment(){
   
@@ -94,13 +96,13 @@ LoadPayment(){
 		let productInfo=this.paymentOptions.ProductInfo.replace("&","");
 		let params=  "amount="+ this.paymentOptions.Amount+ "&Pinfo="+productInfo+"&PIds="+this.paymentOptions.ProductIds.toString()+"&months="+this.paymentOptions.Months+"&auth="+this.authKey;
 //Old options
-//  const browser = this.iab.create(
-//    AppConfig.BaseUrl +'views/payU.html?'+params,
-//    '_self',
-//    {location:'yes'}
-//   ); 
+ const browser = this.iab.create(
+   AppConfig.BaseUrl +'views/payU.html?'+params,
+   '_self',
+   {location:'yes'}
+  ); 
 //New options
- let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'views/payU.html?'+params, '_blank', options);
+ //let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'views/payU.html?'+params, '_blank', options);
 
 // browser.on('helloPressed').subscribe(x => {
 // 			alert('Hello button pressed');

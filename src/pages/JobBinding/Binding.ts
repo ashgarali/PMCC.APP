@@ -41,6 +41,7 @@ export class BindingPage {
     hideJobSize:boolean=false;
     showCovertType:boolean=true;
     connctionErrorCount:number=0;
+    _isSaving=false;
 
    constructor(
    public nav: NavController,
@@ -283,6 +284,7 @@ public CloseDocument()
   }
 public onBindingSave()
 {
+  this._isSaving=true;
    this.loading.present();
     if(!this.isEditMode){
       let jobRequest= this.CreateReqest(this.bindingForm.value);
@@ -306,6 +308,7 @@ public onSaveSuccess(response:Status)
        }
        else{
        this.ShowAlert(MsgType.ErrorType,response.Message);
+       this._isSaving=false;
      }
      this.loading = this.loadingCtrl.create();
  } 
@@ -360,6 +363,7 @@ private CreateReqest(formValues:any):JobCreateRequest
   }
   public OnError(error:any)
   {
+    this._isSaving=false;
     this.loading.dismiss();
     if(this.connctionErrorCount==0)
       this.ShowAlert(MsgType.ErrorType,error.message);

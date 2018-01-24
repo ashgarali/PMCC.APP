@@ -46,20 +46,22 @@ export class AddressPage {
       state: new FormControl('',Validators.required),
       city: new FormControl('',Validators.required),
     });
-     this.storage.GetValues(StoreKey.UserId)
+     
+  }
+  ionViewWillEnter()
+  {
+    this.storage.GetValues(StoreKey.UserId)
       .then((value) => this.userId=value)
       .catch(() => {this.errorMsg = "User not found!",this.isError=true});
       
        this.storage.GetValues(StoreKey.AuthKey)
-      .then((value) =>AppCommon.HoldAuthKey =value)
+      .then((value) =>this.GetStates(1,value))
       .catch(() => {this.errorMsg = "User not found!",this.isError=true});
   }
-  ionViewWillEnter()
+  private GetStates(id:number,key:string)
   {
-    setTimeout(()=>{this.GetStates(1);},1000);
-  }
-  private GetStates(id:number)
-  {
+    AppCommon.HoldAuthKey=key;
+    this.serviceHelper.LoadSessionKey();
     let orders :Shorting[]  =[];
     orders.push(new Shorting("Name",SortingType.Asc));
     let request = AppCommon.CreateGetsRequest(JobType.StateMaster,[],orders);

@@ -222,7 +222,7 @@
                   <button ion-button block class="form-action-button create-event-button" (click)="ClearForm()" type="button"  >{{clearBtnText}}</button>
               </ion-col>
               <ion-col no-padding width-50>
-                  <button ion-button block class="form-action-button create-event-button" (click)="onFlexSave()" type="button" [disabled]="!(this.flexForm.valid && this.flexForm.dirty)" >Post</button>
+                  <button ion-button block class="form-action-button create-event-button" (click)="onFlexSave()" type="button" [disabled]="(!(this.flexForm.valid && this.flexForm.dirty)||_isSaving)" >Post</button>
               </ion-col>
           </ion-row>
           <ion-row *ngIf="isEditDesiable" no-padding class="multi-input-row">

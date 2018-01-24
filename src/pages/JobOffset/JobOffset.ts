@@ -42,6 +42,7 @@ export class JobOffsetPage {
     loading: any;
     connctionErrorCount:number=0;
     errorInPlatesCount:boolean=false;
+    _isSaving=false;
 constructor(
    public nav: NavController,
    public alertCtrl: AlertController,
@@ -280,6 +281,7 @@ public CloseDocument()
   public OnError(error:any)
   {
     this.loading.dismiss();
+    this._isSaving=false;
     if(this.connctionErrorCount==0)
       this.ShowAlert(MsgType.ErrorType,error.message);
     if(error.status==0)
@@ -312,8 +314,10 @@ public CloseDocument()
   toast.present();
 }
  onOffsetPrintingSave(){
+     this._isSaving=true;
     console.log(this.jobOffsetForm.value);
     this.loading.present();
+    
     if(!this.isEditMode){
     let jobRequest= this.CreateOffSetReqest(this.jobOffsetForm.value);
     if(this.errorInPlatesCount){
@@ -341,6 +345,7 @@ public CloseDocument()
        }
        else{
        this.ShowAlert(MsgType.ErrorType,response.Message);
+       this._isSaving=false;
      }
  }
  private CreateOffSetReqest(formValues:any):JobCreateRequest
