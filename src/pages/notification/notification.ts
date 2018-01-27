@@ -171,6 +171,11 @@ private CreateNotificationsRequest(isresponed:boolean):JobGetsRequest
  }
   GoToJobPage(item: NotificationModel)
   {
+    if(!item.SubActive)
+    {
+      this.ShowAlert(MsgType.InfoType,"Your subscription of "+ item.JobTypeName +" has been expired. Please renew.")
+      return false;
+    }
      switch(item.JobType){
         case JobType.ScreenPrinting:
           this.nav.push(this.printingPage.component,{id:item.JobTypeId,isDisable:true});

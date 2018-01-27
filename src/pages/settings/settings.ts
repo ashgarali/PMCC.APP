@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, ModalController, LoadingController,AlertController,ToastController } from 'ionic-angular';
 import { FormGroup, FormControl ,Validators} from '@angular/forms';
 import {UserDetail} from './settings.model';
-import { TermsOfServicePage } from '../terms-of-service/terms-of-service';
-import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy';
 import {ServiceHelper} from '../../services/serviceHelper';
 import {LoginPage} from '../login/login';
 import { JobGetsRequest} from '../../model/JobRequest';
@@ -201,15 +199,7 @@ private UserDetailsRequest():JobGetsRequest
        this.ShowAlert("Error",response.Message);
      }
   }
-  showTermsModal() {
-    let modal = this.modal.create(TermsOfServicePage);
-    modal.present();
-  }
 
-  showPrivacyModal() {
-    let modal = this.modal.create(PrivacyPolicyPage);
-    modal.present();
-  }
   OnError(error:any)
   {
     this.loading.dismiss();

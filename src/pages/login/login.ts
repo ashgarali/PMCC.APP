@@ -7,7 +7,6 @@ import {Device } from '@ionic-native/device';
 import { TabsNavigationPage } from '../tabs-navigation/tabs-navigation';
 import { SignupPage } from '../signup/signup';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
-import { TermsOfServicePage } from '../terms-of-service/terms-of-service';
 import {LoginService} from '../../services/loginService';
 import { AddressPage } from '../address/address';
 import {Login} from  '../../model/login.model';
@@ -110,10 +109,6 @@ export class LoginPage  {
     // .then(user=>this.onGoogleLogin(user),
     //       error=>this.onLoginError(error) );
     this.nav.setRoot(this.main_page.component);
-  }
-  showTermsModal() {
-    let modal = this.modal.create(TermsOfServicePage);
-    modal.present();
   }
   onGoogleLogin(user)
   {

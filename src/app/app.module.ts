@@ -26,9 +26,6 @@ import {ICardPage} from '../pages/JobICard/ICard';
 import { FlexPage } from "../pages/JobFlex/Flex";
 import {ContactusPage }from '../pages/contactus/contactus';
  
-import { TermsOfServicePage } from '../pages/terms-of-service/terms-of-service';
-import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
-
 import { PreloadImage } from '../components/preload-image/preload-image';
 import { BackgroundImage } from '../components/background-image/background-image';
 import { ShowHideContainer } from '../components/show-hide-password/show-hide-container';
@@ -52,6 +49,8 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import {EmailValidator} from 'ng-email-validation';
 import {Localstorage} from '../services/storageService';
 
+import {MaxLengthDirectiveModule} from '../Directive/MaxLength.Directive.module';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -61,8 +60,6 @@ import {Localstorage} from '../services/storageService';
     SettingsPage,
     SignupPage,
     ForgotPasswordPage,
-    TermsOfServicePage,
-    PrivacyPolicyPage,
     AddressPage,
     NotificationPage,
     PrintingPage,
@@ -91,6 +88,7 @@ import {Localstorage} from '../services/storageService';
   imports: [
     BrowserModule,
     HttpModule,
+    MaxLengthDirectiveModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
   ],
@@ -103,8 +101,6 @@ import {Localstorage} from '../services/storageService';
     SettingsPage,
     ForgotPasswordPage,
     SignupPage,
-    TermsOfServicePage,
-    PrivacyPolicyPage,
     AddressPage,
     NotificationPage,
     PrintingPage,

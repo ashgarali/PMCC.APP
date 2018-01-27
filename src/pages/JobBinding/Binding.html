@@ -57,7 +57,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" placeholder="e.g. 100" formControlName="noOfBook"></ion-input>
+               <ion-input type="number" iMaxLength="4" placeholder="e.g. 100" formControlName="noOfBook"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -80,7 +80,7 @@
             </ion-col>
             <ion-col no-padding width-15>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim1"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="jobDim1"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding style="text-align: center;" width-10>
@@ -88,7 +88,7 @@
             </ion-col>
             <ion-col no-padding width-15>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim2"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="jobDim2"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding width-20>
@@ -119,7 +119,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" placeholder="e.g. 100" formControlName="eachCopyQty"></ion-input>
+               <ion-input type="number" iMaxLength="4" placeholder="e.g. 100" formControlName="eachCopyQty"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -175,7 +175,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="expCost"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="expCost"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -200,7 +200,7 @@
             </ion-col>
             <ion-col no-padding width-100>
               <ion-item class="multi-input time-item">
-                <ion-textarea formControlName="details" rows="3" placeholder="Your description here..."></ion-textarea>
+                <ion-textarea formControlName="details" rows="3" maxLength="200" placeholder="Your description here..."></ion-textarea>
               </ion-item>
             </ion-col>
           </ion-row>

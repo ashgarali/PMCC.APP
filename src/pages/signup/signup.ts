@@ -4,13 +4,11 @@ import { Validators, FormGroup, FormControl,ValidatorFn,AbstractControl } from '
 import {Storage} from '@ionic/storage';
 import {LoginService} from '../../services/loginService';
 
-import { TermsOfServicePage } from '../terms-of-service/terms-of-service';
-import { PrivacyPolicyPage } from '../privacy-policy/privacy-policy';
-
+import {ThemeableBrowser} from '@ionic-native/themeable-browser'
 import { AddressPage } from '../address/address';
 import {Registration} from '../../model/login.model';
 import {Status } from '../../model/status.model';
-import {StoreKey} from '../../app.config';
+import {StoreKey,AppConfig} from '../../app.config';
 import {AppValidators} from '../../model/AppValidators'
 import {AppCommon} from '../../model/appcommon';
 import {DeviceType} from '../../model/appenums';
@@ -31,6 +29,7 @@ export class SignupPage {
    public loginService: LoginService,
    private storage : Localstorage,
    public alertCtr :AlertController,
+   private themeableBrowser: ThemeableBrowser,
    public loadingCtrl: LoadingController
   ) {
     this.address_page = { component: AddressPage };
@@ -91,14 +90,47 @@ export class SignupPage {
     alert.present();
   }
 
-  showTermsModal() {
-    let modal = this.modal.create(TermsOfServicePage);
-    modal.present();
-  }
 
   showPrivacyModal() {
-    let modal = this.modal.create(PrivacyPolicyPage);
-    modal.present();
+    let options = {
+			statusbar: {
+				color: '#ffffffff'
+			},
+			toolbar: {
+				height: 44,
+				color: '#3ea3bd'
+			},
+			title: {
+				color: '#ffffffff',
+				showPageTitle: true
+			},
+			closeButton: {
+				wwwImage: 'assets/images/close.png',
+				wwwImageDensity: 2,
+				align: 'left',
+				event: 'closePressed'
+      },
+    //   menu: {
+	// 			wwwImage: 'assets/images/menu.png',
+	// 			wwwImageDensity: 2,
+	// 			align: 'right',
+	// 			title: 'Test',
+	// 			cancel: 'Cancel',
+	// 			items: [
+	// 				{
+	// 					event: 'helloPressed',
+	// 					label: 'Hello World!'
+	// 				},
+	// 				{
+	// 					event: 'testPressed',
+	// 					label: 'Test!'
+	// 				}
+	// 			]
+	// 		},
+			backButtonCanClose: true
+    };
+    
+    let browser = this.themeableBrowser.create(AppConfig.BaseUrl +'TandC.html', '_self', options);
   }
 
   ///Validation Start

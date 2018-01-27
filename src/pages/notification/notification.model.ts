@@ -18,4 +18,5 @@ export class NotificationModel {
   ReceivedDate:string;
   IsSend:boolean;
   IsViewed:boolean;
+  SubActive:boolean;
 }

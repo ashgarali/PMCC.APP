@@ -93,7 +93,7 @@
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim{{item}}1"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="jobDim{{item}}1"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding style="text-align: center;" width-10>
@@ -101,12 +101,12 @@
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobDim{{item}}2"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="jobDim{{item}}2"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col no-padding width-20>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="jobUom{{item}}3"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="jobUom{{item}}3"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -166,7 +166,7 @@
             </ion-col>
             <ion-col no-padding width-60>
               <ion-item class="multi-input time-item">
-               <ion-input type="number" formControlName="expCost"></ion-input>
+               <ion-input type="number" iMaxLength="4" formControlName="expCost"></ion-input>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -211,7 +211,7 @@
             </ion-col>
           </ion-row>
           <ion-item class="multi-input time-item" style="margin-top: -12px;" >
-            <ion-textarea formControlName="details" rows="3" placeholder="Your description here..."></ion-textarea>
+            <ion-textarea formControlName="details" rows="3" maxLength="200" placeholder="Your description here..."></ion-textarea>
           </ion-item>
     </section>
   </form>
