@@ -36,6 +36,7 @@ export class AddressPage {
               public loadingCtrl: LoadingController
               ) 
   {
+    this.serviceHelper.LoadSessionKey();
     this.main_page = { component: TabsNavigationPage };
     this.loading = this.loadingCtrl.create();
     this.address = new FormGroup({
@@ -46,7 +47,6 @@ export class AddressPage {
       state: new FormControl('',Validators.required),
       city: new FormControl('',Validators.required),
     });
-     
   }
   ionViewWillEnter()
   {
