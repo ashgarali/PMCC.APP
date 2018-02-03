@@ -36,7 +36,12 @@ constructor(public nav: NavController,
 
 ionViewWillEnter()
 {
+    this.Total="0.00";
+    this.Offer="0.00";
+    this.GrandTotal="0.00";
+    this.enableBye=false;
     this.loading.present();
+    this.byeList=[];
     this.serviceHelper
       .GetViews(this.ModuleMasterRequest())
       .then(response => {
