@@ -1,8 +1,8 @@
 {
     "name": "PmccApp",
-    "version": "1.0.6",
+    "version": "1.0",
     "author": "Ashgar ali",
-    "homepage": "http://pmccqa.azurewebsites.net",
+    "homepage": "http://pmccprdapp.azurewebsites.net",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
